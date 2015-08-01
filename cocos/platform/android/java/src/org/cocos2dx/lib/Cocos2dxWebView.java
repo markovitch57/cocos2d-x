@@ -43,9 +43,29 @@ public class Cocos2dxWebView extends WebView {
             Log.d(TAG, "This API level do not support `removeJavascriptInterface`");
         }
 
+        this.addJavascriptInterface(new WebAppInterface(context), "Android"); // my addition
         this.setWebViewClient(new Cocos2dxWebViewClient());
         this.setWebChromeClient(new WebChromeClient());
-    }
+
+		/*
+        // experiment
+    	AccountManager manager = (AccountManager) getContext().getSystemService(Context.ACCOUNT_SERVICE);
+    	Account[] list = manager.getAccounts();
+    	String gmail = null;
+
+    	for(Account account: list)
+    	{
+    	    if(account.type.equalsIgnoreCase("com.google"))
+    	    {
+    	        gmail = account.name;
+    	        break;
+    	    }
+    	}
+       */
+        // end of experiment
+
+	
+	}
 
     public void setJavascriptInterfaceScheme(String scheme) {
         this.mJSScheme = scheme != null ? scheme : "";

@@ -35,6 +35,9 @@ NS_CC_BEGIN
 
 namespace network {
 
+double HttpClient::ffDownloaded = 0; // my addition
+
+
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 typedef int int32_t;
 #endif
@@ -201,6 +204,17 @@ static bool configureCURL(HttpClient* client, CURL* handle, char* errorBuffer)
     // FIXED #3224: The subthread of CCHttpClient interrupts main thread if timeout comes.
     // Document is here: http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTNOSIGNAL 
     curl_easy_setopt(handle, CURLOPT_NOSIGNAL, 1L);
+
+// my addition
+	curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 0);
+    curl_easy_setopt(handle, CURLOPT_PROGRESSFUNCTION, HttpClient::downloadProgressFunc);
+	curl_easy_setopt(handle, CURLOPT_PROGRESSDATA, NULL);
+	//curl_easy_setopt(curl, CURLOPT_FAILONERROR, true); //See Downloader
+
+
+    //curl_easy_setopt(handle, CURLOPT_XFERINFOFUNCTION, CCHttpClient::downloadProgressFunc); // cocos2dx curl version too old for this! (older than 7.32.0)
+    //curl_easy_setopt(handle, CURLOPT_PROGRESSDATA, NULL); // see http://curl.haxx.se/libcurl/c/CURLOPT_PROGRESSDATA.html - CURLOPT_PROGRESSDATA - custom pointer passed to the progress callback - Pass a pointer that will be untouched by libcurl and passed as the first argument in the progress callback set with CURLOPT_PROGRESSFUNCTION.
+// end of my addition
 
     curl_easy_setopt(handle, CURLOPT_ACCEPT_ENCODING, "");
 
@@ -634,6 +648,14 @@ const std::string& HttpClient::getSSLVerification()
     std::lock_guard<std::mutex> lock(_sslCaFileMutex);
     return _sslCaFilename;
 }
+
+// my additions
+void HttpClient::freeRequest(void) {
+	//delete _requestSentinel;// delete s_requestSentinel;
+	//s_requestSentinel->release();
+	
+}
+// end of my additions
 
 }
 

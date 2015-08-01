@@ -741,8 +741,11 @@ unsigned char* FileUtils::getFileDataFromZip(const std::string& zipFilePath, con
         ret = unzOpenCurrentFile(file);
         CC_BREAK_IF(UNZ_OK != ret);
 
-        buffer = (unsigned char*)malloc(fileInfo.uncompressed_size);
-        int CC_UNUSED readedSize = unzReadCurrentFile(file, buffer, static_cast<unsigned>(fileInfo.uncompressed_size));
+        //buffer = (unsigned char*)malloc(fileInfo.uncompressed_size);
+        buffer = (unsigned char*)malloc(fileInfo.uncompressed_size + 1); // my addition -- add a string terminator for convenience
+		buffer[fileInfo.uncompressed_size] = 0;// my addition
+
+		int CC_UNUSED readedSize = unzReadCurrentFile(file, buffer, static_cast<unsigned>(fileInfo.uncompressed_size));
         CCASSERT(readedSize == 0 || readedSize == (int)fileInfo.uncompressed_size, "the file size is wrong");
 
         *size = fileInfo.uncompressed_size;
@@ -779,12 +782,14 @@ std::string FileUtils::getPathForFilename(const std::string& filename, const std
 {
     std::string file = filename;
     std::string file_path = "";
-    size_t pos = filename.find_last_of("/");
+    // following removal is my addition (the code prevents me using folder strucure for lua!)
+    /*size_t pos = filename.find_last_of("/");
     if (pos != std::string::npos)
     {
         file_path = filename.substr(0, pos+1);
         file = filename.substr(pos+1);
     }
+	*/
 
     // searchPath + file_path + resourceDirectory
     std::string path = searchPath;
@@ -796,6 +801,42 @@ std::string FileUtils::getPathForFilename(const std::string& filename, const std
     //CCLOG("getPathForFilename, fullPath = %s", path.c_str());
     return path;
 }
+
+// my additions
+bool yFileExistsAtThisPrecisePath(const char *pcPath) {
+	FILE *poFile = fopen(pcPath, "r");
+	if (poFile) {
+		fclose(poFile);
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void convertSubpathToDataFolderForm(std::string *psSubPath) {
+/*
+	// Converting the subpath string to simply a part of the file name avoids the need to create folder structures in the Data folder even if that were
+	// possible on the device.
+	// if (str1.compare(6,5,"apple") == 0) - http://www.cplusplus.com/reference/string/string/compare/
+	std::string sDataPath = FileUtils::getInstance()->getWritablePath();
+	int dataPathLen = sDataPath.length();
+	if (psSubPath->compare(0, dataPathLen, sDataPath) == 0) {//getInstance()->getWritablePath());
+		std::replace(psSubPath->begin() + dataPathLen, psSubPath->end(), '/', '_');
+	}
+	else {
+		std::replace(psSubPath->begin(), psSubPath->end(), '/', '_');
+	}
+*/
+}
+
+bool dataFileExistsAtThisPath(const char *pcPath) {
+	std::string sSubPath(pcPath);
+	convertSubpathToDataFolderForm(&sSubPath);//std::replace(sSubPath.begin(), sSubPath.end(), '/', '_');
+	std::string psPath(sSubPath); // need slash?
+	return yFileExistsAtThisPrecisePath(psPath.c_str());
+}
+// end of my additions
 
 std::string FileUtils::fullPathForFilename(const std::string &filename) const
 {
@@ -836,6 +877,38 @@ std::string FileUtils::fullPathForFilename(const std::string &filename) const
 
         }
     }
+
+	// my addition - should this be within _searchPathArray loop!??
+		// now look in Data folder with modified path! 
+	const std::string sDataPath = getWritablePath();
+        //for (std::vector<std::string>::iterator resOrderIter = m_searchResolutionsOrderArray.begin(); resOrderIter != m_searchResolutionsOrderArray.end(); ++resOrderIter) {
+		for (const auto& resolutionIt : _searchResolutionsOrderArray) {
+            
+            //CCLOG("\n\nSEARCHING: %s, %s, %s", newFilename.c_str(), resOrderIter->c_str(), searchPathsIter->c_str());
+			std::string myNewfileName(newFilename); 
+			convertSubpathToDataFolderForm(&myNewfileName);
+            
+           // fullpath = this->getPathForFilename(newFilename, *resOrderIter, sDataPath);//*searchPathsIter);
+			fullpath = myNewfileName;//sDataPath + newFilename;
+			if (!dataFileExistsAtThisPath(fullpath.c_str())) {
+//			if (!yFileExistsAtThisPrecisePath(fullpath.c_str())) { // 2015_03_12
+				fullpath = sDataPath + myNewfileName;
+//				convertSubpathToDataFolderForm(&fullpath); // 2015_03_12
+				if (!dataFileExistsAtThisPath(fullpath.c_str())) {
+//				if (!yFileExistsAtThisPrecisePath(fullpath.c_str())) { // 2015_03_12
+					fullpath.assign("");
+				}
+			}
+
+			if (fullpath.length() > 0)
+            {
+                // Using the filename passed in as key.
+                _fullPathCache.insert(std::pair<std::string, std::string>(filename, fullpath));
+                //CCLOG("Returning path: %s", fullpath.c_str());
+                return fullpath;
+            }
+        }
+		// end of my addition
 
     if(isPopupNotify()){
         CCLOG("cocos2d: fullPathForFilename: No file found at %s. Possible missing file.", filename.c_str());

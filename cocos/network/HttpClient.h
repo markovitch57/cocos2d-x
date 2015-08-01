@@ -137,7 +137,22 @@ public:
      */
     void setTimeoutForRead(int value);
 
-    /**
+	// My additions
+	static int downloadProgressFunc(void *ptr, double totalToDownload, double nowDownloaded, double totalToUpLoad, double nowUpLoaded) {
+	//static int downloadProgressFunc(void *clientp,   curl_off_t dltotal,   curl_off_t dlnow,   curl_off_t ultotal,   curl_off_t ulnow)	{ /cocos2dx curl version too old for this! (older than 7.32.0)
+		ffDownloaded = nowDownloaded;
+		//CCLOG("downloaded = %f", ffDownloaded);// This method currently never called under Android!!? IOS? - It is under windows.
+		return 0;
+	};
+	static double getDownloaded(void) {
+		return ffDownloaded;
+	};
+	static void zeroDownloaded(void) {ffDownloaded = 0;};
+	static double ffDownloaded;
+	static void freeRequest(void); // my addition
+	// End of my additions
+
+	/**
      * Get the timeout value for reading.
      *
      * @return int the timeout value for reading.

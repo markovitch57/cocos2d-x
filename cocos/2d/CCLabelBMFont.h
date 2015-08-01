@@ -117,6 +117,9 @@ public:
     virtual void setOpacityModifyRGB(bool isOpacityModifyRGB) override;
 
     void setFntFile(const std::string& fntFile, const Vec2& imageOffset = Vec2::ZERO);
+
+	Rect getRectForKey(unsigned int cKey); // my addition - Purely so can get at m_pFontDefDictionary
+
     const std::string& getFntFile() const;
 
     virtual void setBlendFunc(const BlendFunc &blendFunc) override;

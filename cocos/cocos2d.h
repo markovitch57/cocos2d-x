@@ -28,6 +28,17 @@ THE SOFTWARE.
 #ifndef __COCOS2D_H__
 #define __COCOS2D_H__
 
+// my addition
+#ifdef _WIN32
+#define _WINSOCKAPI_
+
+#ifdef _DEBUG
+// Following line instigates Visual Leak Detector.
+#include "vld.h"
+#endif
+#endif
+// end of my addition
+
 // 0x00 HI ME LO
 // 00   03 07 00
 #define COCOS2D_VERSION 0x00030700

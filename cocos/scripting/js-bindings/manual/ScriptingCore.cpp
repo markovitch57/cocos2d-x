@@ -77,6 +77,8 @@
 
 using namespace cocos2d;
 
+ScriptingCore* ScriptingCore::pInstance = NULL; // my addition
+
 static std::string inData;
 static std::string outData;
 static std::vector<std::string> g_queue;
@@ -770,7 +772,16 @@ void ScriptingCore::restartVM()
 
 ScriptingCore::~ScriptingCore()
 {
-    cleanup();
+	// my addition
+	if (pInstance) {
+		cleanup();
+		pInstance = NULL; 
+		js_log("ScriptingCore destructor called");
+	}
+	else {
+		js_log("ScriptingCore destructor called on null pInstance");
+	}
+	// end of my addition
 }
 
 void ScriptingCore::cleanup()

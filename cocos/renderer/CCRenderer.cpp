@@ -1058,7 +1058,13 @@ bool Renderer::checkVisibility(const Mat4 &transform, const Size &size)
 
 void Renderer::setClearColor(const Color4F &clearColor)
 {
-    _clearColor = clearColor;
+	_clearColor = clearColor;
 }
+
+// my addition
+Color4F Renderer::getClearColor(void) {
+	return _clearColor;
+}
+// end of my addition
 
 NS_CC_END

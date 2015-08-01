@@ -136,6 +136,9 @@ public:
     bool                     hasAlpha();
     bool                     isCompressed();
 
+	int iComputePixelDataIndex(int iX, int iY); // my addition
+	Color4B getPixel(int iX, int iY); // my addition
+	void setPixel(int iX, int iY, Color4B *pPixel); // my addition
 
     /**
      @brief    Save Image data to the specified file, with specified format.

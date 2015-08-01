@@ -54,6 +54,7 @@ public:
     @brief    Run the message loop.
     */
     int run();
+	virtual void openURL(const char* pszUrl); // my addition - see https://github.com/cocos2d/cocos2d-x/pull/1940
 
     /**
     @brief    Get current applicaiton instance.
@@ -108,7 +109,10 @@ protected:
     std::string         _resourceRootPath;
     std::string         _startupScriptFilename;
 
+public: // My addition
     static Application * sm_pSharedApplication;
+	static bool yDestroyGlViewOnRelaunch; // My addition
+	static bool yRelaunch; // My addition
 };
 
 NS_CC_END

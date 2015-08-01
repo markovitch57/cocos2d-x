@@ -535,10 +535,16 @@ protected:
         
     /* delta time since last tick to main loop */
 	float _deltaTime;
+
+public: // My addition
+	int iRequestsPending; // My addition
+protected: // My addition
     
     /* The _openGLView, where everything is rendered, GLView is a abstract class,cocos2d-x provide GLViewImpl
      which inherit from it as default renderer context,you can have your own by inherit from it*/
-    GLView *_openGLView;
+public: // My addition
+	static GLView *_openGLView; // static is my addition
+protected: // My addition
 
     //texture cache belongs to this director
     TextureCache *_textureCache;

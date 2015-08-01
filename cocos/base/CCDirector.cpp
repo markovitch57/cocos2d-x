@@ -81,6 +81,8 @@ using namespace std;
 NS_CC_BEGIN
 // FIXME: it should be a Director ivar. Move it there once support for multiple directors is added
 
+GLView *Director::_openGLView = NULL; // my addition
+
 // singleton stuff
 static DisplayLinkDirector *s_SharedDirector = nullptr;
 
@@ -107,6 +109,8 @@ Director* Director::getInstance()
 Director::Director()
 : _isStatusLabelUpdated(true)
 {
+	iRequestsPending = 0; // My addition
+
 }
 
 bool Director::init(void)
@@ -140,8 +144,9 @@ bool Director::init(void)
 
     _winSizeInPoints = Size::ZERO;
 
-    _openGLView = nullptr;
-    _defaultFBO = nullptr;
+    //_openGLView = nullptr; // my addition (subtraction)
+
+	_defaultFBO = nullptr;
     
     _contentScaleFactor = 1.0f;
 
@@ -983,6 +988,9 @@ void Director::reset()
     RenderState::finalize();
     
     destroyTextureCache();
+
+	Application::yRelaunch = true; // my addition - not needed by win32 but is needed by android (and ios?)
+
 }
 
 void Director::purgeDirector()

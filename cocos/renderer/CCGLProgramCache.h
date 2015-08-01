@@ -33,6 +33,8 @@ THE SOFTWARE.
 
 #include "base/CCRef.h"
 
+#include "deprecated/CCDictionary.h" // my addition
+
 /**
  * @addtogroup renderer
  * @{
@@ -77,6 +79,10 @@ public:
     void loadDefaultGLPrograms();
     CC_DEPRECATED_ATTRIBUTE void loadDefaultShaders() { loadDefaultGLPrograms(); }
 
+	void addCustomShader(const char *pcVertexShaderText, const char *pcFragmentShaderText, uint32_t dShaderFlags, const char* key); // my addition
+	void bindAttributesToShader(GLProgram *shaderProgram, uint32_t dShaderFlags); // my addition
+	void reloadCustomShaders(void); // my addition
+
     /** reload the default shaders */
     void reloadDefaultGLPrograms();
     CC_DEPRECATED_ATTRIBUTE void reloadDefaultShaders() { reloadDefaultGLPrograms(); }
@@ -110,6 +116,7 @@ private:
 
     /**Predefined shaders.*/
     std::unordered_map<std::string, GLProgram*> _programs;
+	__Dictionary * m_pCustomShaders; // my addition
 };
 
 NS_CC_END

@@ -315,6 +315,7 @@ public:
      * @return If successed,it will return true.
      */
     bool initWithWidthAndHeight(int w, int h, Texture2D::PixelFormat format, GLuint depthStencilFormat);
+	Texture2D* getTexture(); // my addition
 
 protected:
     virtual void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue, GLbitfield flags);

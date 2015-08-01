@@ -2490,5 +2490,51 @@ void Image::setPVRImagesHavePremultipliedAlpha(bool haveAlphaPremultiplied)
     _PVRHaveAlphaPremultiplied = haveAlphaPremultiplied;
 }
 
+// my additions
+int Image::iComputePixelDataIndex(int iX, int iY) {
+	// I think this should work for both png and jpg files. Only tested on png with alpha so far.
+	int iEltSize = hasAlpha() ? 4:3;
+	return ((_height - iY) * _width + iX) * iEltSize;
+}
+
+
+Color4B Image::getPixel(int iX, int iY) {
+	Color4B c;// = {0, 0, 0, 0};
+	memset(&c, 0, sizeof(c));
+	if ( (iY >= _height) || (iX >= _width)  || (iX < 0)   || (iY < 0) ) {
+		return c;
+	}
+	int iInd = iComputePixelDataIndex(iX, iY);
+	c.r = _data[iInd];
+
+	c.g = _data[iInd + 1];
+
+	c.b = _data[iInd + 2];
+
+	c.a = _data[iInd + 3];
+
+	return c;
+}
+
+void Image::setPixel(int iX, int iY, Color4B *pPixel) {
+	Color4B c;// = {0, 0, 0, 0};
+	memset(&c, 0, sizeof(c));
+	if ( (iY >= _height) || (iX >= _width)  || (iX < 0)   || (iY < 0) ) {
+		//logc(elInfo, "")
+		return;
+	}
+	int iInd = iComputePixelDataIndex(iX, iY);
+	_data[iInd]     = pPixel->r;
+
+	_data[iInd + 1] = pPixel->g;
+
+	_data[iInd + 2] = pPixel->b;
+
+	_data[iInd + 3] = pPixel->a;
+
+}
+
+// end of my additions
+
 NS_CC_END
 

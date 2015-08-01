@@ -35,6 +35,8 @@ THE SOFTWARE.
 #include "base/CCDirector.h"
 #include "base/CCEventDispatcher.h"
 
+#include "renderer/ccGLStateCache.h" // my addition
+
 NS_CC_BEGIN
 
 enum {
@@ -567,5 +569,54 @@ std::string GLProgramCache::getShaderMacrosForLight() const
              conf->getMaxSupportSpotLightInShader());
     return std::string(def);
 }
+
+// my additions
+class CustomShaderData : public Ref  {
+public:
+	std::string sVertexShaderText, sFragmentShaderText;
+	uint32_t dShaderFlags;
+};
+
+void GLProgramCache::addCustomShader(const char *pcVertexShaderText, const char *pcFragmentShaderText, uint32_t dShaderFlags, const char* key) {
+	CustomShaderData *pData = new CustomShaderData();
+	pData->sVertexShaderText.assign(pcVertexShaderText);
+	pData->sFragmentShaderText.assign(pcFragmentShaderText);
+	pData->dShaderFlags = dShaderFlags;
+	m_pCustomShaders->setObject(pData, key);
+}
+
+void GLProgramCache::bindAttributesToShader(GLProgram *shaderProgram, uint32_t dShaderFlags) {
+	if (GL::VERTEX_ATTRIB_FLAG_POSITION & dShaderFlags) {
+		shaderProgram->addAttribute(GLProgram::ATTRIBUTE_NAME_POSITION, GLProgram::VERTEX_ATTRIB_POSITION);
+	}
+	if (GL::VERTEX_ATTRIB_FLAG_COLOR & dShaderFlags) {
+		shaderProgram->addAttribute(GLProgram::ATTRIBUTE_NAME_COLOR, GLProgram::VERTEX_ATTRIB_COLOR);
+	}
+	if (GL::VERTEX_ATTRIB_FLAG_TEX_COORD & dShaderFlags) {
+		shaderProgram->addAttribute(GLProgram::ATTRIBUTE_NAME_TEX_COORD, GLProgram::VERTEX_ATTRIB_TEX_COORD);
+	}
+	if (GL::VERTEX_ATTRIB_FLAG_NORMAL & dShaderFlags) {
+		shaderProgram->addAttribute(GLProgram::ATTRIBUTE_NAME_NORMAL, GLProgram::VERTEX_ATTRIB_NORMAL);
+	}
+	if (GL::VERTEX_ATTRIB_FLAG_NTH_VERTEX & dShaderFlags) {
+		shaderProgram->addAttribute(GLProgram::ATTRIBUTE_NAME_NTH_VERTEX, GLProgram::VERTEX_ATTRIB_NTH_VERTEX);
+	}
+}
+
+void GLProgramCache::reloadCustomShaders(void) {
+    DictElement* pElement = NULL;
+    CCDICT_FOREACH(m_pCustomShaders, pElement)
+    { 
+        const char *pcShaderName = pElement->getStrKey();
+		GLProgram *p = programForKey(pcShaderName);
+		CustomShaderData *pCustomShader = (CustomShaderData*)m_pCustomShaders->objectForKey(pcShaderName);
+
+		p->initWithVertexShaderByteArray(pCustomShader->sVertexShaderText.c_str(), pCustomShader->sFragmentShaderText.c_str());
+		bindAttributesToShader(p, pCustomShader->dShaderFlags); // move this to shadercache?
+    }
+
+}
+// end of my additions
+
 
 NS_CC_END

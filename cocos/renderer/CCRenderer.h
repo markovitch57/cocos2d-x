@@ -166,6 +166,7 @@ public:
 
     /** set color for clear screen */
     void setClearColor(const Color4F& clearColor);
+	Color4F getClearColor(void); // my addition
     /* returns the number of drawn batches in the last frame */
     ssize_t getDrawnBatches() const { return _drawnBatches; }
     /* RenderCommands (except) QuadCommand should update this value */

@@ -197,12 +197,13 @@ private:
 
 
     friend class WebSocketCallbackWrapper;
-    int onSocketCallback(struct libwebsocket_context *ctx,
+    virtual int onSocketCallback(struct libwebsocket_context *ctx,
                          struct libwebsocket *wsi,
                          int reason,
-                         void *user, void *in, ssize_t len);
+                         void *user, void *in, ssize_t len); // virtual is my addition
 
 private:
+public: // my addition
     State        _readyState;
     std::string  _host;
     unsigned int _port;

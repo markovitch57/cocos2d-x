@@ -100,6 +100,9 @@ public:
 
 protected:
     static Application * sm_pSharedApplication;
+public:  // My addition
+	static bool yDestroyGlViewOnRelaunch; // My addition
+	static bool yRelaunch; // My addition
 };
 
 NS_CC_END

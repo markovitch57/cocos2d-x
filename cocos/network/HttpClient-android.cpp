@@ -38,7 +38,9 @@
 NS_CC_BEGIN
 
 namespace network {
-    
+
+double HttpClient::ffDownloaded = 0; // my addition
+
 typedef std::vector<std::string> HttpRequestHeaders;
 typedef HttpRequestHeaders::iterator HttpRequestHeadersIter;
 typedef std::vector<std::string> HttpCookies;
@@ -1048,6 +1050,12 @@ const std::string& HttpClient::getSSLVerification()
     std::lock_guard<std::mutex> lock(_sslCaFileMutex);
     return _sslCaFilename;
 }
+
+// my additions
+void HttpClient::freeRequest(void) {
+	delete s_requestSentinel;
+}
+// end of my additions
 
 }
 

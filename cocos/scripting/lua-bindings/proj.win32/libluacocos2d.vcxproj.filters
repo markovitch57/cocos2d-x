@@ -79,6 +79,9 @@
     <Filter Include="manual\navmesh">
       <UniqueIdentifier>{fa8be49e-8b79-4dc5-8f28-febde1347eda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="manual\mos">
+      <UniqueIdentifier>{15fcf33b-f26f-4685-a0d0-3087aa431c1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\auto\lua_cocos2dx_auto.cpp">
@@ -293,6 +296,12 @@
     </ClCompile>
     <ClCompile Include="..\manual\navmesh\lua_cocos2dx_navmesh_manual.cpp">
       <Filter>manual\navmesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\MOS\libs\moslib\sound\lua_cocos2dx_soundobject_manual.cpp">
+      <Filter>manual\mos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\auto\lua_cocos2dx_mos_auto.cpp">
+      <Filter>auto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -514,6 +523,12 @@
     </ClInclude>
     <ClInclude Include="..\manual\navmesh\lua_cocos2dx_navmesh_manual.h">
       <Filter>manual\navmesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\MOS\libs\moslib\sound\lua_cocos2dx_soundobject_manual.hpp">
+      <Filter>manual\mos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\auto\lua_cocos2dx_mos_auto.hpp">
+      <Filter>auto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

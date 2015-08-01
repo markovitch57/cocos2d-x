@@ -47,6 +47,9 @@ extern "C" size_t __ctype_get_mb_cur_max(void) {
 
 NS_CC_BEGIN
 
+bool Application::yDestroyGlViewOnRelaunch = false; // my addition
+bool Application::yRelaunch = false; // my addition
+
 // sharedApplication pointer
 Application * Application::sm_pSharedApplication = 0;
 

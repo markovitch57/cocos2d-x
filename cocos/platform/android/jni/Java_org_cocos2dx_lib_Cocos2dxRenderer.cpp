@@ -13,7 +13,8 @@ using namespace cocos2d;
 extern "C" {
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender(JNIEnv* env) {
-        cocos2d::Director::getInstance()->mainLoop();
+        //cocos2d::Director::getInstance()->mainLoop();
+		LuaPlayer::sharedInstance()->mainLoop(); // my addition (replacement
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause() {

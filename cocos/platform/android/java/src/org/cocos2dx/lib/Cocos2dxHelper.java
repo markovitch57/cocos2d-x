@@ -220,13 +220,96 @@ public class Cocos2dxHelper {
         boolean ret = false;
         try {
             Intent i = new Intent(Intent.ACTION_VIEW);
+            i.addCategory(Intent.CATEGORY_BROWSABLE); // Adding this line has no discernable effect!?
             i.setData(Uri.parse(url));
+            i.putExtra(Browser.EXTRA_APPLICATION_ID, sActivity.getPackageName()); // my addition - So uses same tab each time!
             sActivity.startActivity(i);
             ret = true;
         } catch (Exception e) {
         }
         return ret;
     }
+	/*
+    public static boolean openURL(String url) { 
+    	// This version does not open new browser tab if one already exists! (the effect of setting component)
+		// http://stackoverflow.com/questions/11755573/android-activity-not-found-exception-on-some-devices-when-trying-to-open-local
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+		//PackageManager packageManager = currentActivity.getPackageManager();
+		PackageManager packageManager = sActivity.getPackageManager();
+		Uri uri = Uri.parse(url);
+		browserIntent.setDataAndType(uri, "text/html");
+		List<ResolveInfo> list = packageManager.queryIntentActivities(browserIntent, 0);
+		String sChromePackageName = null;
+		String sChromeActivityName = null;
+		String sOtherBrowserPackageName = null;
+		String sOtherBrowserActivityName = null;
+		for (ResolveInfo resolveInfo : list) {
+			String activityName = resolveInfo.activityInfo.name;
+			//if (activityName.contains("chrome.Main")) {
+			if (activityName.contains("chrome")) {
+				sChromePackageName = resolveInfo.activityInfo.packageName;
+				sChromeActivityName = resolveInfo.activityInfo.name;
+			} else if (activityName.contains("BrowserActivity")) {
+				sOtherBrowserPackageName = resolveInfo.activityInfo.packageName;
+				sOtherBrowserActivityName = resolveInfo.activityInfo.name;
+			}	
+		}
+		String sPackageName;
+		String sActivityName;
+		if (sChromePackageName != null) {
+			sPackageName = sChromePackageName;
+			sActivityName = sChromeActivityName;
+		} else {
+			sPackageName = sOtherBrowserPackageName;
+			sActivityName = sOtherBrowserActivityName;
+		}
+		browserIntent = packageManager.getLaunchIntentForPackage(sPackageName);//resolveInfo.activityInfo.packageName);
+		ComponentName comp = new ComponentName(sPackageName, sActivityName);//resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
+		browserIntent.setAction(Intent.ACTION_VIEW);
+		browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+		browserIntent.setComponent(comp);
+		browserIntent.setData(uri);
+		browserIntent.putExtra(Browser.EXTRA_APPLICATION_ID, sActivity.getPackageName());
+	    //break; // We would like to find the default browser (how) - get a list of browsers - possibly default - http://stackoverflow.com/questions/10512597/android-fetch-installed-and-default-browser-in-device
+		sActivity.startActivity(browserIntent);
+		return true; // for now
+	}
+*/
+
+	/* http://stackoverflow.com/questions/11755573/android-activity-not-found-exception-on-some-devices-when-trying-to-open-local
+final Uri uri = Uri.parse(filePath);
+Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
+browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+context.startActivity(browserIntent);	// my addition (replacement)
+*/
+/*
+public static boolean openURL(String url) { 
+    	// This version does not open new browser tab if one already exists!
+		 boolean ret = false;
+		
+		Intent intent = new Intent();
+		//ComponentName comp = new ComponentName(af.packageName, af.name);
+		ComponentName comp = new ComponentName("com.android.browser","com.android.browser.BrowserActivity");
+		intent.setComponent(comp);
+		intent.setAction("android.intent.action.VIEW");
+		intent.addCategory("android.intent.category.BROWSABLE");
+		Uri uri = Uri.parse(url);
+		intent.setData(uri);
+		try
+		{
+			//sContext.startActivity(intent);
+			//((Context)sActivity).startActivity(intent);
+			sActivity.startActivity(intent);
+			ret = true;
+		 }
+		 catch (Exception e)
+		 {
+		   e.printStackTrace();
+		 } 	
+        return ret;
+    }
+	// end of my addition
+*/
 
     public static void preloadBackgroundMusic(final String pPath) {
         Cocos2dxHelper.sCocos2dMusic.preloadBackgroundMusic(pPath);

@@ -110,6 +110,7 @@ public:
         VERTEX_ATTRIB_BLEND_WEIGHT,
         /**Index 8 will be used as Blend index.*/
         VERTEX_ATTRIB_BLEND_INDEX,
+		VERTEX_ATTRIB_NTH_VERTEX, // my addition
         VERTEX_ATTRIB_MAX,
 
         // backward compatibility
@@ -297,6 +298,7 @@ public:
     static const char* ATTRIBUTE_NAME_BLEND_WEIGHT;
     /**Attribute blend index.*/
     static const char* ATTRIBUTE_NAME_BLEND_INDEX;
+    static const char* ATTRIBUTE_NAME_NTH_VERTEX; // my addition
     /**
     end of Built Attribute names
     @}

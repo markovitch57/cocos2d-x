@@ -41,6 +41,8 @@ NS_CC_BEGIN
 
 // sharedApplication pointer
 Application * Application::sm_pSharedApplication = 0;
+bool Application::yDestroyGlViewOnRelaunch = false; // my addition
+bool Application::yRelaunch = false; // my addition
 
 Application::Application()
 : _instance(nullptr)
@@ -108,6 +110,17 @@ int Application::run()
     glview->release();
     return 0;
 }
+
+// my addition 
+void Application::openURL(const char* pszUrl) {
+	//return (int)ShellExecuteA(NULL, "open", pszUrl, NULL, NULL, SW_SHOWNORMAL); // crashes
+	//return (int)ShellExecuteA(0, "open", "http://www.yahoo.com", 0, 0, SW_SHOW); // crashes
+	//return (int)ShellExecuteA(0, 0, "http://www.yahoo.com", 0, 0, SW_SHOW);// works!
+	//return (int)ShellExecuteA(0, 0, pszUrl, 0, 0, SW_SHOW);// works!
+	ShellExecuteA(0, 0, pszUrl, 0, 0, SW_SHOW);
+	//ShellExecuteA(0,0,"notepad.exe",0,0,SW_SHOW);
+}
+// end of my addition
 
 void Application::setAnimationInterval(float interval)
 {

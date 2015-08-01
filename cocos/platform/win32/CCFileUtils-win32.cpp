@@ -40,7 +40,8 @@ NS_CC_BEGIN
 
 // The root path of resources, the character encoding is UTF-8.
 // UTF-8 is the only encoding supported by cocos2d-x API.
-static std::string s_resourcePath = "";
+//static std::string s_resourcePath = ""; // my addition (subtraction)
+static std::string s_resourcePath = ".\\..\\Resources\\"; // my addition
 
 // D:\aaa\bbb\ccc\ddd\abc.txt --> D:/aaa/bbb/ccc/ddd/abc.txt
 static inline std::string convertPathFormatToUnixStyle(const std::string& path)
@@ -370,8 +371,11 @@ unsigned char* FileUtilsWin32::getFileData(const std::string& filename, const ch
 
         *size = ::GetFileSize(fileHandle, nullptr);
 
-        pBuffer = (unsigned char*) malloc(*size);
-        DWORD sizeRead = 0;
+        //pBuffer = (unsigned char*) malloc(*size);
+        pBuffer = (unsigned char*) malloc(*size + 1); // my addition -- add a string terminator for convenience
+		pBuffer[*size] = 0;// my addition
+
+		DWORD sizeRead = 0;
         BOOL successed = FALSE;
         successed = ::ReadFile(fileHandle, pBuffer, *size, &sizeRead, nullptr);
         ::CloseHandle(fileHandle);
@@ -416,7 +420,8 @@ std::string FileUtilsWin32::getFullPathForDirectoryAndFilename(const std::string
 
 string FileUtilsWin32::getWritablePath() const
 {
-    if (_writablePath.length())
+/* my addition (subtraction)
+	if (_writablePath.length())
     {
         return _writablePath;
     }
@@ -465,6 +470,9 @@ string FileUtilsWin32::getWritablePath() const
     }
 
     return convertPathFormatToUnixStyle(StringWideCharToUtf8(retPath));
+	*/
+
+	return std::string(".\\..\\Data\\"); // my addition (replacing all above!)
 }
 
 bool FileUtilsWin32::renameFile(const std::string &path, const std::string &oldname, const std::string &name)

@@ -37,6 +37,8 @@
 NS_CC_BEGIN
 
 namespace network {
+
+double HttpClient::ffDownloaded = 0; // my addition
     
 static HttpClient *_httpClient = nullptr; // pointer to singleton
 
@@ -597,6 +599,12 @@ const std::string& HttpClient::getSSLVerification()
     std::lock_guard<std::mutex> lock(_sslCaFileMutex);
     return _sslCaFilename;
 }
+
+// my additions
+void HttpClient::freeRequest(void) {
+	delete s_requestSentinel;
+}
+// end of my additions
     
 }
 

@@ -118,6 +118,7 @@ const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD3 = "a_texCoord3";
 const char* GLProgram::ATTRIBUTE_NAME_NORMAL = "a_normal";
 const char* GLProgram::ATTRIBUTE_NAME_BLEND_WEIGHT = "a_blendWeight";
 const char* GLProgram::ATTRIBUTE_NAME_BLEND_INDEX = "a_blendIndex";
+const char* GLProgram::ATTRIBUTE_NAME_NTH_VERTEX = "a_nthVertex"; // my addition
 
 static const char * COCOS2D_SHADER_UNIFORMS =
         "uniform mat4 CC_PMatrix;\n"
@@ -297,6 +298,7 @@ void GLProgram::bindPredefinedVertexAttribs()
         {GLProgram::ATTRIBUTE_NAME_TEX_COORD2, GLProgram::VERTEX_ATTRIB_TEX_COORD2},
         {GLProgram::ATTRIBUTE_NAME_TEX_COORD3, GLProgram::VERTEX_ATTRIB_TEX_COORD3},
         {GLProgram::ATTRIBUTE_NAME_NORMAL, GLProgram::VERTEX_ATTRIB_NORMAL},
+        {GLProgram::ATTRIBUTE_NAME_NTH_VERTEX, GLProgram::VERTEX_ATTRIB_NTH_VERTEX}, // my addition
     };
 
     const int size = sizeof(attribute_locations) / sizeof(attribute_locations[0]);
@@ -443,6 +445,7 @@ bool GLProgram::compileShader(GLuint* shader, GLenum type, const GLchar* source,
     }
 
     const GLchar *sources[] = {
+	//"#version 100\n", // my addition - desktop GLSL version 1.20. This is similar to GLSL ES version 1.00 (see http://stackoverflow.com/questions/10383113/differences-between-glsl-and-glsl-es-2) - better drop for now since presumably should be 120 in win!
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
         (type == GL_VERTEX_SHADER ? "precision mediump float;\n precision mediump int;\n" : "precision mediump float;\n precision mediump int;\n"),
 #elif (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32 && CC_TARGET_PLATFORM != CC_PLATFORM_LINUX && CC_TARGET_PLATFORM != CC_PLATFORM_MAC)

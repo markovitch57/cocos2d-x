@@ -29,6 +29,8 @@ THE SOFTWARE.
 #include "CCLuaStack.h"
 #include "CCLuaEngine.h"
 
+#include "moslib/cc/MOS_FileUtils.h"
+
 using namespace cocos2d;
 
 extern "C"
@@ -92,13 +94,16 @@ extern "C"
             }
             else
             {
-                chunkName = prefix.substr(0, pos) + filename + NOT_BYTECODE_FILE_EXT;
-                if (utils->isFileExist(chunkName))
-                {
-                    chunk = utils->getFileData(chunkName.c_str(), "rb", &chunkSize);
-                    break;
-                }
-            }
+				chunkName = prefix.substr(0, pos) + filename + NOT_BYTECODE_FILE_EXT;
+				//chunkName = std::string("src/") + filename + NOT_BYTECODE_FILE_EXT;
+				//chunkName = filename + NOT_BYTECODE_FILE_EXT;
+				if (utils->isFileExist(chunkName)) // my addition (subtraction
+				{
+					//chunk = utils->getFileData(chunkName.c_str(), "rb", &chunkSize); // my addition (subtraction
+					chunk = MOS_FileUtils::getInstance()->getLuaFileData(chunkName.c_str(), "rb", &chunkSize); // my addition
+					break;
+				}
+			}
             
             begin = next + 1;
             next = searchpath.find_first_of(";", begin);

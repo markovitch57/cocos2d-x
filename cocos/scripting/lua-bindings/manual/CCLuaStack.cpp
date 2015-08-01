@@ -145,6 +145,7 @@ NS_CC_BEGIN
 
 LuaStack::~LuaStack()
 {
+	cleanupXXTEAKeyAndSign(); // my addition
     if (nullptr != _state)
     {
         lua_close(_state);
