@@ -420,7 +420,7 @@ std::string FileUtilsWin32::getFullPathForDirectoryAndFilename(const std::string
 
 string FileUtilsWin32::getWritablePath() const
 {
-/* my addition (subtraction)
+///* my addition (subtraction)
 	if (_writablePath.length())
     {
         return _writablePath;
@@ -470,9 +470,9 @@ string FileUtilsWin32::getWritablePath() const
     }
 
     return convertPathFormatToUnixStyle(StringWideCharToUtf8(retPath));
-	*/
-
-	return std::string(".\\..\\Data\\"); // my addition (replacing all above!)
+//	*/
+	//return std::string(".\\..\\Data\\"); // my addition (replacing all above!)
+//	return _writablePath;
 }
 
 bool FileUtilsWin32::renameFile(const std::string &path, const std::string &oldname, const std::string &name)

@@ -12,6 +12,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import com.mos.mindofsound.WebAppInterface;
+
 public class Cocos2dxWebView extends WebView {
     private static final String TAG = Cocos2dxWebViewHelper.class.getSimpleName();
 

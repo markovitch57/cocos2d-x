@@ -8,6 +8,8 @@
 #include "JniHelper.h"
 #include <jni.h>
 
+#include "moslib/cc/LuaPlayer.h"
+
 using namespace cocos2d;
 
 extern "C" {

@@ -47,6 +47,7 @@ LOCAL_SRC_FILES := ../auto/jsb_cocos2dx_3d_auto.cpp \
                    ../auto/jsb_cocos2dx_studio_auto.cpp \
                    ../auto/jsb_cocos2dx_builder_auto.cpp \
                    ../auto/jsb_cocos2dx_ui_auto.cpp \
+                   ../auto/jsb_cocos2dx_mos_auto.cpp \
                    ../auto/jsb_cocos2dx_physics3d_auto.cpp \
                    ../manual/ScriptingCore.cpp \ \
                    ../manual/cocos2d_specifics.cpp \
@@ -77,7 +78,8 @@ LOCAL_SRC_FILES := ../auto/jsb_cocos2dx_3d_auto.cpp \
                    ../manual/ui/jsb_cocos2dx_ui_manual.cpp \
                    ../manual/navmesh/jsb_cocos2dx_navmesh_conversions.cpp \
                    ../manual/navmesh/jsb_cocos2dx_navmesh_manual.cpp \
-                   ../manual/physics3d/jsb_cocos2dx_physics3d_manual.cpp
+                   ../manual/physics3d/jsb_cocos2dx_physics3d_manual.cpp \
+                   c:/dev/MOS/libs/moslib/sound/jsb_cocos2dx_soundobject_manual.cpp \
 
 
 LOCAL_CFLAGS := -DCOCOS2D_JAVASCRIPT
@@ -100,7 +102,12 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../manual \
                     $(LOCAL_PATH)/../../../../extensions \
                     $(LOCAL_PATH)/../../../editor-support/spine \
                     $(LOCAL_PATH)/../../../editor-support/cocosbuilder \
-                    $(LOCAL_PATH)/../../../editor-support/cocostudio
+                    $(LOCAL_PATH)/../../../editor-support/cocostudio \
+                    c:/dev/MOS/libs \
+                    c:/dev/MOS/libs/moslib \
+                    c:/dev/MOS/libs/moslib/cc \
+                    c:/dev/MOS/libs/moslib/sound \
+                    c:/dev/MOS/libs/moslib/sound/wave \
 
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../manual \

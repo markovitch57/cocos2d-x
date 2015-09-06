@@ -129,6 +129,11 @@ LOCAL_SRC_FILES += ../manual/navmesh/lua_cocos2dx_navmesh_conversions.cpp \
                    ../manual/navmesh/lua_cocos2dx_navmesh_manual.cpp \
                    ../auto/lua_cocos2dx_navmesh_auto.cpp \
 
+#mos
+LOCAL_SRC_FILES += ../auto/lua_cocos2dx_mos_auto.cpp \
+                    /dev/MOS/libs/moslib/sound/lua_cocos2dx_soundobject_manual.cpp \
+
+
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
                     $(LOCAL_PATH)/../../../../external/lua/luajit/include \
                     $(LOCAL_PATH)/../../../2d \
@@ -157,7 +162,11 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
                     $(LOCAL_PATH)/../manual/navmesh \
                     $(LOCAL_PATH)/../../../../external/xxtea \
                     $(LOCAL_PATH)/../../../.. \
-                    $(LOCAL_PATH)/../../../../external/lua
+                    $(LOCAL_PATH)/../../../../external/lua \
+                    $(LOCAL_PATH)/../../../../../MOS/libs \
+                    $(LOCAL_PATH)/../../../../../MOS/libs/moslib/cc \
+                    $(LOCAL_PATH)/../../../../../MOS/libs/moslib/sound \
+                    $(LOCAL_PATH)/../../../../../MOS/libs/moslib/sound/wave \
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
                            $(LOCAL_PATH)/../../../../external/lua/luajit/include \

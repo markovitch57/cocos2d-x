@@ -638,7 +638,7 @@ void HttpClient::processResponse(HttpResponse* response, char* responseMessage)
         HttpRequest::Type::PUT != requestType &&
         HttpRequest::Type::DELETE != requestType)
     {
-        CCASSERT(true, "CCHttpClient: unknown request type, only GET、POST、PUT、DELETE are supported");
+        CCASSERT(true, "CCHttpClient: unknown request type, only GETã€�POSTã€�PUTã€�DELETE are supported");
         return;
     }
 
@@ -1053,7 +1053,7 @@ const std::string& HttpClient::getSSLVerification()
 
 // my additions
 void HttpClient::freeRequest(void) {
-	delete s_requestSentinel;
+///	delete s_requestSentinel;
 }
 // end of my additions
 

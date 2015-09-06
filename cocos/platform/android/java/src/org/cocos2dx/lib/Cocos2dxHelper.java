@@ -25,18 +25,16 @@ THE SOFTWARE.
 package org.cocos2dx.lib;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Locale;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.lang.Runnable;
-
-import com.chukong.cocosplay.client.CocosPlayClient;
 
 import android.app.Activity;
 import android.content.ComponentName;  //Enhance API modification
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;  //Enhance API modification
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.res.AssetManager;
@@ -45,13 +43,14 @@ import android.os.Build;
 import android.os.IBinder;  //Enhance API modification
 import android.os.Vibrator;
 import android.preference.PreferenceManager.OnActivityResultListener;
+import android.provider.Browser;
 import android.util.DisplayMetrics;
-import android.util.Log;  //Enhance API modification
 import android.view.Display;
 import android.view.WindowManager;
-import android.content.ServiceConnection;  //Enhance API modification
 
+import com.chukong.cocosplay.client.CocosPlayClient;
 import com.enhance.gameservice.IGameTuningService;  //Enhance API modification
+//Enhance API modification
 
 public class Cocos2dxHelper {
     // ===========================================================

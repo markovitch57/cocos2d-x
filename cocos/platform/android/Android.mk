@@ -22,13 +22,21 @@ jni/Java_org_cocos2dx_lib_Cocos2dxHelper.cpp \
 jni/Java_org_cocos2dx_lib_Cocos2dxRenderer.cpp \
 jni/JniHelper.cpp \
 jni/TouchesJni.cpp \
-jni/CocosPlayClient.cpp
+jni/CocosPlayClient.cpp \
+jni/Java_org_cocos2dx_lib_Cocos2dxMOS.cpp
+
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/.. \
                     $(LOCAL_PATH)/../.. \
+                    /dev/cocos2d-x \
+                    /dev/cocos2d-x/external \
+                    /dev/cocos2d-x/external/android/$(TARGET_ARCH_ABI)/include \
+                    /dev/cocos2d-x/extensions \
+                    /dev/MOS/libs \
+                    /dev/MOS/mindofsound/Classes \
 
 LOCAL_EXPORT_LDLIBS := -lGLESv1_CM \
                        -lGLESv2 \
