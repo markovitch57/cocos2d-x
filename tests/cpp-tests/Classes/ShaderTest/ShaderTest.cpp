@@ -53,6 +53,8 @@ ShaderNode* ShaderNode::shaderNodeWithVertex(const std::string &vert, const std:
 
 bool ShaderNode::initWithVertex(const std::string &vert, const std::string &frag)
 {
+    _vertFileName = vert;
+    _fragFileName = frag;
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     auto listener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom* event){
             this->setGLProgramState(nullptr);
@@ -62,14 +64,10 @@ bool ShaderNode::initWithVertex(const std::string &vert, const std::string &frag
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 #endif
 
-    _vertFileName = vert;
-    _fragFileName = frag;
-
     loadShaderVertex(vert, frag);
 
     _time = 0;
     _resolution = Vec2(SIZE_X, SIZE_Y);
-    getGLProgramState()->setUniformVec2("resolution", _resolution);
 
     scheduleUpdate();
 
@@ -115,7 +113,6 @@ void ShaderNode::setPosition(const Vec2 &newPosition)
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto retinaFactor = Director::getInstance()->getOpenGLView()->getRetinaFactor();
     _center = Vec2(position.x * frameSize.width / visibleSize.width * retinaFactor, position.y * frameSize.height / visibleSize.height * retinaFactor);
-    getGLProgramState()->setUniformVec2("center", _center);
 }
 
 void ShaderNode::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
@@ -131,6 +128,8 @@ void ShaderNode::onDraw(const Mat4 &transform, uint32_t flags)
     GLfloat vertices[12] = {0,0, w,0, w,h, 0,0, 0,h, w,h};
 
     auto glProgramState = getGLProgramState();
+    glProgramState->setUniformVec2("resolution", _resolution);
+    glProgramState->setUniformVec2("center", _center);
     glProgramState->setVertexAttribPointer("a_position", 2, GL_FLOAT, GL_FALSE, 0, vertices);
 
     glProgramState->apply(transform);
@@ -144,7 +143,6 @@ void ShaderNode::onDraw(const Mat4 &transform, uint32_t flags)
 
 ShaderMonjori::ShaderMonjori()
 {
-    init();
 }
 
 bool ShaderMonjori::init()
@@ -178,7 +176,6 @@ std::string ShaderMonjori::subtitle() const
 /// ShaderMandelbrot
 ShaderMandelbrot::ShaderMandelbrot()
 {
-    init();
 }
 
 bool ShaderMandelbrot::init()
@@ -212,7 +209,6 @@ std::string ShaderMandelbrot::subtitle() const
 /// ShaderJulia
 ShaderJulia::ShaderJulia()
 {
-    init();
 }
 
 bool ShaderJulia::init()
@@ -247,7 +243,6 @@ std::string ShaderJulia::subtitle() const
 /// ShaderHeart
 ShaderHeart::ShaderHeart()
 {
-    init();
 }
 
 bool ShaderHeart::init()
@@ -280,7 +275,6 @@ std::string ShaderHeart::subtitle() const
 /// ShaderFlower
 ShaderFlower::ShaderFlower()
 {
-    init();
 }
 
 bool ShaderFlower::init()
@@ -313,7 +307,6 @@ std::string ShaderFlower::subtitle() const
 /// ShaderPlasma
 ShaderPlasma::ShaderPlasma()
 {
-    init();
 }
 
 bool ShaderPlasma::init()
@@ -387,7 +380,6 @@ bool SpriteBlur::initWithTexture(Texture2D* texture, const Rect& rect)
     {
 #if CC_ENABLE_CACHE_TEXTURE_DATA
         auto listener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom* event){
-                setGLProgram(nullptr);
                 initGLProgram();
             });
 
@@ -441,7 +433,6 @@ void SpriteBlur::setBlurSampleNum(float num)
 
 ShaderBlur::ShaderBlur()
 {
-    init();
 }
 
 std::string ShaderBlur::title() const
@@ -541,7 +532,6 @@ ShaderRetroEffect::ShaderRetroEffect()
 : _label(nullptr)
 , _accum(0.0f)
 {
-    init();
 }
 
 bool ShaderRetroEffect::init()
@@ -551,7 +541,7 @@ bool ShaderRetroEffect::init()
         auto fragStr = FileUtils::getInstance()->getStringFromFile(FileUtils::getInstance()->fullPathForFilename("Shaders/example_HorizontalColor.fsh"));
         GLchar * fragSource = (GLchar*)fragStr.c_str();
 
-        auto p = GLProgram::createWithByteArrays(ccPositionTexture_vert, fragSource);
+        auto p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, fragSource);
 
         auto director = Director::getInstance();
         auto s = director->getWinSize();
@@ -601,7 +591,6 @@ std::string ShaderRetroEffect::subtitle() const
 
 ShaderLensFlare::ShaderLensFlare()
 {
-    init();
 }
 
 std::string ShaderLensFlare::title() const
@@ -611,7 +600,7 @@ std::string ShaderLensFlare::title() const
 
 std::string ShaderLensFlare::subtitle() const
 {
-    return "Lens Flare	";
+    return "Lens Flare";
 }
 
 bool ShaderLensFlare::init()
@@ -636,7 +625,6 @@ bool ShaderLensFlare::init()
 //
 ShaderGlow::ShaderGlow()
 {
-    init();
 }
 
 std::string ShaderGlow::title() const
@@ -671,7 +659,6 @@ bool ShaderGlow::init()
 //
 ShaderMultiTexture::ShaderMultiTexture():_changedTextureId(0)
 {
-    init();
 }
 
 std::string ShaderMultiTexture::title() const

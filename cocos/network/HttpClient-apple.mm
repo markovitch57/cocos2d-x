@@ -24,12 +24,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+#include "platform/CCPlatformConfig.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+
 #include "HttpClient.h"
 
 #include <queue>
 #include <errno.h>
 
-#import "network/HttpAsynConnection.h"
+#import "network/HttpAsynConnection-apple.h"
 #include "network/HttpCookie.h"
 #include "base/CCDirector.h"
 #include "platform/CCFileUtils.h"
@@ -609,5 +612,8 @@ void HttpClient::freeRequest(void) {
 }
 
 NS_CC_END
+
+#endif // #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC
+
 
 

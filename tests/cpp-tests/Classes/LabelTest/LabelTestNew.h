@@ -11,16 +11,6 @@ class AtlasDemoNew : public TestCase
 {
 };
 
-class LabelTTFAlignmentNew : public AtlasDemoNew
-{
-public:
-    CREATE_FUNC(LabelTTFAlignmentNew);
-
-    LabelTTFAlignmentNew();
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
 class LabelFNTColorAndOpacity : public AtlasDemoNew
 {
     float        _time;
@@ -145,26 +135,6 @@ public:
     virtual std::string subtitle() const override;
 };
 
-class LabelTTFUnicodeChinese : public AtlasDemoNew
-{
-public:
-    CREATE_FUNC(LabelTTFUnicodeChinese);
-
-    LabelTTFUnicodeChinese();
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class LabelFNTUnicodeChinese : public AtlasDemoNew
-{
-public:
-    CREATE_FUNC(LabelFNTUnicodeChinese);
-
-    LabelFNTUnicodeChinese();
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
 class LabelFNTMultiLineAlignment : public AtlasDemoNew
 {
 public:
@@ -278,7 +248,6 @@ public:
 private:
 };
 
-
 class LabelTTFFontsTestNew : public AtlasDemoNew
 {
 public:
@@ -288,20 +257,6 @@ public:
 
     virtual std::string title() const override;
     virtual std::string subtitle() const override;
-};
-
-
-class LabelBMFontTestNew : public AtlasDemoNew
-{
-public:
-    CREATE_FUNC(LabelBMFontTestNew);
-
-    LabelBMFontTestNew();
-
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-
-private:
 };
 
 class LabelFontDefTestNew : public AtlasDemoNew
@@ -653,6 +608,28 @@ public:
     CREATE_FUNC(LabelIssue10688Test);
 
     LabelIssue10688Test();
+
+    virtual std::string title() const override;
+    virtual std::string subtitle() const override;
+};
+
+class LabelIssue13202Test : public AtlasDemoNew
+{
+public:
+    CREATE_FUNC(LabelIssue13202Test);
+
+    LabelIssue13202Test();
+
+    virtual std::string title() const override;
+    virtual std::string subtitle() const override;
+};
+
+class LabelIssue9500Test : public AtlasDemoNew
+{
+public:
+    CREATE_FUNC(LabelIssue9500Test);
+
+    LabelIssue9500Test();
 
     virtual std::string title() const override;
     virtual std::string subtitle() const override;

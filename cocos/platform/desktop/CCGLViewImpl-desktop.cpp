@@ -186,7 +186,7 @@ static keyCodeItem g_keyCodeStructArray[] = {
 
     /* Function keys */
     { GLFW_KEY_ESCAPE          , EventKeyboard::KeyCode::KEY_ESCAPE        },
-    { GLFW_KEY_ENTER           , EventKeyboard::KeyCode::KEY_KP_ENTER      },
+    { GLFW_KEY_ENTER           , EventKeyboard::KeyCode::KEY_ENTER      },
     { GLFW_KEY_TAB             , EventKeyboard::KeyCode::KEY_TAB           },
     { GLFW_KEY_BACKSPACE       , EventKeyboard::KeyCode::KEY_BACKSPACE     },
     { GLFW_KEY_INSERT          , EventKeyboard::KeyCode::KEY_INSERT        },
@@ -195,9 +195,9 @@ static keyCodeItem g_keyCodeStructArray[] = {
     { GLFW_KEY_LEFT            , EventKeyboard::KeyCode::KEY_LEFT_ARROW    },
     { GLFW_KEY_DOWN            , EventKeyboard::KeyCode::KEY_DOWN_ARROW    },
     { GLFW_KEY_UP              , EventKeyboard::KeyCode::KEY_UP_ARROW      },
-    { GLFW_KEY_PAGE_UP         , EventKeyboard::KeyCode::KEY_KP_PG_UP      },
-    { GLFW_KEY_PAGE_DOWN       , EventKeyboard::KeyCode::KEY_KP_PG_DOWN    },
-    { GLFW_KEY_HOME            , EventKeyboard::KeyCode::KEY_KP_HOME       },
+    { GLFW_KEY_PAGE_UP         , EventKeyboard::KeyCode::KEY_PG_UP      },
+    { GLFW_KEY_PAGE_DOWN       , EventKeyboard::KeyCode::KEY_PG_DOWN    },
+    { GLFW_KEY_HOME            , EventKeyboard::KeyCode::KEY_HOME       },
     { GLFW_KEY_END             , EventKeyboard::KeyCode::KEY_END           },
     { GLFW_KEY_CAPS_LOCK       , EventKeyboard::KeyCode::KEY_CAPS_LOCK     },
     { GLFW_KEY_SCROLL_LOCK     , EventKeyboard::KeyCode::KEY_SCROLL_LOCK   },
@@ -572,10 +572,10 @@ void GLViewImpl::setFrameSize(float width, float height)
 
 void GLViewImpl::setViewPortInPoints(float x , float y , float w , float h)
 {
-    experimental::Viewport vp = {(float)(x * _scaleX * _retinaFactor * _frameZoomFactor + _viewPortRect.origin.x * _retinaFactor * _frameZoomFactor),
+    experimental::Viewport vp((float)(x * _scaleX * _retinaFactor * _frameZoomFactor + _viewPortRect.origin.x * _retinaFactor * _frameZoomFactor),
         (float)(y * _scaleY * _retinaFactor  * _frameZoomFactor + _viewPortRect.origin.y * _retinaFactor * _frameZoomFactor),
         (float)(w * _scaleX * _retinaFactor * _frameZoomFactor),
-        (float)(h * _scaleY * _retinaFactor * _frameZoomFactor)};
+        (float)(h * _scaleY * _retinaFactor * _frameZoomFactor));
     Camera::setDefaultViewport(vp);
 }
 

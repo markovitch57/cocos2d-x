@@ -28,6 +28,7 @@
 
 #include "2d/CCNode.h"
 #include "renderer/CCCustomCommand.h"
+#include "renderer/CCQuadCommand.h"
 #include "2d/CCFontAtlas.h"
 #include "base/ccTypes.h"
 
@@ -452,6 +453,7 @@ public:
 
     virtual void removeAllChildrenWithCleanup(bool cleanup) override;
     virtual void removeChild(Node* child, bool cleanup = true) override;
+    virtual void setGlobalZOrder(float globalZOrder) override;
 
     CC_DEPRECATED_ATTRIBUTE static Label* create(const std::string& text, const std::string& font, float fontSize,
         const Size& dimensions = Size::ZERO, TextHAlignment hAlignment = TextHAlignment::LEFT,
@@ -504,6 +506,7 @@ protected:
     bool multilineTextWrapByChar();
     bool multilineTextWrapByWord();
 
+    void updateLabelLetters();
     virtual void alignText();
     void computeAlignmentOffset();
     bool computeHorizontalKernings(const std::u16string& stringToRender);
@@ -573,6 +576,7 @@ protected:
     Color4B _textColor;
     Color4F _textColorF;
 
+    QuadCommand _quadCommand;
     CustomCommand _customCommand;
     Mat4  _shadowTransform;
     GLuint _uniformEffectColor;

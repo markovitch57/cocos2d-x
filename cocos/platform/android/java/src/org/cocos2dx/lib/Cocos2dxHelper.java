@@ -24,23 +24,17 @@ THE SOFTWARE.
  ****************************************************************************/
 package org.cocos2dx.lib;
 
-import java.io.UnsupportedEncodingException;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import android.app.Activity;
-import android.content.ComponentName;  //Enhance API modification
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;  //Enhance API modification
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.IBinder;  //Enhance API modification
+import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager.OnActivityResultListener;
 import android.provider.Browser;
@@ -49,8 +43,13 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.chukong.cocosplay.client.CocosPlayClient;
-import com.enhance.gameservice.IGameTuningService;  //Enhance API modification
-//Enhance API modification
+import com.enhance.gameservice.IGameTuningService;
+
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class Cocos2dxHelper {
     // ===========================================================
@@ -175,7 +174,6 @@ public class Cocos2dxHelper {
     public static String getCocos2dxPackageName() {
         return Cocos2dxHelper.sPackageName;
     }
-
     public static String getCocos2dxWritablePath() {
         return Cocos2dxHelper.sFileDirectory;
     }
@@ -427,9 +425,6 @@ public static boolean openURL(String url) {
         Cocos2dxHelper.sCocos2dxHelperListener.showDialog(pTitle, pMessage);
     }
 
-    private static void showEditTextDialog(final String pTitle, final String pMessage, final int pInputMode, final int pInputFlag, final int pReturnType, final int pMaxLength) {
-        Cocos2dxHelper.sCocos2dxHelperListener.showEditTextDialog(pTitle, pMessage, pInputMode, pInputFlag, pReturnType, pMaxLength);
-    }
 
     public static void setEditTextDialogResult(final String pResult) {
         try {
@@ -632,7 +627,6 @@ public static boolean openURL(String url) {
 
     public static interface Cocos2dxHelperListener {
         public void showDialog(final String pTitle, final String pMessage);
-        public void showEditTextDialog(final String pTitle, final String pMessage, final int pInputMode, final int pInputFlag, final int pReturnType, final int pMaxLength);
 
         public void runOnGLThread(final Runnable pRunnable);
     }
