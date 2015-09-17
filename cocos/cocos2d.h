@@ -40,8 +40,8 @@ THE SOFTWARE.
 // end of my addition
 
 // 0x00 HI ME LO
-// 00   03 07 00
-#define COCOS2D_VERSION 0x00030700
+// 00   03 08 00
+#define COCOS2D_VERSION 0x00030800
 
 //
 // all cocos2d include files
@@ -197,6 +197,8 @@ THE SOFTWARE.
 #include "physics/CCPhysicsJoint.h"
 #include "physics/CCPhysicsShape.h"
 #include "physics/CCPhysicsWorld.h"
+#include "physics/CCComponentPhysics2d.h"
+#include "physics/CCPhysicsManager.h"
 
 // platform
 #include "platform/CCCommon.h"
