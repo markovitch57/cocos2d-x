@@ -386,14 +386,6 @@
 
 --------------------------------
 -- 
--- @function [parent=#Scale9Sprite] setCameraMask 
--- @param self
--- @param #unsigned short mask
--- @param #bool applyChildren
--- @return Scale9Sprite#Scale9Sprite self (return value: ccui.Scale9Sprite)
-        
---------------------------------
--- 
 -- @function [parent=#Scale9Sprite] updateDisplayedColor 
 -- @param self
 -- @param #color3b_table parentColor
@@ -404,6 +396,14 @@
 -- @function [parent=#Scale9Sprite] setContentSize 
 -- @param self
 -- @param #size_table size
+-- @return Scale9Sprite#Scale9Sprite self (return value: ccui.Scale9Sprite)
+        
+--------------------------------
+-- 
+-- @function [parent=#Scale9Sprite] setCameraMask 
+-- @param self
+-- @param #unsigned short mask
+-- @param #bool applyChildren
 -- @return Scale9Sprite#Scale9Sprite self (return value: ccui.Scale9Sprite)
         
 --------------------------------

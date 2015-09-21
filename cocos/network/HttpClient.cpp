@@ -417,7 +417,7 @@ HttpClient::HttpClient()
 , _requestSentinel(new HttpRequest())
 , _cookie(nullptr)
 {
-	CCLOG("In the constructor of HttpClient!");
+	//CCLOG("In the constructor of HttpClient!");
 	memset(_responseMessage, 0, RESPONSE_BUFFER_SIZE * sizeof(char));
 	_scheduler = Director::getInstance()->getScheduler();
 	increaseThreadCount();

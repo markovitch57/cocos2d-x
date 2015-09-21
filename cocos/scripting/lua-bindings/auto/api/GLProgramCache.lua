@@ -5,8 +5,18 @@
 -- @parent_module cc
 
 --------------------------------
---  reload default programs these are relative to light 
--- @function [parent=#GLProgramCache] reloadDefaultGLProgramsRelativeToLights 
+-- 
+-- @function [parent=#GLProgramCache] addCustomShader 
+-- @param self
+-- @param #char pcVertexShaderText
+-- @param #char pcFragmentShaderText
+-- @param #unsigned int dShaderFlags
+-- @param #char key
+-- @return GLProgramCache#GLProgramCache self (return value: cc.GLProgramCache)
+        
+--------------------------------
+-- 
+-- @function [parent=#GLProgramCache] reloadCustomShaders 
 -- @param self
 -- @return GLProgramCache#GLProgramCache self (return value: cc.GLProgramCache)
         
@@ -19,9 +29,23 @@
 -- @return GLProgramCache#GLProgramCache self (return value: cc.GLProgramCache)
         
 --------------------------------
+--  reload default programs these are relative to light 
+-- @function [parent=#GLProgramCache] reloadDefaultGLProgramsRelativeToLights 
+-- @param self
+-- @return GLProgramCache#GLProgramCache self (return value: cc.GLProgramCache)
+        
+--------------------------------
 --  reload the default shaders 
 -- @function [parent=#GLProgramCache] reloadDefaultGLPrograms 
 -- @param self
+-- @return GLProgramCache#GLProgramCache self (return value: cc.GLProgramCache)
+        
+--------------------------------
+-- 
+-- @function [parent=#GLProgramCache] bindAttributesToShader 
+-- @param self
+-- @param #cc.GLProgram shaderProgram
+-- @param #unsigned int dShaderFlags
 -- @return GLProgramCache#GLProgramCache self (return value: cc.GLProgramCache)
         
 --------------------------------

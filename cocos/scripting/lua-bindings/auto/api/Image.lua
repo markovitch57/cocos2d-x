@@ -11,6 +11,23 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
+-- 
+-- @function [parent=#Image] iComputePixelDataIndex 
+-- @param self
+-- @param #int iX
+-- @param #int iY
+-- @return int#int ret (return value: int)
+        
+--------------------------------
+-- 
+-- @function [parent=#Image] setPixel 
+-- @param self
+-- @param #int iX
+-- @param #int iY
+-- @param #color4b_table pPixel
+-- @return Image#Image self (return value: cc.Image)
+        
+--------------------------------
 -- brief    Save Image data to the specified file, with specified format.<br>
 -- param    filePath        the file's absolute path, including file suffix.<br>
 -- param    isToRGB        whether the image is saved as RGB format.
@@ -76,6 +93,14 @@
 -- @function [parent=#Image] getRenderFormat 
 -- @param self
 -- @return int#int ret (return value: int)
+        
+--------------------------------
+-- 
+-- @function [parent=#Image] getPixel 
+-- @param self
+-- @param #int iX
+-- @param #int iY
+-- @return color4b_table#color4b_table ret (return value: color4b_table)
         
 --------------------------------
 --  treats (or not) PVR files as if they have alpha premultiplied.<br>
