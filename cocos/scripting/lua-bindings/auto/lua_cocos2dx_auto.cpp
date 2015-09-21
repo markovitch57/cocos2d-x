@@ -59030,6 +59030,262 @@ int lua_register_cocos2dx_ParticleBatchNode(lua_State* tolua_S)
     return 1;
 }
 
+int lua_cocos2dx_ParticleData_release(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ParticleData* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.ParticleData",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ParticleData*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ParticleData_release'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ParticleData_release'", nullptr);
+            return 0;
+        }
+        cobj->release();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.ParticleData:release",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleData_release'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ParticleData_getMaxCount(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ParticleData* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.ParticleData",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ParticleData*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ParticleData_getMaxCount'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ParticleData_getMaxCount'", nullptr);
+            return 0;
+        }
+        unsigned int ret = cobj->getMaxCount();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.ParticleData:getMaxCount",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleData_getMaxCount'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ParticleData_init(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ParticleData* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.ParticleData",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ParticleData*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ParticleData_init'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        int arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "cc.ParticleData:init");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ParticleData_init'", nullptr);
+            return 0;
+        }
+        bool ret = cobj->init(arg0);
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.ParticleData:init",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleData_init'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ParticleData_copyParticle(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ParticleData* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.ParticleData",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ParticleData*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ParticleData_copyParticle'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        int arg0;
+        int arg1;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "cc.ParticleData:copyParticle");
+
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "cc.ParticleData:copyParticle");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ParticleData_copyParticle'", nullptr);
+            return 0;
+        }
+        cobj->copyParticle(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.ParticleData:copyParticle",argc, 2);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleData_copyParticle'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ParticleData_constructor(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ParticleData* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ParticleData_constructor'", nullptr);
+            return 0;
+        }
+        cobj = new cocos2d::ParticleData();
+        tolua_pushusertype(tolua_S,(void*)cobj,"cc.ParticleData");
+        tolua_register_gc(tolua_S,lua_gettop(tolua_S));
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.ParticleData:ParticleData",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleData_constructor'.",&tolua_err);
+#endif
+
+    return 0;
+}
+
+static int lua_cocos2dx_ParticleData_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (ParticleData)");
+    return 0;
+}
+
+int lua_register_cocos2dx_ParticleData(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.ParticleData");
+    tolua_cclass(tolua_S,"ParticleData","cc.ParticleData","",nullptr);
+
+    tolua_beginmodule(tolua_S,"ParticleData");
+        tolua_function(tolua_S,"new",lua_cocos2dx_ParticleData_constructor);
+        tolua_function(tolua_S,"release",lua_cocos2dx_ParticleData_release);
+        tolua_function(tolua_S,"getMaxCount",lua_cocos2dx_ParticleData_getMaxCount);
+        tolua_function(tolua_S,"init",lua_cocos2dx_ParticleData_init);
+        tolua_function(tolua_S,"copyParticle",lua_cocos2dx_ParticleData_copyParticle);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::ParticleData).name();
+    g_luaType[typeName] = "cc.ParticleData";
+    g_typeCast["ParticleData"] = "cc.ParticleData";
+    return 1;
+}
+
 int lua_cocos2dx_ParticleSystem_getStartSizeVar(lua_State* tolua_S)
 {
     int argc = 0;
@@ -60281,6 +60537,56 @@ int lua_cocos2dx_ParticleSystem_initWithTotalParticles(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleSystem_initWithTotalParticles'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ParticleSystem_addParticles(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ParticleSystem* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.ParticleSystem",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ParticleSystem*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ParticleSystem_addParticles'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        int arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "cc.ParticleSystem:addParticles");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ParticleSystem_addParticles'", nullptr);
+            return 0;
+        }
+        cobj->addParticles(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.ParticleSystem:addParticles",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleSystem_addParticles'.",&tolua_err);
 #endif
 
     return 0;
@@ -61639,6 +61945,53 @@ int lua_cocos2dx_ParticleSystem_setSourcePosition(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleSystem_setSourcePosition'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ParticleSystem_updateParticleQuads(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ParticleSystem* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.ParticleSystem",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ParticleSystem*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ParticleSystem_updateParticleQuads'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ParticleSystem_updateParticleQuads'", nullptr);
+            return 0;
+        }
+        cobj->updateParticleQuads();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.ParticleSystem:updateParticleQuads",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleSystem_updateParticleQuads'.",&tolua_err);
 #endif
 
     return 0;
@@ -63004,53 +63357,6 @@ int lua_cocos2dx_ParticleSystem_setStartSizeVar(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_ParticleSystem_addParticle(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::ParticleSystem* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"cc.ParticleSystem",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::ParticleSystem*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ParticleSystem_addParticle'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ParticleSystem_addParticle'", nullptr);
-            return 0;
-        }
-        bool ret = cobj->addParticle();
-        tolua_pushboolean(tolua_S,(bool)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.ParticleSystem:addParticle",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ParticleSystem_addParticle'.",&tolua_err);
-#endif
-
-    return 0;
-}
 int lua_cocos2dx_ParticleSystem_getStartRadius(lua_State* tolua_S)
 {
     int argc = 0;
@@ -63884,6 +64190,7 @@ int lua_register_cocos2dx_ParticleSystem(lua_State* tolua_S)
         tolua_function(tolua_S,"setStartSpin",lua_cocos2dx_ParticleSystem_setStartSpin);
         tolua_function(tolua_S,"setDuration",lua_cocos2dx_ParticleSystem_setDuration);
         tolua_function(tolua_S,"initWithTotalParticles",lua_cocos2dx_ParticleSystem_initWithTotalParticles);
+        tolua_function(tolua_S,"addParticles",lua_cocos2dx_ParticleSystem_addParticles);
         tolua_function(tolua_S,"setTexture",lua_cocos2dx_ParticleSystem_setTexture);
         tolua_function(tolua_S,"getPosVar",lua_cocos2dx_ParticleSystem_getPosVar);
         tolua_function(tolua_S,"updateWithNoTime",lua_cocos2dx_ParticleSystem_updateWithNoTime);
@@ -63912,6 +64219,7 @@ int lua_register_cocos2dx_ParticleSystem(lua_State* tolua_S)
         tolua_function(tolua_S,"setEmitterMode",lua_cocos2dx_ParticleSystem_setEmitterMode);
         tolua_function(tolua_S,"getDuration",lua_cocos2dx_ParticleSystem_getDuration);
         tolua_function(tolua_S,"setSourcePosition",lua_cocos2dx_ParticleSystem_setSourcePosition);
+        tolua_function(tolua_S,"updateParticleQuads",lua_cocos2dx_ParticleSystem_updateParticleQuads);
         tolua_function(tolua_S,"getEndSpinVar",lua_cocos2dx_ParticleSystem_getEndSpinVar);
         tolua_function(tolua_S,"setBlendAdditive",lua_cocos2dx_ParticleSystem_setBlendAdditive);
         tolua_function(tolua_S,"setLife",lua_cocos2dx_ParticleSystem_setLife);
@@ -63940,7 +64248,6 @@ int lua_register_cocos2dx_ParticleSystem(lua_State* tolua_S)
         tolua_function(tolua_S,"getEndColor",lua_cocos2dx_ParticleSystem_getEndColor);
         tolua_function(tolua_S,"getLifeVar",lua_cocos2dx_ParticleSystem_getLifeVar);
         tolua_function(tolua_S,"setStartSizeVar",lua_cocos2dx_ParticleSystem_setStartSizeVar);
-        tolua_function(tolua_S,"addParticle",lua_cocos2dx_ParticleSystem_addParticle);
         tolua_function(tolua_S,"getStartRadius",lua_cocos2dx_ParticleSystem_getStartRadius);
         tolua_function(tolua_S,"getParticleCount",lua_cocos2dx_ParticleSystem_getParticleCount);
         tolua_function(tolua_S,"getStartRadiusVar",lua_cocos2dx_ParticleSystem_getStartRadiusVar);
@@ -96267,6 +96574,7 @@ TOLUA_API int register_all_cocos2dx(lua_State* tolua_S)
 	lua_register_cocos2dx_EaseCircleActionOut(tolua_S);
 	lua_register_cocos2dx_TransitionProgressInOut(tolua_S);
 	lua_register_cocos2dx_EaseCubicActionInOut(tolua_S);
+	lua_register_cocos2dx_ParticleData(tolua_S);
 	lua_register_cocos2dx_EaseBackIn(tolua_S);
 	lua_register_cocos2dx_SplitRows(tolua_S);
 	lua_register_cocos2dx_Follow(tolua_S);
