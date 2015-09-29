@@ -16,10 +16,10 @@ LINKS
 package org.cocos2dx.lib;
 
 import android.media.AudioTrack;
-import android.provider.Settings.Secure;
-import android.util.Log;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.provider.Settings.Secure;
+import android.util.Log;
 
 import com.mos.mindofsound.LaunchFromWebActivity;
  
@@ -101,8 +101,8 @@ public class Cocos2dxMOS {
 
 
 
-		String sRet =  new String(LaunchFromWebActivity.sJavaRelaunchString);
-		LaunchFromWebActivity.sJavaRelaunchString = new String(""); // Empty it!
+	String sRet =  new String(LaunchFromWebActivity.sJavaRelaunchString);
+	LaunchFromWebActivity.sJavaRelaunchString = new String(""); // Empty it!
 		return sRet;
 		
 	}

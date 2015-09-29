@@ -1,5 +1,8 @@
 package org.cocos2dx.lib;
 
+import java.lang.reflect.Method;
+import java.net.URI;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
@@ -9,8 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
-import java.lang.reflect.Method;
-import java.net.URI;
+import com.mos.mindofsound.WebAppInterface;
 
 public class Cocos2dxWebView extends WebView {
     private static final String TAG = Cocos2dxWebViewHelper.class.getSimpleName();
@@ -44,6 +46,8 @@ public class Cocos2dxWebView extends WebView {
         }
 
         this.addJavascriptInterface(new WebAppInterface(context), "Android"); // my addition
+        //this.addJavascriptInterface(new JavaScriptInterface(context), "Android"); // my addition
+        
         this.setWebViewClient(new Cocos2dxWebViewClient());
         this.setWebChromeClient(new WebChromeClient());
 

@@ -188,7 +188,7 @@ Director::~Director(void)
     CC_SAFE_RELEASE(_notificationNode);
     CC_SAFE_RELEASE(_scheduler);
     CC_SAFE_RELEASE(_actionManager);
-    CC_SAFE_DELETE(_defaultFBO);
+//    CC_SAFE_DELETE(_defaultFBO); my addition (subtraction) - 2015_09_22
     
     delete _eventAfterUpdate;
     delete _eventAfterDraw;
@@ -261,6 +261,7 @@ void Director::drawScene()
 {
     // calculate "global" dt
     calculateDeltaTime();
+
     
     if (_openGLView)
     {

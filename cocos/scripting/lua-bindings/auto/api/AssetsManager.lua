@@ -96,9 +96,6 @@
 -- 
 -- @function [parent=#AssetsManager] AssetsManager 
 -- @param self
--- @param #char packageUrl
--- @param #char versionFileUrl
--- @param #char storagePath
 -- @return AssetsManager#AssetsManager self (return value: cc.AssetsManager)
         
 return nil
