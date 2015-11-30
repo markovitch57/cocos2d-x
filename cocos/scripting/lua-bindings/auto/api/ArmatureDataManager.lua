@@ -130,7 +130,7 @@
 -- @return map_table#map_table ret (return value: map_table)
         
 --------------------------------
--- brief    Juge whether or not need auto load sprite file
+-- brief    Judge whether or not need auto load sprite file
 -- @function [parent=#ArmatureDataManager] isAutoLoadSpriteFile 
 -- @param self
 -- @return bool#bool ret (return value: bool)

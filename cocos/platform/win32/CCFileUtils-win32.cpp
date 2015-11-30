@@ -41,7 +41,7 @@ NS_CC_BEGIN
 // The root path of resources, the character encoding is UTF-8.
 // UTF-8 is the only encoding supported by cocos2d-x API.
 //static std::string s_resourcePath = ""; // my addition (subtraction)
-static std::string s_resourcePath = ".\\..\\Resources\\"; // my addition
+static std::string s_resourcePath = ".\\..\\Resources\\"; // my addition - without this Debug version (at least) will not find premain.lua.
 
 // D:\aaa\bbb\ccc\ddd\abc.txt --> D:/aaa/bbb/ccc/ddd/abc.txt
 static inline std::string convertPathFormatToUnixStyle(const std::string& path)
@@ -190,6 +190,19 @@ bool FileUtilsWin32::isDirectoryExistInternal(const std::string& dirPath) const
 std::string FileUtilsWin32::getSuitableFOpen(const std::string& filenameUtf8) const
 {
     return UTF8StringToMultiByte(filenameUtf8);
+}
+
+long FileUtilsWin32::getFileSize(const std::string &filepath)
+{
+    WIN32_FILE_ATTRIBUTE_DATA fad;
+    if (!GetFileAttributesEx(StringUtf8ToWideChar(filepath).c_str(), GetFileExInfoStandard, &fad))
+    {
+        return 0; // error condition, could call GetLastError to find out more
+    }
+    LARGE_INTEGER size;
+    size.HighPart = fad.nFileSizeHigh;
+    size.LowPart = fad.nFileSizeLow;
+    return (long)size.QuadPart;
 }
 
 bool FileUtilsWin32::isFileExistInternal(const std::string& strFilePath) const

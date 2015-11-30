@@ -461,49 +461,59 @@ void Grid3D::calculateVertexPoints(void)
     {
         for (y = 0; y < _gridSize.height; ++y)
         {
-            int idx = (y * _gridSize.width) + x;
+			//if ( !( (x < 3) && ((y > 2) && (y < 5)) ) ) { // this essentially worked - ie flipped all but rectangle at mid left. But causes crash after a few goes!?
+				int idx = (y * _gridSize.width) + x;
 
-            GLfloat x1 = x * _step.x + _gridRect.origin.x;
-            GLfloat x2 = x1 + _step.x;
-            GLfloat y1 = y * _step.y + _gridRect.origin.y;
-            GLfloat y2= y1 + _step.y;
+				GLfloat x1 = x * _step.x + _gridRect.origin.x;
+				GLfloat x2 = x1 + _step.x;
+				GLfloat y1 = y * _step.y + _gridRect.origin.y;
+				GLfloat y2 = y1 + _step.y;
 
-            GLushort a = (GLushort)(x * (_gridSize.height + 1) + y);
-            GLushort b = (GLushort)((x + 1) * (_gridSize.height + 1) + y);
-            GLushort c = (GLushort)((x + 1) * (_gridSize.height + 1) + (y + 1));
-            GLushort d = (GLushort)(x * (_gridSize.height + 1) + (y + 1));
+				GLushort a = (GLushort)(x * (_gridSize.height + 1) + y);
+				GLushort b = (GLushort)((x + 1) * (_gridSize.height + 1) + y);
+				GLushort c = (GLushort)((x + 1) * (_gridSize.height + 1) + (y + 1));
+				GLushort d = (GLushort)(x * (_gridSize.height + 1) + (y + 1));
 
-            GLushort tempidx[6] = {a, b, d, b, c, d};
+				GLushort tempidx[6] = { a, b, d, b, c, d };
 
-            memcpy(&idxArray[6*idx], tempidx, 6*sizeof(GLushort));
+				memcpy(&idxArray[6 * idx], tempidx, 6 * sizeof(GLushort));
 
-            int l1[4] = {a*3, b*3, c*3, d*3};
-            Vec3 e(x1, y1, 0);
-            Vec3 f(x2, y1, 0);
-            Vec3 g(x2, y2, 0);
-            Vec3 h(x1, y2, 0);
+				int l1[4] = { a * 3, b * 3, c * 3, d * 3 };
+				Vec3 e(x1, y1, 0);
+				Vec3 f(x2, y1, 0);
+				Vec3 g(x2, y2, 0);
+				Vec3 h(x1, y2, 0);
 
-            Vec3 l2[4] = {e, f, g, h};
+				Vec3 l2[4] = { e, f, g, h };
 
-            int tex1[4] = {a*2, b*2, c*2, d*2};
-            Vec2 Tex2F[4] = {Vec2(x1, y1), Vec2(x2, y1), Vec2(x2, y2), Vec2(x1, y2)};
+				int tex1[4] = { a * 2, b * 2, c * 2, d * 2 };
+				Vec2 Tex2F[4] = { Vec2(x1, y1), Vec2(x2, y1), Vec2(x2, y2), Vec2(x1, y2) };
 
-            for (i = 0; i < 4; ++i)
-            {
-                vertArray[l1[i]] = l2[i].x;
-                vertArray[l1[i] + 1] = l2[i].y;
-                vertArray[l1[i] + 2] = l2[i].z;
+				for (i = 0; i < 4; ++i)
+				{
+					/*if (((x < 3) && ((y > 2) && (y < 5)))) { // this essentially worked - ie flipped all but rectangle at mid left. But causes crash after a few goes!?
+						//vertArray[l1[i]] = 0;
+						//vertArray[l1[i] + 1] = 0;
+						//vertArray[l1[i] + 2] = 0;
+					}
+					else {*/
+						vertArray[l1[i]] = l2[i].x;
+						vertArray[l1[i] + 1] = l2[i].y;
+						vertArray[l1[i] + 2] = l2[i].z;
 
-                texArray[tex1[i]] = Tex2F[i].x / width;
-                if (_isTextureFlipped)
-                {
-                    texArray[tex1[i] + 1] = (imageH - Tex2F[i].y) / height;
-                }
-                else
-                {
-                    texArray[tex1[i] + 1] = Tex2F[i].y / height;
-                }
-            }
+					//}
+
+					texArray[tex1[i]] = Tex2F[i].x / width;
+					if (_isTextureFlipped)
+					{
+						texArray[tex1[i] + 1] = (imageH - Tex2F[i].y) / height;
+					}
+					else
+					{
+						texArray[tex1[i] + 1] = Tex2F[i].y / height;
+					}
+				}
+			//}
         }
     }
 

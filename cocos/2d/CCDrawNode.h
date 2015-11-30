@@ -312,7 +312,12 @@ public:
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
     
     void setLineWidth(int lineWidth);
-    
+
+	void setColor(const Color4B &color); // my addition
+	//void adjustLastSolidRectToX(float fNewX); // my addition
+	//void adjustLastSolidRectToY(float fNewY); // my addition
+	int adjustBufferCount(int iInc); // my addition
+
 CC_CONSTRUCTOR_ACCESS:
     DrawNode();
     virtual ~DrawNode();

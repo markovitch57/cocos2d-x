@@ -946,4 +946,63 @@ void DrawNode::setLineWidth(int lineWidth)
     _lineWidth = lineWidth;
 }
 
+// my additions
+void DrawNode::setColor(const Color4B &color) {
+	V2F_C4B_T2F *p = _buffer;
+	for (int i = 0; i < _bufferCount; i++) {
+		p->colors = color;
+		p++;
+	}
+	p = _bufferGLPoint;
+	for (int i = 0; i < _bufferCountGLPoint; i++) {
+		p->colors = color;
+		p++;
+	}
+	p = _bufferGLLine;
+	for (int i = 0; i < _bufferCountGLLine; i++) {
+		p->colors = color;
+		p++;
+	}
+	_dirty = true;
+	_dirtyGLLine = true;
+	_dirtyGLPoint = true;
+}
+/*
+void DrawNode::adjustLastSolidRectToX(float fNewX) {
+	// Created to solve partial erasure of play blocks
+	V2F_C4B_T2F *pVertex = _buffer + (_bufferCount - 2);
+	pVertex->vertices.x = fNewX;
+	pVertex -= 2;
+	pVertex->vertices.x = fNewX;
+	pVertex--;
+	pVertex->vertices.x = fNewX;
+	_dirty = true;
+}
+
+void DrawNode::adjustLastSolidRectToY(float fNewY) {
+	// Created to solve partial erasure of play blocks - UNTESTED!
+	V2F_C4B_T2F *pVertex = _buffer + (_bufferCount - 1);
+	pVertex->vertices.y = fNewY;
+	pVertex--;
+	pVertex->vertices.y = fNewY;
+	pVertex -= 2;
+	pVertex->vertices.y = fNewY;
+	_dirty = true;
+}
+*/
+int DrawNode::adjustBufferCount(int iInc) {
+	// returns -1 on failure otherwise resulting _bufferCount
+	int iNewValue = _bufferCount + iInc;
+	if (iNewValue >= 0) { // should check here withing allocated memory?
+		_bufferCount = iNewValue;
+		return _bufferCount;
+	}
+	else {
+		return -1;
+	}
+	
+}
+
+// end of my addition
+
 NS_CC_END

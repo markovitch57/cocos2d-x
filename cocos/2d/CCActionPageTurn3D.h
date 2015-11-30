@@ -56,13 +56,13 @@ public:
     @brief Create an action with duration, grid size.
     @param duration Specify the duration of the PageTurn3D action. It's a value in seconds.
     @param gridSize Specify the size of the grid.
-    @return If the creation sucess, return a pointer of PageTurn3D action; otherwise, return nil.
+    @return If the creation success, return a pointer of PageTurn3D action; otherwise, return nil.
     */
     static PageTurn3D* create(float duration, const Size& gridSize);
 
     // Overrides
 	virtual PageTurn3D* clone() const override;
-    virtual void update(float time) override;
+	virtual void update(float time) override;
 };
 
 // end of actions group

@@ -57,7 +57,7 @@ public:
 	virtual void openURL(const char* pszUrl); // my addition - see https://github.com/cocos2d/cocos2d-x/pull/1940
 
     /**
-    @brief    Get current applicaiton instance.
+    @brief    Get current application instance.
     @return Current application instance pointer.
     */
     static Application* getInstance();

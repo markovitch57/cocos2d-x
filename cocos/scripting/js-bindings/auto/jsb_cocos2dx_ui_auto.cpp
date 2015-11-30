@@ -1748,14 +1748,14 @@ bool js_cocos2dx_ui_Widget_requestFocus(JSContext *cx, uint32_t argc, jsval *vp)
 }
 bool js_cocos2dx_ui_Widget_updateSizeAndPosition(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Widget* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Widget* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Widget *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Widget *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Widget_updateSizeAndPosition : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -2646,14 +2646,14 @@ bool js_cocos2dx_ui_Layout_setBackGroundImage(JSContext *cx, uint32_t argc, jsva
 }
 bool js_cocos2dx_ui_Layout_setBackGroundColor(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Layout* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Layout* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Layout *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Layout *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Layout_setBackGroundColor : Invalid Native Object");
     do {
         if (argc == 2) {
@@ -3670,14 +3670,14 @@ bool js_cocos2dx_ui_Button_getCapInsetsNormalRenderer(JSContext *cx, uint32_t ar
 }
 bool js_cocos2dx_ui_Button_setTitleAlignment(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Button* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Button* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Button *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Button *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Button_setTitleAlignment : Invalid Native Object");
     do {
         if (argc == 2) {
@@ -5392,14 +5392,14 @@ bool js_cocos2dx_ui_RadioButtonGroup_setAllowedNoSelection(JSContext *cx, uint32
 }
 bool js_cocos2dx_ui_RadioButtonGroup_setSelectedButtonWithoutEvent(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::RadioButtonGroup* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::RadioButtonGroup* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::RadioButtonGroup *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::RadioButtonGroup *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_RadioButtonGroup_setSelectedButtonWithoutEvent : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -5527,14 +5527,14 @@ bool js_cocos2dx_ui_RadioButtonGroup_addRadioButton(JSContext *cx, uint32_t argc
 }
 bool js_cocos2dx_ui_RadioButtonGroup_setSelectedButton(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::RadioButtonGroup* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::RadioButtonGroup* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::RadioButtonGroup *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::RadioButtonGroup *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_RadioButtonGroup_setSelectedButton : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -6160,14 +6160,14 @@ bool js_cocos2dx_ui_Text_getString(JSContext *cx, uint32_t argc, jsval *vp)
 }
 bool js_cocos2dx_ui_Text_disableEffect(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Text* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Text* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Text *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Text *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Text_disableEffect : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -8800,6 +8800,30 @@ bool js_cocos2dx_ui_ListView_getItemsMargin(JSContext *cx, uint32_t argc, jsval 
     JS_ReportError(cx, "js_cocos2dx_ui_ListView_getItemsMargin : wrong number of arguments: %d, was expecting %d", argc, 0);
     return false;
 }
+bool js_cocos2dx_ui_ListView_jumpToItem(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    bool ok = true;
+    JS::RootedObject obj(cx, args.thisv().toObjectOrNull());
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    cocos2d::ui::ListView* cobj = (cocos2d::ui::ListView *)(proxy ? proxy->ptr : NULL);
+    JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_ListView_jumpToItem : Invalid Native Object");
+    if (argc == 3) {
+        int arg0 = 0;
+        cocos2d::Vec2 arg1;
+        cocos2d::Vec2 arg2;
+        ok &= jsval_to_int32(cx, args.get(0), (int32_t *)&arg0);
+        ok &= jsval_to_vector2(cx, args.get(1), &arg1);
+        ok &= jsval_to_vector2(cx, args.get(2), &arg2);
+        JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_ListView_jumpToItem : Error processing arguments");
+        cobj->jumpToItem(arg0, arg1, arg2);
+        args.rval().setUndefined();
+        return true;
+    }
+
+    JS_ReportError(cx, "js_cocos2dx_ui_ListView_jumpToItem : wrong number of arguments: %d, was expecting %d", argc, 3);
+    return false;
+}
 bool js_cocos2dx_ui_ListView_setMagneticType(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -8818,22 +8842,6 @@ bool js_cocos2dx_ui_ListView_setMagneticType(JSContext *cx, uint32_t argc, jsval
     }
 
     JS_ReportError(cx, "js_cocos2dx_ui_ListView_setMagneticType : wrong number of arguments: %d, was expecting %d", argc, 1);
-    return false;
-}
-bool js_cocos2dx_ui_ListView_refreshViewIfNecessary(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    JS::RootedObject obj(cx, args.thisv().toObjectOrNull());
-    js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cocos2d::ui::ListView* cobj = (cocos2d::ui::ListView *)(proxy ? proxy->ptr : NULL);
-    JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_ListView_refreshViewIfNecessary : Invalid Native Object");
-    if (argc == 0) {
-        cobj->refreshViewIfNecessary();
-        args.rval().setUndefined();
-        return true;
-    }
-
-    JS_ReportError(cx, "js_cocos2dx_ui_ListView_refreshViewIfNecessary : wrong number of arguments: %d, was expecting %d", argc, 0);
     return false;
 }
 bool js_cocos2dx_ui_ListView_getIndex(JSContext *cx, uint32_t argc, jsval *vp)
@@ -9148,14 +9156,14 @@ bool js_cocos2dx_ui_ListView_removeItem(JSContext *cx, uint32_t argc, jsval *vp)
 }
 bool js_cocos2dx_ui_ListView_scrollToItem(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::ListView* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::ListView* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::ListView *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::ListView *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_ListView_scrollToItem : Invalid Native Object");
     do {
         if (argc == 4) {
@@ -9318,22 +9326,6 @@ bool js_cocos2dx_ui_ListView_getClosestItemToPositionInCurrentView(JSContext *cx
     JS_ReportError(cx, "js_cocos2dx_ui_ListView_getClosestItemToPositionInCurrentView : wrong number of arguments: %d, was expecting %d", argc, 2);
     return false;
 }
-bool js_cocos2dx_ui_ListView_refreshView(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    JS::RootedObject obj(cx, args.thisv().toObjectOrNull());
-    js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cocos2d::ui::ListView* cobj = (cocos2d::ui::ListView *)(proxy ? proxy->ptr : NULL);
-    JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_ListView_refreshView : Invalid Native Object");
-    if (argc == 0) {
-        cobj->refreshView();
-        args.rval().setUndefined();
-        return true;
-    }
-
-    JS_ReportError(cx, "js_cocos2dx_ui_ListView_refreshView : wrong number of arguments: %d, was expecting %d", argc, 0);
-    return false;
-}
 bool js_cocos2dx_ui_ListView_setItemModel(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -9360,22 +9352,6 @@ bool js_cocos2dx_ui_ListView_setItemModel(JSContext *cx, uint32_t argc, jsval *v
     }
 
     JS_ReportError(cx, "js_cocos2dx_ui_ListView_setItemModel : wrong number of arguments: %d, was expecting %d", argc, 1);
-    return false;
-}
-bool js_cocos2dx_ui_ListView_requestRefreshView(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    JS::RootedObject obj(cx, args.thisv().toObjectOrNull());
-    js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cocos2d::ui::ListView* cobj = (cocos2d::ui::ListView *)(proxy ? proxy->ptr : NULL);
-    JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_ListView_requestRefreshView : Invalid Native Object");
-    if (argc == 0) {
-        cobj->requestRefreshView();
-        args.rval().setUndefined();
-        return true;
-    }
-
-    JS_ReportError(cx, "js_cocos2dx_ui_ListView_requestRefreshView : wrong number of arguments: %d, was expecting %d", argc, 0);
     return false;
 }
 bool js_cocos2dx_ui_ListView_insertCustomItem(JSContext *cx, uint32_t argc, jsval *vp)
@@ -9524,8 +9500,8 @@ void js_register_cocos2dx_ui_ListView(JSContext *cx, JS::HandleObject global) {
         JS_FN("getCenterItemInCurrentView", js_cocos2dx_ui_ListView_getCenterItemInCurrentView, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getCurSelectedIndex", js_cocos2dx_ui_ListView_getCurSelectedIndex, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getItemsMargin", js_cocos2dx_ui_ListView_getItemsMargin, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("jumpToItem", js_cocos2dx_ui_ListView_jumpToItem, 3, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("setMagneticType", js_cocos2dx_ui_ListView_setMagneticType, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("refreshViewIfNecessary", js_cocos2dx_ui_ListView_refreshViewIfNecessary, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getIndex", js_cocos2dx_ui_ListView_getIndex, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("pushBackCustomItem", js_cocos2dx_ui_ListView_pushBackCustomItem, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("insertDefaultItem", js_cocos2dx_ui_ListView_insertDefaultItem, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -9546,9 +9522,7 @@ void js_register_cocos2dx_ui_ListView(JSContext *cx, JS::HandleObject global) {
         JS_FN("getClosestItemToPosition", js_cocos2dx_ui_ListView_getClosestItemToPosition, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getRightmostItemInCurrentView", js_cocos2dx_ui_ListView_getRightmostItemInCurrentView, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getClosestItemToPositionInCurrentView", js_cocos2dx_ui_ListView_getClosestItemToPositionInCurrentView, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("refreshView", js_cocos2dx_ui_ListView_refreshView, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("setItemModel", js_cocos2dx_ui_ListView_setItemModel, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("requestRefreshView", js_cocos2dx_ui_ListView_requestRefreshView, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("insertCustomItem", js_cocos2dx_ui_ListView_insertCustomItem, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("ctor", js_cocos2dx_ui_ListView_ctor, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
@@ -11481,14 +11455,14 @@ bool js_cocos2dx_ui_TextField_setPlaceHolder(JSContext *cx, uint32_t argc, jsval
 }
 bool js_cocos2dx_ui_TextField_setPlaceHolderColor(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::TextField* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::TextField* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::TextField *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::TextField *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_TextField_setPlaceHolderColor : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -13775,14 +13749,14 @@ bool js_cocos2dx_ui_RichText_formatText(JSContext *cx, uint32_t argc, jsval *vp)
 }
 bool js_cocos2dx_ui_RichText_removeElement(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::RichText* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::RichText* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::RichText *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::RichText *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_RichText_removeElement : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -14502,14 +14476,14 @@ bool js_cocos2dx_ui_Scale9Sprite_disableCascadeColor(JSContext *cx, uint32_t arg
 }
 bool js_cocos2dx_ui_Scale9Sprite_updateWithSprite(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Scale9Sprite* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Scale9Sprite* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Scale9Sprite_updateWithSprite : Invalid Native Object");
     do {
         if (argc == 6) {
@@ -14761,14 +14735,14 @@ bool js_cocos2dx_ui_Scale9Sprite_setInsetBottom(JSContext *cx, uint32_t argc, js
 }
 bool js_cocos2dx_ui_Scale9Sprite_initWithSpriteFrameName(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Scale9Sprite* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Scale9Sprite* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Scale9Sprite_initWithSpriteFrameName : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -14849,14 +14823,14 @@ bool js_cocos2dx_ui_Scale9Sprite_setInsetTop(JSContext *cx, uint32_t argc, jsval
 }
 bool js_cocos2dx_ui_Scale9Sprite_init(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Scale9Sprite* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Scale9Sprite* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Scale9Sprite_init : Invalid Native Object");
     do {
         if (argc == 3) {
@@ -15128,14 +15102,14 @@ bool js_cocos2dx_ui_Scale9Sprite_getOriginalSize(JSContext *cx, uint32_t argc, j
 }
 bool js_cocos2dx_ui_Scale9Sprite_initWithFile(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Scale9Sprite* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Scale9Sprite* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Scale9Sprite_initWithFile : Invalid Native Object");
     do {
         if (argc == 2) {
@@ -15264,14 +15238,14 @@ bool js_cocos2dx_ui_Scale9Sprite_setInsetLeft(JSContext *cx, uint32_t argc, jsva
 }
 bool js_cocos2dx_ui_Scale9Sprite_initWithSpriteFrame(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::Scale9Sprite* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::Scale9Sprite* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::Scale9Sprite *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Scale9Sprite_initWithSpriteFrame : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -15950,14 +15924,14 @@ bool js_cocos2dx_ui_EditBox_setInputMode(JSContext *cx, uint32_t argc, jsval *vp
 }
 bool js_cocos2dx_ui_EditBox_setPlaceholderFontColor(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::EditBox* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::EditBox* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::EditBox *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::EditBox *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_EditBox_setPlaceholderFontColor : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -15986,14 +15960,14 @@ bool js_cocos2dx_ui_EditBox_setPlaceholderFontColor(JSContext *cx, uint32_t argc
 }
 bool js_cocos2dx_ui_EditBox_setFontColor(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::EditBox* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::EditBox* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::EditBox *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::EditBox *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_EditBox_setFontColor : Invalid Native Object");
     do {
         if (argc == 1) {
@@ -16044,14 +16018,14 @@ bool js_cocos2dx_ui_EditBox_setPlaceholderFont(JSContext *cx, uint32_t argc, jsv
 }
 bool js_cocos2dx_ui_EditBox_initWithSizeAndBackgroundSprite(JSContext *cx, uint32_t argc, jsval *vp)
 {
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
+    cocos2d::ui::EditBox* cobj = nullptr;
 
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     JS::RootedObject obj(cx);
-    cocos2d::ui::EditBox* cobj = NULL;
     obj = args.thisv().toObjectOrNull();
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cobj = (cocos2d::ui::EditBox *)(proxy ? proxy->ptr : NULL);
+    cobj = (cocos2d::ui::EditBox *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_EditBox_initWithSizeAndBackgroundSprite : Invalid Native Object");
     do {
         if (argc == 2) {

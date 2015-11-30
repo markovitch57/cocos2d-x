@@ -356,12 +356,24 @@ int SimulatorWin::run()
         setZoom(_project.getFrameScale());
     }
     Vec2 pos = _project.getWindowOffset();
-    if (pos.x != 0 && pos.y != 0)
+    //if (pos.x != 0 && pos.y != 0) // my addition/subtraction
     {
         RECT rect;
         GetWindowRect(_hwnd, &rect);
-        MoveWindow(_hwnd, pos.x, pos.y, rect.right - rect.left, rect.bottom - rect.top, FALSE);
-    }
+		int vx = GetSystemMetrics(SM_CXVIRTUALSCREEN); // my addition
+		if (vx < 3200) {
+			MoveWindow(_hwnd, pos.x, pos.y, rect.right - rect.left, rect.bottom - rect.top, FALSE);
+		}
+		else {
+			int vy = GetSystemMetrics(SM_CYVIRTUALSCREEN); // my addition
+			//MoveWindow(_hwnd, pos.x + 1920 + 50, pos.y + 20, rect.right - rect.left, rect.bottom - rect.top, FALSE); // my addition - so appears on small laptop display to right!
+
+			//Following is hardcoded for x201 laptop (1280x768) at bottom right of big screen (1920x1080) with margins of 50 (x) and 50 (y)
+			// This information can be obtained with EnumDisplayMonitors if desired. Probably better would be actual coords in the cocos config (exist already?).
+			MoveWindow(_hwnd, pos.x + 50 + (vx - 1280), pos.y - 50 + (1080 - (rect.bottom - rect.top)), rect.right - rect.left, rect.bottom - rect.top, FALSE); // my addition - so appears on small laptop display to right!
+		}
+
+	}
 
     // path for looking Lang file, Studio Default images
     FileUtils::getInstance()->addSearchPath(getApplicationPath().c_str());

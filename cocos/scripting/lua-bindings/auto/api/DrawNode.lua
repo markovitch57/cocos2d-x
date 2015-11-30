@@ -85,6 +85,13 @@
 -- @return DrawNode#DrawNode self (return value: cc.DrawNode)
         
 --------------------------------
+-- 
+-- @function [parent=#DrawNode] adjustBufferCount 
+-- @param self
+-- @param #int iInc
+-- @return int#int ret (return value: int)
+        
+--------------------------------
 --  Get the color mixed mode.<br>
 -- lua NA
 -- @function [parent=#DrawNode] getBlendFunc 
@@ -151,6 +158,13 @@
 -- @param #vec2_table p2
 -- @param #vec2_table p3
 -- @param #color4f_table color
+-- @return DrawNode#DrawNode self (return value: cc.DrawNode)
+        
+--------------------------------
+-- 
+-- @function [parent=#DrawNode] setColor 
+-- @param self
+-- @param #color4b_table color
 -- @return DrawNode#DrawNode self (return value: cc.DrawNode)
         
 --------------------------------

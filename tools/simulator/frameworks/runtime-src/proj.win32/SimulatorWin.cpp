@@ -302,6 +302,8 @@ int SimulatorWin::run()
     SetCurrentDirectoryA(_project.getProjectDir().c_str());
     FileUtils::getInstance()->setDefaultResourceRootPath(_project.getProjectDir());
     FileUtils::getInstance()->setWritablePath(_project.getWritableRealPath().c_str());
+//	CCLOG("Simulator.cpp sResourcePath = %s", MOS_FileUtils::getInstance()->getResourcePath()); // my addition
+//	CCLOG("Simulator.cpp sDataPath = %s", FileUtils::getInstance()->getWritablePath()); // my addition
 
     // check screen DPI
     HDC screen = GetDC(0);
