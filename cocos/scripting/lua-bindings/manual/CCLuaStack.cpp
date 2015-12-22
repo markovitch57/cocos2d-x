@@ -31,7 +31,10 @@ extern "C" {
 #include "tolua++.h"
 #include "lualib.h"
 #include "lauxlib.h"
+extern void MosAbort(const char * pcMessage); // my addition
 }
+
+
 
 #include "Cocos2dxLuaLoader.h"
 
@@ -483,7 +486,8 @@ int LuaStack::executeFunction(int numArgs)
     --_callFromLua;
     if (error)
     {
-        if (traceback == 0)
+		MosAbort(lua_tostring(_state, -1)); // my addition
+		if (traceback == 0)
         {
             CCLOG("[LUA ERROR] %s", lua_tostring(_state, - 1));        /* L: ... error */
             lua_pop(_state, 1); // remove error message from stack
@@ -596,7 +600,8 @@ int LuaStack::executeFunctionReturnArray(int handler,int numArgs,int numResults,
         --_callFromLua;
         if (error)
         {
-            if (traceback == 0)
+			MosAbort(lua_tostring(_state, -1)); // my addition
+			if (traceback == 0)
             {
                 CCLOG("[LUA ERROR] %s", lua_tostring(_state, - 1));        /* L: ... error */
                 lua_pop(_state, 1); // remove error message from stack
@@ -688,7 +693,8 @@ int LuaStack::executeFunction(int handler, int numArgs, int numResults, const st
         
         if (error)
         {
-            if (traceCallback == 0)
+			MosAbort(lua_tostring(_state, -1)); // my addition
+			if (traceCallback == 0)
             {
                 CCLOG("[LUA ERROR] %s", lua_tostring(_state, - 1));        /* L: ... error */
                 lua_pop(_state, 1);                                        // remove error message from stack
