@@ -45,6 +45,8 @@ NS_CC_BEGIN
 
 // sharedApplication pointer
 Application * Application::sm_pSharedApplication = 0;
+bool Application::yDestroyGlViewOnRelaunch = false; // my addition
+bool Application::yRelaunch = false; // my addition
 
 
 

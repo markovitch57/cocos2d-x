@@ -106,7 +106,11 @@ protected:
 
     std::function<void(::Platform::String^)> m_openURLDelegate;
 
+public: // My addition
     static Application * sm_pSharedApplication;
+	static bool yDestroyGlViewOnRelaunch; // My addition
+	static bool yRelaunch; // My addition
+
 };
 
 NS_CC_END

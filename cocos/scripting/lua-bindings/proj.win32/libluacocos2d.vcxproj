@@ -224,11 +224,6 @@
     <None Include="..\script\ui\experimentalUIConstants.lua" />
     <None Include="..\script\ui\GuiConstants.lua" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\2d\libcocos2d.vcxproj">
-      <Project>{98a51ba8-fc3a-415b-ac8f-8c7bd464e93e}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9F2D6CE6-C893-4400-B50C-6DB70CC2562F}</ProjectGuid>
     <RootNamespace>libluacocos2d</RootNamespace>

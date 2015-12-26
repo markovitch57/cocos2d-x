@@ -46,6 +46,8 @@ NS_CC_BEGIN
 
 namespace network {
 
+	double HttpClient::ffDownloaded = 0; // my addition
+
     static std::mutex       s_requestQueueMutex;
     static std::mutex       s_responseQueueMutex;
 
