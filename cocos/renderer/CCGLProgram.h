@@ -110,6 +110,10 @@ public:
         VERTEX_ATTRIB_BLEND_WEIGHT,
         /**Index 8 will be used as Blend index.*/
         VERTEX_ATTRIB_BLEND_INDEX,
+        /**Index 9 will be used as tangent.*/
+        VERTEX_ATTRIB_TANGENT,
+        /**Index 10 will be used as Binormal.*/
+        VERTEX_ATTRIB_BINORMAL,
 		VERTEX_ATTRIB_NTH_VERTEX, // my addition
         VERTEX_ATTRIB_MAX,
 
@@ -212,6 +216,15 @@ public:
     */
     static const char* SHADER_3D_SKINPOSITION_NORMAL_TEXTURE;
     /**
+    Built in shader used for 3D, support Position, Bumped Normal, Texture vertex attribute, used in lighting. with color specified by a uniform.
+    */
+    static const char* SHADER_3D_POSITION_BUMPEDNORMAL_TEXTURE;
+    /**
+    Built in shader used for 3D, support Position(skeletal animation by hardware skin), Bumped Normal, Texture vertex attribute,
+    used in lighting. with color specified by a uniform.
+    */
+    static const char* SHADER_3D_SKINPOSITION_BUMPEDNORMAL_TEXTURE;
+    /**
     Built in shader for particles, support Position and Texture, with a color specified by a uniform.
     */
     static const char* SHADER_3D_PARTICLE_TEXTURE;
@@ -298,6 +311,10 @@ public:
     static const char* ATTRIBUTE_NAME_BLEND_WEIGHT;
     /**Attribute blend index.*/
     static const char* ATTRIBUTE_NAME_BLEND_INDEX;
+    /**Attribute blend tangent.*/
+    static const char* ATTRIBUTE_NAME_TANGENT;
+    /**Attribute blend binormal.*/
+    static const char* ATTRIBUTE_NAME_BINORMAL;
     static const char* ATTRIBUTE_NAME_NTH_VERTEX; // my addition
     /**
     end of Built Attribute names
@@ -503,6 +520,8 @@ protected:
     GLint             _builtInUniforms[UNIFORM_MAX];
     /**Indicate whether it has a offline shader compiler or not.*/
     bool              _hasShaderCompiler;
+
+    inline void clearShader();
 
     struct flag_struct {
         unsigned int usesTime:1;

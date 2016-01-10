@@ -12,7 +12,7 @@
 -- param text Content string.<br>
 -- param fontName Content font name.<br>
 -- param fontSize Content font size.<br>
--- return True if initialize scucess, false otherwise.
+-- return True if initialize success, false otherwise.
 -- @function [parent=#RichElementText] init 
 -- @param self
 -- @param #int tag

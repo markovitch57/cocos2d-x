@@ -26,9 +26,7 @@ public:
         addTest("Actions - Progress", [](){return new (std::nothrow) ActionsProgressTests(); });
         addTest("Allocator - Basic", [](){return new (std::nothrow) AllocatorTests(); });
         addTest("Audio - CocosDenshion", []() { return new (std::nothrow) CocosDenshionTests(); });
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
         addTest("Audio - NewAudioEngine", []() { return new (std::nothrow) AudioEngineTests(); });
-#endif
 #if CC_ENABLE_BOX2D_INTEGRATION
         addTest("Box2d - Basic", []() { return new (std::nothrow) Box2DTests(); });
         addTest("Box2d - TestBed", []() { return new (std::nothrow) Box2dTestBedSuite(); });
@@ -38,19 +36,13 @@ public:
         addTest("Click and Move", [](){return new ClickAndMoveTest(); });
         addTest("Configuration", []() { return new ConfigurationTests(); });
         addTest("Console", []() { return new ConsoleTests(); });
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT && _MSC_VER < 1900)
-        // Window 10 UWP does not yet support CURL
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS) && (CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
         // android and ios don't use CURL
         addTest("Curl", []() { return new CurlTests(); });
 #endif
-#endif
         addTest("Current Language", []() { return new CurrentLanguageTests(); });
         addTest("CocosStudio3D Test", []() { return new CocosStudio3DTests(); });
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT && _MSC_VER < 1900)
-        // Window 10 UWP does not yet support CURL
         addTest("Downloader Test", []() { return new DownloaderTests(); });
-#endif
         addTest("EventDispatcher", []() { return new EventDispatcherTests(); });
         addTest("Effects - Advanced", []() { return new EffectAdvanceTests(); });
         addTest("Effects - Basic", [](){return new EffectTests(); });

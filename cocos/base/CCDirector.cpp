@@ -91,6 +91,7 @@ extern const char* cocos2dVersion(void);
 const char *Director::EVENT_PROJECTION_CHANGED = "director_projection_changed";
 const char *Director::EVENT_AFTER_DRAW = "director_after_draw";
 const char *Director::EVENT_AFTER_VISIT = "director_after_visit";
+const char *Director::EVENT_BEFORE_UPDATE = "director_before_update";
 const char *Director::EVENT_AFTER_UPDATE = "director_after_update";
 
 Director* Director::getInstance()
@@ -129,7 +130,7 @@ bool Director::init(void)
     _frameRate = 0.0f;
     _FPSLabel = _drawnBatchesLabel = _drawnVerticesLabel = nullptr;
     _totalFrames = 0;
-    _lastUpdate = new struct timeval;
+    _lastUpdate = new (std::nothrow) struct timeval;
     _secondsPerFrame = 1.0f;
 
     // paused ?
@@ -162,6 +163,8 @@ bool Director::init(void)
     _eventAfterDraw->setUserData(this);
     _eventAfterVisit = new (std::nothrow) EventCustom(EVENT_AFTER_VISIT);
     _eventAfterVisit->setUserData(this);
+    _eventBeforeUpdate = new (std::nothrow) EventCustom(EVENT_BEFORE_UPDATE);
+    _eventBeforeUpdate->setUserData(this);
     _eventAfterUpdate = new (std::nothrow) EventCustom(EVENT_AFTER_UPDATE);
     _eventAfterUpdate->setUserData(this);
     _eventProjectionChanged = new (std::nothrow) EventCustom(EVENT_PROJECTION_CHANGED);
@@ -190,6 +193,7 @@ Director::~Director(void)
     CC_SAFE_RELEASE(_actionManager);
 //    CC_SAFE_DELETE(_defaultFBO); my addition (subtraction) - 2015_09_22
     
+    delete _eventBeforeUpdate;
     delete _eventAfterUpdate;
     delete _eventAfterDraw;
     delete _eventAfterVisit;
@@ -271,6 +275,7 @@ void Director::drawScene()
     //tick before glClear: issue #533
     if (! _paused)
     {
+        _eventDispatcher->dispatchEvent(_eventBeforeUpdate);
         _scheduler->update(_deltaTime);
         _eventDispatcher->dispatchEvent(_eventAfterUpdate);
     }
@@ -443,7 +448,7 @@ void Director::setNextDeltaTimeZero(bool nextDeltaTimeZero)
 //
 // FIXME TODO
 // Matrix code MUST NOT be part of the Director
-// MUST BE moved outide.
+// MUST BE moved outside.
 // Why the Director must have this code ?
 //
 void Director::initMatrixStack()

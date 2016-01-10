@@ -26,7 +26,7 @@
 
 // CCConfig.js
 //
-cc.ENGINE_VERSION = "Cocos2d-JS v3.9 Beta";
+cc.ENGINE_VERSION = "Cocos2d-JS v3.10";
 
 cc.FIX_ARTIFACTS_BY_STRECHING_TEXEL = 0;
 cc.DIRECTOR_STATS_POSITION = {x: 0, y: 0};
@@ -1591,7 +1591,9 @@ cc.Touch.prototype.getLocationY = function(){
 cc.Director.EVENT_PROJECTION_CHANGED = "director_projection_changed";
 cc.Director.EVENT_AFTER_DRAW = "director_after_draw";
 cc.Director.EVENT_AFTER_VISIT = "director_after_visit";
+cc.Director.EVENT_BEFORE_UPDATE = "director_before_update";
 cc.Director.EVENT_AFTER_UPDATE = "director_after_update";
+cc.Director.EVENT_BEFORE_SCENE_LAUNCH = "director_before_scene_launch";
 
 cc.Director.prototype.runScene = function(scene){
     if (!this.getRunningScene()) {
@@ -1774,6 +1776,9 @@ cc.cardinalSplineAt = function (p0, p1, p2, p3, tension, t) {
 };
 
 cc._DrawNode = cc.DrawNode;
+cc._DrawNode.prototype.drawPoly = function (verts, fillColor, borderWidth, borderColor) {
+    cc._DrawNode.prototype.drawPolygon.call(this, verts, verts.length, fillColor, borderWidth, borderColor);
+}
 cc.DrawNode = cc._DrawNode.extend({
     _drawColor: cc.color(255, 255, 255, 255),
     _lineWidth: 1,
@@ -2594,6 +2599,13 @@ cc.Texture2D.prototype.setTexParameters = function (texParams, magFilter, wrapS,
 
 cc.Texture2D.prototype.handleLoadedTexture = function (premultipled) {};
 
+// 
+// MenuItem setCallback support target
+//
+cc.MenuItem.prototype._setCallback = cc.MenuItem.prototype.setCallback;
+cc.MenuItem.prototype.setCallback = function (callback, target) {
+    this._setCallback(callback.bind(target));
+};
 
 //
 // MenuItemImage support sprite frame name as paramter
@@ -2638,6 +2650,8 @@ cc.LabelTTF.prototype.enableShadow = function (shadowColor, offset, blurRadius) 
     this._enableShadow(offset, opacity, blurRadius);
 }
 
+cc.LabelTTF.prototype.setDrawMode = function () {};
+
 
 //
 // Label adaptation to LabelTTF/LabelBMFont/LabelAtlas
@@ -2653,7 +2667,39 @@ _p.setBoundingHeight = _p.setHeight;
 //
 _p = cc.Scheduler.prototype;
 _p.unscheduleUpdateForTarget = _p.unscheduleUpdate;
-_p.unscheduleAllCallbacksForTarget = _p.unscheduleAllForTarget;
+_p.unscheduleAllCallbacksForTarget = function (target) {
+    this.unschedule(target.__instanceId + "", target);
+};
+_p._schedule = _p.schedule;
+_p.schedule = function (callback, target, interval, repeat, delay, paused, key) {
+    var isSelector = false;
+    if(typeof callback !== "function"){
+        var selector = callback;
+        isSelector = true;
+    }
+    if(isSelector === false){
+        //callback, target, interval, repeat, delay, paused, key
+        //callback, target, interval, paused, key
+        if(arguments.length === 4 || arguments.length === 5) {
+            key = delay;
+            paused = repeat;
+            delay = 0;
+            repeat = cc.REPEAT_FOREVER;
+        }
+    }else{
+        //selector, target, interval, repeat, delay, paused
+        //selector, target, interval, paused
+        if(arguments.length === 4){
+            paused = repeat;
+            repeat = cc.REPEAT_FOREVER;
+            delay = 0;
+        }
+    }
+    if (key === undefined) {
+        key = target.__instanceId + "";
+    }
+    this._schedule(callback, target, interval, repeat, delay, paused, key);
+}
 
 
 cc._NodeGrid = cc.NodeGrid;
@@ -2725,29 +2771,30 @@ cc.GLProgram.prototype.setUniformLocationWithMatrix2fv = function(){
     var tempArray = Array.prototype.slice.call(arguments);
     tempArray = Array.prototype.concat.call(tempArray, 2);
     this.setUniformLocationWithMatrixfvUnion.apply(this, tempArray);
-}
+};
 
 cc.GLProgram.prototype.setUniformLocationWithMatrix3fv = function(){
     var tempArray = Array.prototype.slice.call(arguments);
     tempArray = Array.prototype.concat.call(tempArray, 3);
     this.setUniformLocationWithMatrixfvUnion.apply(this, tempArray);
-}
+};
 cc.GLProgram.prototype.setUniformLocationWithMatrix4fv = function(){
     var tempArray = Array.prototype.slice.call(arguments);
     tempArray = Array.prototype.concat.call(tempArray, 4);
     this.setUniformLocationWithMatrixfvUnion.apply(this, tempArray);
-}
+};
 
 
 //
 // Script Component
 //
 cc._ComponentJS = cc.ComponentJS;
+cc._ComponentJS.extend = cc.Class.extend;
 cc.ComponentJS = function (filename) {
     var comp = cc._ComponentJS.create(filename);
     var res = comp.getScriptObject();
     return res;
-}
+};
 cc.ComponentJS.extend = function (prop) {
     return cc._ComponentJS.extend(prop);
 };
