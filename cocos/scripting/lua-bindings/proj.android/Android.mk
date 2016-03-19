@@ -61,6 +61,7 @@ LOCAL_SRC_FILES := ../manual/CCLuaBridge.cpp \
           ../auto/lua_cocos2dx_audioengine_auto.cpp \
           ../manual/audioengine/lua_cocos2dx_audioengine_manual.cpp
 
+
 #Component
 LOCAL_SRC_FILES += ../manual/CCComponentLua.cpp \
 
@@ -132,6 +133,7 @@ LOCAL_SRC_FILES += ../manual/physics3d/lua_cocos2dx_physics3d_manual.cpp \
 LOCAL_SRC_FILES += ../manual/navmesh/lua_cocos2dx_navmesh_conversions.cpp \
                    ../manual/navmesh/lua_cocos2dx_navmesh_manual.cpp \
                    ../auto/lua_cocos2dx_navmesh_auto.cpp \
+
 
 #mos
 LOCAL_SRC_FILES += ../auto/lua_cocos2dx_mos_auto.cpp \

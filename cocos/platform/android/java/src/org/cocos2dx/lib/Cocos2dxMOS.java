@@ -15,6 +15,8 @@ LINKS
 
 package org.cocos2dx.lib;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -68,28 +70,28 @@ public class Cocos2dxMOS {
 		return iNativeOutputSampleRate;
 	}
 	
-	private static int getNativeHardwareBufferSize() {
-		int iNativeOutputBufferSize = 0;    
+	private static int getNativeHardwareBufferFrames() {
+		int iNativeOutputBufferFrames = 0;    
 
-/*		if (android.os.Build.VERSION.SDK_INT >= 17) {
+		if (android.os.Build.VERSION.SDK_INT >= 17) { // ie if build version of device is 4.2 or greater (ie second version of Jelly Bean)
 			Context context = Cocos2dxActivity.getContext();
-			//@TargetApi(17)  // This should prevent lint from complaining (thogh it didn't anyway!
+			//@TargetApi(17)  // This should prevent lint from complaining (though it didn't anyway!
 			if (context != null) {
 				AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-				String siNativeOutputBufferSize = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
-				iNativeOutputBufferSize = Integer.parseInt(siNativeOutputBufferSize);
-				Log.d("Me","AudioManager gave native output buffer size: " + siNativeOutputBufferSize);
+				String siNativeOutputBufferFrames = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
+				iNativeOutputBufferFrames = Integer.parseInt(siNativeOutputBufferFrames);
+				Log.d("Me","AudioManager gave siNativeOutputBufferFrames: " + siNativeOutputBufferFrames);
 			}
 		} 
-*/
-		return iNativeOutputBufferSize;
+
+		return iNativeOutputBufferFrames;
 	}
 	
 	private static String getJavaRelaunchStringAndEmptyIt() {
 
 /*		if (android.os.Build.VERSION.SDK_INT >= 17) {
 			Context context = Cocos2dxActivity.getContext();
-			//@TargetApi(17)  // This should prevent lint from complaining (thogh it didn't anyway!
+			//@TargetApi(17)  // This should prevent lint from complaining (though it didn't anyway!
 			if (context != null) {
 				AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 				String siNativeOutputBufferSize = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);

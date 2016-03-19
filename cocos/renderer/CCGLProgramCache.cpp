@@ -38,7 +38,42 @@ THE SOFTWARE.
 #include "renderer/ccGLStateCache.h" // my addition
 
 NS_CC_BEGIN
+// my addition (so debug can display shader name in errorlog)
+const char *shaderNames[] = {
+	GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR,
+	GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP,
+	GLProgram::SHADER_NAME_POSITION_TEXTURE_ALPHA_TEST,
+	GLProgram::SHADER_NAME_POSITION_TEXTURE_ALPHA_TEST_NO_MV,
+	GLProgram::SHADER_NAME_POSITION_COLOR,
+	GLProgram::SHADER_NAME_POSITION_COLOR_TEXASPOINTSIZE,
+	GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP,
 
+	GLProgram::SHADER_NAME_POSITION_TEXTURE,
+	GLProgram::SHADER_NAME_POSITION_TEXTURE_U_COLOR,
+	GLProgram::SHADER_NAME_POSITION_TEXTURE_A8_COLOR,
+	GLProgram::SHADER_NAME_POSITION_U_COLOR,
+	GLProgram::SHADER_NAME_POSITION_LENGTH_TEXTURE_COLOR,
+	GLProgram::SHADER_NAME_POSITION_GRAYSCALE,
+	GLProgram::SHADER_NAME_LABEL_DISTANCEFIELD_NORMAL,
+	GLProgram::SHADER_NAME_LABEL_DISTANCEFIELD_GLOW,
+	GLProgram::SHADER_NAME_LABEL_NORMAL,
+	GLProgram::SHADER_NAME_LABEL_OUTLINE,
+
+	GLProgram::SHADER_3D_POSITION,
+	GLProgram::SHADER_3D_POSITION_TEXTURE,
+	GLProgram::SHADER_3D_SKINPOSITION_TEXTURE,
+	GLProgram::SHADER_3D_POSITION_NORMAL,
+	GLProgram::SHADER_3D_POSITION_NORMAL_TEXTURE,
+	GLProgram::SHADER_3D_SKINPOSITION_NORMAL_TEXTURE,
+	GLProgram::SHADER_3D_POSITION_BUMPEDNORMAL_TEXTURE,
+	GLProgram::SHADER_3D_SKINPOSITION_BUMPEDNORMAL_TEXTURE,
+	GLProgram::SHADER_3D_PARTICLE_COLOR,
+	GLProgram::SHADER_3D_PARTICLE_TEXTURE,
+	GLProgram::SHADER_3D_SKYBOX,
+	GLProgram::SHADER_3D_TERRAIN,
+	GLProgram::SHADER_CAMERA_CLEAR,
+};
+// end of my addition
 enum {
     kShaderType_PositionTextureColor,
     kShaderType_PositionTextureColor_noMVP,
@@ -450,7 +485,8 @@ void GLProgramCache::reloadDefaultGLProgramsRelativeToLights()
 
 void GLProgramCache::loadDefaultGLProgram(GLProgram *p, int type)
 {
-    switch (type) {
+	CCLOG("loadDefaultGLProgram: %s", shaderNames[type]);
+	switch (type) {
         case kShaderType_PositionTextureColor:
             p->initWithByteArrays(ccPositionTextureColor_vert, ccPositionTextureColor_frag);
             break;

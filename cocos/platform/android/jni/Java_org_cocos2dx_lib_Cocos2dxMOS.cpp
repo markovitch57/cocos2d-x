@@ -55,11 +55,11 @@ int getNativeHardwareSampleRate(void) {
     return ret;
 }
 
-int getNativeHardwareBufferSize(void) {
+int getNativeHardwareBufferFrames(void) {
     int ret = 0;
 
     JniMethodInfo t;
-    if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "getNativeHardwareBufferSize", "()I")) {
+    if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "getNativeHardwareBufferFrames", "()I")) {
         ret = t.env->CallStaticIntMethod(t.classID, t.methodID);
         t.env->DeleteLocalRef(t.classID);
     }

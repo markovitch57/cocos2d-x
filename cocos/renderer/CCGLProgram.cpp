@@ -382,9 +382,11 @@ void GLProgram::parseUniforms()
                     GLenum __gl_error_code = glGetError();
                     if (__gl_error_code != GL_NO_ERROR)
                     {
-                        CCLOG("error: 0x%x", (int)__gl_error_code);
-                    }
-                    assert(__gl_error_code == GL_NO_ERROR);
+						CCLOG("error: 0x%x", (int)__gl_error_code);
+						CCLOG("uniformName: %s", uniformName); // my addition
+						CCLOG("shader description: %s", getDescription().c_str()); // my addition
+					}
+//q                    assert(__gl_error_code == GL_NO_ERROR);// my addition (subtraction)
 
                     _userUniforms[uniform.name] = uniform;
                 }

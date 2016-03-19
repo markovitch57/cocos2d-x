@@ -33,7 +33,7 @@ THE SOFTWARE.
 #include <string>
 
 int getNativeHardwareSampleRate(void);
-int getNativeHardwareBufferSize(void);
+int getNativeHardwareBufferFrames(void);
 //char * pcGetRelaunchString(void);
 std::string sGetBrowserString(void);
 std::string sGetDeviceDescription(void);
