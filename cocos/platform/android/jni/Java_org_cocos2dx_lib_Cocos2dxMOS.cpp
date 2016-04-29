@@ -43,6 +43,18 @@ extern "C" {
     }
 }
 
+bool getAudioFocus(void) {
+    int ret = 0;
+
+    JniMethodInfo t;
+    if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "getAudioFocus", "()Z")) {
+        ret = t.env->CallStaticBooleanMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+
+    return ret;
+}
+
 int getNativeHardwareSampleRate(void) {
     int ret = 0;
 

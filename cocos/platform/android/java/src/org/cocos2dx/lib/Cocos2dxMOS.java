@@ -45,8 +45,79 @@ public class Cocos2dxMOS {
 		return iNativeOutputSampleRate;
 	}
 */
-	//static String sJavaRelaunchString = "Parameters!";
+	/*
+	private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener;
+	//…
+	mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+	 
+				@Override
+				public void onAudioFocusChange(int focusChange) {
+					switch (focusChange) {
+					case AudioManager.AUDIOFOCUS_GAIN:
+						Log.i(TAG, "AUDIOFOCUS_GAIN");
+	                                  // Set volume level to desired levels
+						play();
+						break;
+					case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT:
+						Log.i(TAG, "AUDIOFOCUS_GAIN_TRANSIENT");
+	                                  // You have audio focus for a short time
+	                                  play();
+						break;
+					case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK:
+						Log.i(TAG, "AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK");
+	                                  // Play over existing audio
+	                                  play();
+						break;
+					case AudioManager.AUDIOFOCUS_LOSS:
+						Log.e(TAG, "AUDIOFOCUS_LOSS");
+						stop();
+						break;
+					case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+						Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
+	                                  // Temporary loss of audio focus - expect to get it back - you can keep your resources around
+						pause();
+						break;
+					case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+						Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
+	                                  // Lower the volume
+						break;
+					}
+				}
+			};
+			*/
+		//static String sJavaRelaunchString = "Parameters!";
+//private AudioManager.OnAudioFocusChangeListener afChangeListener;
+	static AudioManager.OnAudioFocusChangeListener	afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+		        public void onAudioFocusChange(int focusChange) {
+		            if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+		            	Log.d("Me","AUDIOFOCUS_LOSS_TRANSIENT");
+		            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+		            	Log.d("Me","AUDIOFOCUS_LOSS_TRANSIENT");
+		            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+		                //am.unregisterMediaButtonEventReceiver(RemoteControlReceiver);
+		                //am.abandonAudioFocus(afChangeListener);
+		            	Log.d("Me","AUDIOFOCUS_LOSS");
+		            } else {
+		            	Log.d("Me","Unknown focusChange: " + focusChange);
+		            	
+		            }
+		        }
+		    };	
+		    
+	private static boolean getAudioFocus() {
+		// Request audio focus for playback
+		Context context = Cocos2dxActivity.getContext();
+		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		int result = audioManager.requestAudioFocus(afChangeListener,
+		                                 // Use the music stream.
+		                                 AudioManager.STREAM_MUSIC,
+		                                 // Request permanent focus.
+		                                 AudioManager.AUDIOFOCUS_GAIN);
 
+	
+		return (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+	}
+	
 	private static int getNativeHardwareSampleRate() {
 		int iNativeOutputSampleRate = 0; 
 /*
@@ -71,6 +142,13 @@ public class Cocos2dxMOS {
 	}
 	
 	private static int getNativeHardwareBufferFrames() {
+		/*
+		 Note that property PROPERTY_OUTPUT_FRAMES_PER_BUFFER is defined to be native OR OPTIMAL value. Eg on my crap vodaphone it gives 1024 frames whereas my analysis software definitively deduced native hardware buffer to be 2048!
+		 
+		 */
+		
+		
+		
 		int iNativeOutputBufferFrames = 0;    
 
 		if (android.os.Build.VERSION.SDK_INT >= 17) { // ie if build version of device is 4.2 or greater (ie second version of Jelly Bean)
@@ -84,7 +162,7 @@ public class Cocos2dxMOS {
 			}
 		} 
 
-		return iNativeOutputBufferFrames;
+		return 0;//iNativeOutputBufferFrames;// * 2; // debug - remove "*2"!!
 	}
 	
 	private static String getJavaRelaunchStringAndEmptyIt() {

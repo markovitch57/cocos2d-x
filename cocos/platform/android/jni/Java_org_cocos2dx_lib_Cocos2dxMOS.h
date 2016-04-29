@@ -32,8 +32,9 @@ THE SOFTWARE.
 
 #include <string>
 
-int getNativeHardwareSampleRate(void);
+bool getAudioFocus(void);
 int getNativeHardwareBufferFrames(void);
+int getNativeHardwareSampleRate(void);
 //char * pcGetRelaunchString(void);
 std::string sGetBrowserString(void);
 std::string sGetDeviceDescription(void);

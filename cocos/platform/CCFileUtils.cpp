@@ -909,8 +909,13 @@ std::string FileUtils::fullPathForFilename(const std::string &filename) const
             }
         }
 		// end of my addition
-
-    if(isPopupNotify()){
+		if (filename.compare("Helvetica") == 0) {
+			int z = 0;
+		}
+		if (filename.compare("") == 0) {
+			int z = 0;
+		}
+		if(isPopupNotify()){
         CCLOG("cocos2d: fullPathForFilename: No file found at %s. Possible missing file.", filename.c_str());
     }
 
