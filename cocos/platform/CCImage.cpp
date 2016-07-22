@@ -79,14 +79,14 @@ extern "C"
 #endif // CC_USE_WEBP
 
 #include "base/ccMacros.h"
-#include "CCCommon.h"
-#include "CCStdC.h"
-#include "CCFileUtils.h"
+#include "platform/CCCommon.h"
+#include "platform/CCStdC.h"
+#include "platform/CCFileUtils.h"
 #include "base/CCConfiguration.h"
 #include "base/ccUtils.h"
 #include "base/ZipUtils.h"
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#include "android/CCFileUtils-android.h"
+#include "platform/android/CCFileUtils-android.h"
 #endif
 
 #define CC_GL_ATC_RGB_AMD                                          0x8C92
@@ -400,7 +400,7 @@ namespace
         uint32_t bytesOfKeyValueData;
     };
 }
-//atittc struct end
+//atitc struct end
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -724,7 +724,6 @@ Image::Format Image::detectFormat(const unsigned char * data, ssize_t dataLen)
     }
     else
     {
-        CCLOG("cocos2d: can't detect image format");
         return Format::UNKNOWN;
     }
 }
@@ -803,7 +802,7 @@ namespace
 #endif // CC_USE_JPEG
 }
 
-#ifdef CC_USE_WIC
+#if CC_USE_WIC
 bool Image::decodeWithWIC(const unsigned char *data, ssize_t dataLen)
 {
     bool bRet = false;
@@ -1838,7 +1837,7 @@ bool Image::initWithTGAData(tImageTGA* tgaData)
 
 namespace
 {
-    static const uint32_t makeFourCC(char ch0, char ch1, char ch2, char ch3)
+    static uint32_t makeFourCC(char ch0, char ch1, char ch2, char ch3)
     {
         const uint32_t fourCC = ((uint32_t)(char)(ch0) | ((uint32_t)(char)(ch1) << 8) | ((uint32_t)(char)(ch2) << 16) | ((uint32_t)(char)(ch3) << 24 ));
         return fourCC;
@@ -2121,19 +2120,19 @@ bool Image::initWithWebpData(const unsigned char * data, ssize_t dataLen)
         if (WebPGetFeatures(static_cast<const uint8_t*>(data), dataLen, &config.input) != VP8_STATUS_OK) break;
         if (config.input.width == 0 || config.input.height == 0) break;
         
-        config.output.colorspace = MODE_RGBA;
-        _renderFormat = Texture2D::PixelFormat::RGBA8888;
+        config.output.colorspace = config.input.has_alpha?MODE_rgbA:MODE_RGB;
+        _renderFormat = config.input.has_alpha?Texture2D::PixelFormat::RGBA8888:Texture2D::PixelFormat::RGB888;
         _width    = config.input.width;
         _height   = config.input.height;
         
-        //webp doesn't have premultipliedAlpha
-        _hasPremultipliedAlpha = false;
+        //we ask webp to give data with premultiplied alpha
+        _hasPremultipliedAlpha = config.input.has_alpha;
         
-        _dataLen = _width * _height * 4;
+        _dataLen = _width * _height * (config.input.has_alpha?4:3);
         _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
         
         config.output.u.RGBA.rgba = static_cast<uint8_t*>(_data);
-        config.output.u.RGBA.stride = _width * 4;
+        config.output.u.RGBA.stride = _width * (config.input.has_alpha?4:3);
         config.output.u.RGBA.size = _dataLen;
         config.output.is_external_memory = 1;
         

@@ -43,7 +43,17 @@ extern "C" {
     }
 }
 
-bool getAudioFocus(void) {
+/* already in Helper
+void setKeepScreenOnFlagInJni(bool yVal) {
+    JniMethodInfo t;
+    if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "setKeepScreenOnFlag", "(Z)V")) {
+        t.env->CallStaticVoidMethod(t.classID, t.methodID, yVal);
+        t.env->DeleteLocalRef(t.classID);
+    }
+}
+*/
+
+bool getAudioFocus_JNI(void) {
     int ret = 0;
 
     JniMethodInfo t;
@@ -55,7 +65,7 @@ bool getAudioFocus(void) {
     return ret;
 }
 
-int getNativeHardwareSampleRate(void) {
+int getNativeHardwareSampleRate_JNI(void) {
     int ret = 0;
 
     JniMethodInfo t;
@@ -67,7 +77,7 @@ int getNativeHardwareSampleRate(void) {
     return ret;
 }
 
-int getNativeHardwareBufferFrames(void) {
+int getNativeHardwareBufferFrames_JNI(void) {
     int ret = 0;
 
     JniMethodInfo t;
@@ -79,7 +89,19 @@ int getNativeHardwareBufferFrames(void) {
     return ret;
 }
 
-std::string sGetBrowserString(void) {
+bool headsetStatusChanged_JNI(void) {
+    bool ret = false;
+
+    JniMethodInfo t;
+    if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "headsetStatusChanged", "()Z")) {
+        ret = t.env->CallStaticBooleanMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+
+    return ret;
+}
+
+std::string sGetBrowserString_JNI(void) {
 
 	JniMethodInfo t;
 	if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "getJavaBrowserStringAndEmptyIt", "()Ljava/lang/String;")) {
@@ -116,7 +138,7 @@ std::string getStringWithEllipsisJni(const char* pszText, float width, float fon
 }
 */
 
-void openURL(const char* pszUrl){
+void openURL_JNI(const char* pszUrl){
 	//int ret = 0;
     JniMethodInfo minfo;
 
@@ -134,7 +156,7 @@ void openURL(const char* pszUrl){
 	//return ret; 
 }
 
-std::string sGetAndroidId(void) {
+std::string sGetAndroidId_JNI(void) {
 	JniMethodInfo t;
 	if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "getAndroidId", "()Ljava/lang/String;")) {
             jstring str = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
@@ -144,7 +166,7 @@ std::string sGetAndroidId(void) {
 	return std::string("");
 }
 
-std::string sGetAndroidMacAddress(void) {
+std::string sGetAndroidMacAddress_JNI(void) {
 	JniMethodInfo t;
 	if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "getAndroidMacAddress", "()Ljava/lang/String;")) {
             jstring str = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
@@ -154,7 +176,7 @@ std::string sGetAndroidMacAddress(void) {
 	return std::string("");
 }
 
-std::string sGetDeviceDescription(void) {
+std::string sGetDeviceDescription_JNI(void) {
 
 	JniMethodInfo t;
 	if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxMOS", "getDeviceDescription", "()Ljava/lang/String;")) {

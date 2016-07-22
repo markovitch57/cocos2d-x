@@ -467,15 +467,20 @@ public:
     virtual void setScale(float scale) override;
     virtual void setPositionZ(float positionZ) override;
     virtual void setAnchorPoint(const Vec2& anchor) override;
-    virtual void ignoreAnchorPointForPosition(bool value) override;
+    
+    virtual void setIgnoreAnchorPointForPosition(bool value) override;
+    
+    // @deprecated Use setIgnoreAnchorPointForPosition() instead.
+//    CC_DEPRECATED_ATTRIBUTE virtual void ignoreAnchorPointForPosition(bool value) override { setIgnoreAnchorPointForPosition(value); } // my addition - removed 2016_06_02
+    
     virtual void setVisible(bool bVisible) override;
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
     virtual void setOpacityModifyRGB(bool modify) override;
     virtual bool isOpacityModifyRGB() const override;
     /// @}
 
-    const int getResourceType() const { return _fileType; }
-    const std::string getResourceName() const { return _fileName; }
+    int getResourceType() const { return _fileType; }
+    const std::string& getResourceName() const { return _fileName; }
 
 CC_CONSTRUCTOR_ACCESS :
 	/**
@@ -484,7 +489,7 @@ CC_CONSTRUCTOR_ACCESS :
     Sprite();
     virtual ~Sprite();
 
-    /* Initializes an empty sprite with nothing init. */
+    /* Initializes an empty sprite with no parameters. */
     virtual bool init() override;
 
     /**

@@ -32,14 +32,16 @@ THE SOFTWARE.
 
 #include <string>
 
-bool getAudioFocus(void);
-int getNativeHardwareBufferFrames(void);
-int getNativeHardwareSampleRate(void);
+//void setKeepScreenOnFlagInJni(bool yVal);
+bool getAudioFocus_JNI(void);
+int getNativeHardwareBufferFrames_JNI(void);
+int getNativeHardwareSampleRate_JNI(void);
+bool headsetStatusChanged_JNI(void);
 //char * pcGetRelaunchString(void);
-std::string sGetBrowserString(void);
-std::string sGetDeviceDescription(void);
-std::string sGetAndroidId(void);
-std::string sGetAndroidMacAddress(void);
+std::string sGetBrowserString_JNI(void);
+std::string sGetDeviceDescription_JNI(void);
+std::string sGetAndroidId_JNI(void);
+std::string sGetAndroidMacAddress_JNI(void);
 //void openURL(const char* pszUrl);
 //std::string getStringWithEllipsisJni(const char* pszText, float width, float fontSize);
 // ======== Billing functions =========

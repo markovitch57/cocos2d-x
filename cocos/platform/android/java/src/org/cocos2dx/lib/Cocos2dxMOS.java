@@ -20,9 +20,11 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
+import com.mos.mindofsound.Cocos2dxMosActivity;
 import com.mos.mindofsound.LaunchFromWebActivity;
  
 public class Cocos2dxMOS {
@@ -104,18 +106,43 @@ public class Cocos2dxMOS {
 		        }
 		    };	
 		    
-	private static boolean getAudioFocus() {
-		// Request audio focus for playback
-		Context context = Cocos2dxActivity.getContext();
-		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-		int result = audioManager.requestAudioFocus(afChangeListener,
-		                                 // Use the music stream.
-		                                 AudioManager.STREAM_MUSIC,
-		                                 // Request permanent focus.
-		                                 AudioManager.AUDIOFOCUS_GAIN);
-
+/*	 IT'S ALREADY IN Device!		
+private static void setKeepScreenOnFlag(boolean yVal) {
+				// 2016_06_16 - http://discuss.cocos2d-x.org/t/prevent-screen-dimming/13837/2 - official docs: https://developer.android.com/training/scheduling/wakelock.html
+				Log.d("Me","setKeepScreenOnFlag called !!!!!!!!!!!!!!");
+				//Cocos2dxMosActivity.mActivity.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		        //    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		        //setContentView(R.layout.main);
+//				Cocos2dxMosActivity.mActivity.setContentView(Cocos2dxMosActivity.mActivity.mFrameLayout);
+				if (yVal) {
+					Cocos2dxMosActivity.mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); 
+				} else {
+					Cocos2dxMosActivity.mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+				}
+				int fred = 0;
+			}
+*/			
+			private static boolean getAudioFocus() {
+				// Request audio focus for playback
+				Context context = Cocos2dxActivity.getContext();
+				AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+				int result = audioManager.requestAudioFocus(afChangeListener,
+				                                 // Use the music stream.
+				                                 AudioManager.STREAM_MUSIC,
+				                                 // Request permanent focus.
+				                                 AudioManager.AUDIOFOCUS_GAIN);
+				
+//				context.registerReceiver(new HeadsetPlugUnplugReceiver(), new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+				return (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+			}
 	
-		return (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+//	HeadsetPlugUnplugReceiver fred = HeadsetPlugUnplugReceiver::getInstance();
+	//HeadsetPlugUnplugReceiver fred = HeadsetPlugUnplugReceiver.getInstance();
+	
+	private static int getScreenOffTimeout() {
+		// returns screen timeout in ms - returns zero if SCREEN_OFF_TIMEOUT is not defined
+		return android.provider.Settings.System.getInt(Cocos2dxActivity.getContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 0);//Integer.MAX_VALUE);
 	}
 	
 	private static int getNativeHardwareSampleRate() {
@@ -163,6 +190,17 @@ public class Cocos2dxMOS {
 		} 
 
 		return 0;//iNativeOutputBufferFrames;// * 2; // debug - remove "*2"!!
+	}
+
+	private static boolean headsetStatusChanged() {
+		// We want to record whether headser plugged=in status has changed since last call to this method.
+		// We would like this to include usb headsets at some point!
+		if (Cocos2dxMosActivity.yHeadsetPlugChanged) {
+			Cocos2dxMosActivity.yHeadsetPlugChanged = false; // a bit crappy since might poss miss quickly following plug/unplug? actually maybe desirable to swallow fast subsequent...
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	private static String getJavaRelaunchStringAndEmptyIt() {

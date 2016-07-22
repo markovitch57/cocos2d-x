@@ -430,7 +430,9 @@ int SimulatorWin::run()
     updateWindowTitle();
 
     // startup message loop
-    return app->run();
+    int ret = app->run();
+    CC_SAFE_DELETE(_app);
+    return ret;
 }
 
 // services
