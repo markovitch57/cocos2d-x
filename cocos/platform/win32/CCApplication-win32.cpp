@@ -41,7 +41,7 @@ static void PVRFrameEnableControlWindow(bool bEnable);
 NS_CC_BEGIN
 
 // sharedApplication pointer
-Application * Application::sm_pSharedApplication = 0;
+Application * Application::sm_pSharedApplication = nullptr;
 bool Application::yDestroyGlViewOnRelaunch = false; // my addition
 bool Application::yRelaunch = false; // my addition
 

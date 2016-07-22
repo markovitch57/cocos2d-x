@@ -256,17 +256,28 @@ FileUtils::Status FileUtilsWin32::getContents(const std::string& filename, Resiz
 		::CloseHandle(fileHandle);
 		return FileUtils::Status::TooLarge;
 	}
+/*
 	//buffer->resize(size); // my addition (subtraction)
 	buffer->resize(size);// +1); // my addition
 	//*((unsigned char *)buffer->buffer() + size) = 0; // my useful terminator - my addition
 	DWORD sizeRead = 0;
+*/
+    // don't read file content if it is empty
+    if (size == 0)
+    {
+        ::CloseHandle(fileHandle);
+        return FileUtils::Status::OK;
+    }
+
+    buffer->resize(size);
+    DWORD sizeRead = 0;
     BOOL successed = ::ReadFile(fileHandle, buffer->buffer(), size, &sizeRead, nullptr);
     ::CloseHandle(fileHandle);
 
     if (!successed) {
 		CCLOG("Get data from file(%s) failed, error code is %s", filename.data(), std::to_string(::GetLastError()).data());
 		buffer->resize(sizeRead);
-		return FileUtils::Status::ReadFaild;
+		return FileUtils::Status::ReadFailed;
     }
     return FileUtils::Status::OK;
 }

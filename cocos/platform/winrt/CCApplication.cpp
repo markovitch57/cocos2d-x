@@ -46,7 +46,7 @@ using namespace Windows::Foundation;
 NS_CC_BEGIN
 
 // sharedApplication pointer
-Application * Application::sm_pSharedApplication = 0;
+Application * Application::sm_pSharedApplication = nullptr;
 bool Application::yDestroyGlViewOnRelaunch = false; // my addition
 bool Application::yRelaunch = false; // my addition
 
@@ -59,7 +59,7 @@ bool Application::yRelaunch = false; // my addition
 ////////////////////////////////////////////////////////////////////////////////
 
 // sharedApplication pointer
-Application * s_pSharedApplication = 0;
+Application * s_pSharedApplication = nullptr;
 
 Application::Application() :
 m_openURLDelegate(nullptr)
@@ -72,7 +72,7 @@ m_openURLDelegate(nullptr)
 Application::~Application()
 {
     CC_ASSERT(this == sm_pSharedApplication);
-    sm_pSharedApplication = NULL;
+    sm_pSharedApplication = nullptr;
 }
 
 int Application::run()

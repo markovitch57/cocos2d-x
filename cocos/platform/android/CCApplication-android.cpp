@@ -52,7 +52,7 @@ bool Application::yDestroyGlViewOnRelaunch = false; // my addition
 bool Application::yRelaunch = false; // my addition
 
 // sharedApplication pointer
-Application * Application::sm_pSharedApplication = 0;
+Application * Application::sm_pSharedApplication = nullptr;
 
 Application::Application()
 {
@@ -63,7 +63,7 @@ Application::Application()
 Application::~Application()
 {
     CCAssert(this == sm_pSharedApplication, "");
-    sm_pSharedApplication = NULL;
+    sm_pSharedApplication = nullptr;
 }
 
 int Application::run()

@@ -41,7 +41,7 @@ THE SOFTWARE.
 
 // 0x00 HI ME LO
 // 00   03 08 00
-#define COCOS2D_VERSION 0x00031100
+#define COCOS2D_VERSION 0x00031200
 
 //
 // all cocos2d include files
@@ -180,13 +180,6 @@ THE SOFTWARE.
 #include "renderer/CCVertexAttribBinding.h"
 #include "renderer/CCVertexIndexBuffer.h"
 #include "renderer/CCVertexIndexData.h"
-#include "renderer/CCPrimitive.h"
-#include "renderer/CCPrimitiveCommand.h"
-#include "renderer/CCTrianglesCommand.h"
-#include "renderer/CCMaterial.h"
-#include "renderer/CCTechnique.h"
-#include "renderer/CCPass.h"
-#include "renderer/CCRenderState.h"
 #include "renderer/CCFrameBuffer.h"
 #include "renderer/ccGLStateCache.h"
 #include "renderer/ccShaders.h"
@@ -260,6 +253,13 @@ THE SOFTWARE.
 	#include "platform/winrt/CCStdC.h"
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_TIZEN)
+	#include "platform/tizen/CCApplication-tizen.h"
+	#include "platform/tizen/CCGLViewImpl-tizen.h"
+	#include "platform/tizen/CCGL-tizen.h"
+	#include "platform/tizen/CCStdC-tizen.h"
+#endif
+
 // script_support
 #include "base/CCScriptSupport.h"
 
@@ -312,10 +312,13 @@ THE SOFTWARE.
 #include "3d/CCSprite3DMaterial.h"
 #include "3d/CCTerrain.h"
 
+// vr
+#include "vr/CCVRGenericRenderer.h"
+
 
 // Deprecated
 // All deprecated features are include inside deprecated/CCDeprecated.h.
-// It is recommanded that you just inlcude what is needed.
+// It is recommended that you just include what is needed.
 // eg. #include "deprecated/CCString.h" if you only need cocos2d::__String.
 #include "deprecated/CCDeprecated.h"
 

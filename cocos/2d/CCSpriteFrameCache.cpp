@@ -37,13 +37,11 @@ THE SOFTWARE.
 #include "platform/CCFileUtils.h"
 #include "base/CCNS.h"
 #include "base/ccMacros.h"
+#include "base/ccUTF8.h"
 #include "base/CCDirector.h"
 #include "renderer/CCTexture2D.h"
 #include "renderer/CCTextureCache.h"
 #include "base/CCNinePatchImageParser.h"
-
-#include "deprecated/CCString.h"
-
 
 using namespace std;
 
@@ -202,8 +200,8 @@ void SpriteFrameCache::addSpriteFramesWithDictionary(ValueMap& dictionary, Textu
                 CCLOGWARN("cocos2d: WARNING: originalWidth/Height not found on the SpriteFrame. AnchorPoint won't work as expected. Regenerate the .plist");
             }
             // abs ow/oh
-            ow = abs(ow);
-            oh = abs(oh);
+            ow = std::abs(ow);
+            oh = std::abs(oh);
             // create frame
             spriteFrame = SpriteFrame::createWithTexture(texture,
                                                          Rect(x, y, w, h),
@@ -322,7 +320,7 @@ void SpriteFrameCache::addSpriteFramesWithDictionary(ValueMap& dict, const std::
         {"I8", Texture2D::PixelFormat::I8},
         {"AI88", Texture2D::PixelFormat::AI88},
         {"ALPHA_INTENSITY", Texture2D::PixelFormat::AI88},
-        //{"BGRA8888", Texture2D::PixelFormat::BGRA8888}, no Image convertion RGBA -> BGRA
+        //{"BGRA8888", Texture2D::PixelFormat::BGRA8888}, no Image conversion RGBA -> BGRA
         {"RGB888", Texture2D::PixelFormat::RGB888}
     };
 
@@ -637,8 +635,8 @@ void SpriteFrameCache::reloadSpriteFramesWithDictionary(ValueMap& dictionary, Te
                 CCLOGWARN("cocos2d: WARNING: originalWidth/Height not found on the SpriteFrame. AnchorPoint won't work as expected. Regenrate the .plist");
             }
             // abs ow/oh
-            ow = abs(ow);
-            oh = abs(oh);
+            ow = std::abs(ow);
+            oh = std::abs(oh);
             // create frame
             spriteFrame = SpriteFrame::createWithTexture(texture,
                 Rect(x, y, w, h),

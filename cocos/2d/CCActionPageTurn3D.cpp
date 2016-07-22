@@ -69,60 +69,67 @@ GridBase* PageTurn3D::getGrid()
 // old version vertical from bottom left - from http://discuss.cocos2d-x.org/t/i-would-like-to-know-how-to-flip-a-vertical-pageturn3d/17389 
 void PageTurn3D::update(float time)
 {
-	float tt = MAX(0, time - 0.25f);
-	float deltaAx = (tt * tt * 500);
-	float ax = -100 - deltaAx;
+    float tt = MAX(0, time - 0.25f);
+    float deltaAy = (tt * tt * 500);
+    float ay = -100 - deltaAy;
+    
+    float deltaTheta = sqrtf(time);
+    float theta = deltaTheta > 0.5f ? (float)M_PI_2*deltaTheta : (float)M_PI_2*(1-deltaTheta);
+    
+    float rotateByYAxis = (2-time)* M_PI;
+    
+    float sinTheta = sinf(theta);
+    float cosTheta = cosf(theta);
+    
+    for (int i = 0; i <= _gridSize.width; ++i)
+    {
+        for (int j = 0; j <= _gridSize.height; ++j)
+        {
+            // Get original vertex
+            Vec3 p = getOriginalVertex(Vec2(i ,j));
+            
+            p.x -= getGridRect().origin.x;
+            float R = sqrtf((p.x * p.x) + ((p.y - ay) * (p.y - ay)));
+            float r = R * sinTheta;
+            float alpha = asinf( p.x / R );
+            float beta = alpha / sinTheta;
+            float cosBeta = cosf( beta );
+            
+            // If beta > PI then we've wrapped around the cone
+            // Reduce the radius to stop these points interfering with others
+            if (beta <= M_PI)
+            {
+                p.x = ( r * sinf(beta));
+            }
+            else
+            {
+                // Force X = 0 to stop wrapped
+                // points
+                p.x = 0;
+            }
 
-	float deltaTheta = -(float)M_PI_2 * sqrtf(time);
-	float theta = /*0.01f */ +(float)M_PI_2 + deltaTheta;
+            p.y = ( R + ay - ( r * (1 - cosBeta) * sinTheta));
 
-	float sinTheta = sinf(theta);
-	float cosTheta = cosf(theta);
+            // We scale z here to avoid the animation being
+            // too much bigger than the screen due to perspective transform
 
-	for (int i = 0; i <= _gridSize.width; ++i)
-	{
-		for (int j = 0; j <= _gridSize.height; ++j)
-		{
-			// Get original vertex
-			Vec3 p = originalVertex(Vec2(i, j));
-
-			float R = sqrtf(((p.x - ax) * (p.x - ax)) + ((640 - p.y)*(640 - p.y)));
-			float r = R * sinTheta;
-			float alpha = asinf((640 - p.y) / R);
-			float beta = alpha / sinTheta;
-			float cosBeta = cosf(beta);
-
-			// If beta > PI then we've wrapped around the cone
-			// Reduce the radius to stop these points interfering with others
-			if (beta <= M_PI)
-			{
-				p.y = 640 - (r * sinf(beta));
-			}
-			else
-			{
-				// Force X = 0 to stop wrapped
-				// points
-				p.y = 640 - 0;
-			}
-
-			p.x = (R + ax - (r * (1 - cosBeta) * sinTheta));
-
-			// We scale z here to avoid the animation being
-			// too much bigger than the screen due to perspective transform
-			p.z = (r * (1 - cosBeta) * cosTheta) / 7;// "100" didn't work for
-
-													 //    Stop z coord from dropping beneath underlying page in a transition
-													 // issue #751
-			if (p.z < 0.5f)
-			{
-				p.z = 0.5f;
-			}
-
-			// Set new coords
-			setVertex(Vec2(i, j), p);
-
-		}
-	}
+            p.z = (r * ( 1 - cosBeta ) * cosTheta);// "100" didn't work for
+            p.x = p.z * sinf(rotateByYAxis) + p.x * cosf(rotateByYAxis);
+            p.z = p.z * cosf(rotateByYAxis) - p.x * sinf(rotateByYAxis);
+            p.z/=7;
+            //    Stop z coord from dropping beneath underlying page in a transition
+            // issue #751
+            if( p.z < 0.5f )
+            {
+                p.z = 0.5f;
+            }
+            
+            // Set new coords
+            p.x += getGridRect().origin.x;
+            setVertex(Vec2(i, j), p);
+            
+        }
+    }
 }
 // old version from  http://discuss.cocos2d-x.org/t/i-would-like-to-know-how-to-flip-a-vertical-pageturn3d/17389 
 /*void PageTurn3D::update(float time)

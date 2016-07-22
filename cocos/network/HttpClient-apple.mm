@@ -1,20 +1,20 @@
 /****************************************************************************
  Copyright (c) 2012      greathqy
  Copyright (c) 2012      cocos2d-x.org
- Copyright (c) 2013-2014 Chukong Technologies Inc.
- 
+ Copyright (c) 2013-2016 Chukong Technologies Inc.
+
  http://www.cocos2d-x.org
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -172,12 +172,7 @@ static int processTask(HttpClient* client, HttpRequest* request, NSString* reque
 
     //if request type is post or put,set header and data
     if([requestType  isEqual: @"POST"] || [requestType isEqual: @"PUT"])
-    {
-        if ([requestType isEqual: @"PUT"])
-        {
-            [nsrequest setValue: @"application/x-www-form-urlencoded" forHTTPHeaderField: @"Content-Type"];
-        }
-        
+    {   
         char* requestDataBuffer = request->getRequestData();
         if (nullptr !=  requestDataBuffer && 0 != request->getRequestDataSize())
         {
@@ -299,7 +294,7 @@ static int processTask(HttpClient* client, HttpRequest* request, NSString* reque
     const void* ptr = [httpAsynConn.responseData bytes];
     long len = [httpAsynConn.responseData length];
     recvBuffer->insert(recvBuffer->end(), (char*)ptr, (char*)ptr+len);
-    
+
     return 1;
 }
 
@@ -310,7 +305,7 @@ HttpClient* HttpClient::getInstance()
     {
         _httpClient = new (std::nothrow) HttpClient();
     }
-    
+
     return _httpClient;
 }
 
@@ -321,9 +316,9 @@ void HttpClient::destroyInstance()
         CCLOG("HttpClient singleton is nullptr");
         return;
     }
-    
+
     CCLOG("HttpClient::destroyInstance begin");
-    
+
     auto thiz = _httpClient;
     _httpClient = nullptr;
     
@@ -335,10 +330,10 @@ void HttpClient::destroyInstance()
     thiz->_requestQueueMutex.lock();
     thiz->_requestQueue.pushBack(thiz->_requestSentinel);
     thiz->_requestQueueMutex.unlock();
-    
+
     thiz->_sleepCondition.notify_one();
     thiz->decreaseThreadCountAndMayDeleteThis();
-    
+
     CCLOG("HttpClient::destroyInstance() finished!");
 }
 
@@ -355,7 +350,7 @@ void HttpClient::enableCookies(const char* cookieFile)
         _cookieFilename = (FileUtils::getInstance()->getWritablePath() + "cookieFile.txt");
     }
     _cookieFileMutex.unlock();
-    
+
     if (nullptr == _cookie)
     {
         _cookie = new(std::nothrow)HttpCookie;
@@ -363,7 +358,7 @@ void HttpClient::enableCookies(const char* cookieFile)
     _cookie->setCookieFileName(_cookieFilename);
     _cookie->readFile();
 }
-    
+
 void HttpClient::setSSLVerification(const std::string& caFile)
 {
     std::lock_guard<std::mutex> lock(_sslCaFileMutex);
@@ -378,17 +373,16 @@ HttpClient::HttpClient()
 , _requestSentinel(new HttpRequest())
 , _cookie(nullptr)
 {
-
     CCLOG("In the constructor of HttpClient!");
     memset(_responseMessage, 0, sizeof(char) * RESPONSE_BUFFER_SIZE);
     _scheduler = Director::getInstance()->getScheduler();
     increaseThreadCount();
 }
-    
+
 
 HttpClient::~HttpClient()
 {
-    CC_SAFE_DELETE(_requestSentinel);
+    CC_SAFE_RELEASE(_requestSentinel);
     if (!_cookieFilename.empty() && nullptr != _cookie)
     {
         _cookie->writeFile();
@@ -410,29 +404,29 @@ bool HttpClient::lazyInitThreadSemphore()
         t.detach();
         _isInited = true;
     }
-    
+
     return true;
 }
 
 //Add a get task to queue
 void HttpClient::send(HttpRequest* request)
-{    
-    if (false == lazyInitThreadSemphore()) 
+{
+    if (false == lazyInitThreadSemphore())
     {
         return;
     }
-    
+
     if (!request)
     {
         return;
     }
-        
+
     request->retain();
-    
+
     _requestQueueMutex.lock();
     _requestQueue.pushBack(request);
     _requestQueueMutex.unlock();
-    
+
     // Notify thread start to work
     _sleepCondition.notify_one();
 }
@@ -465,7 +459,7 @@ void HttpClient::dispatchResponseCallbacks()
         _responseQueue.erase(0);
     }
     _responseQueueMutex.unlock();
-    
+
     if (response)
     {
         HttpRequest *request = response->getHttpRequest();
@@ -481,13 +475,13 @@ void HttpClient::dispatchResponseCallbacks()
         {
             (pTarget->*pSelector)(this, response);
         }
-        
+
         response->release();
         // do not release in other thread
         request->release();
     }
 }
-    
+
 // Process Response
 void HttpClient::processResponse(HttpResponse* response, char* responseMessage)
 {
@@ -495,31 +489,31 @@ void HttpClient::processResponse(HttpResponse* response, char* responseMessage)
     long responseCode = -1;
     int retValue = 0;
     NSString* requestType = nil;
-    
+
     // Process the request -> get response packet
     switch (request->getRequestType())
     {
         case HttpRequest::Type::GET: // HTTP GET
             requestType = @"GET";
             break;
-            
+
         case HttpRequest::Type::POST: // HTTP POST
             requestType = @"POST";
             break;
-            
+
         case HttpRequest::Type::PUT:
             requestType = @"PUT";
             break;
-            
+
         case HttpRequest::Type::DELETE:
             requestType = @"DELETE";
             break;
-            
+
         default:
             CCASSERT(true, "CCHttpClient: unknown request type, only GET and POSt are supported");
             break;
     }
-    
+
     retValue = processTask(this,
                            request,
                            requestType,
@@ -527,11 +521,11 @@ void HttpClient::processResponse(HttpResponse* response, char* responseMessage)
                            &responseCode,
                            response->getResponseHeader(),
                            responseMessage);
-    
+
     // write data to HttpResponse
     response->setResponseCode(responseCode);
-    
-    if (retValue != 0) 
+
+    if (retValue != 0)
     {
         response->setSucceed(true);
     }
@@ -542,7 +536,7 @@ void HttpClient::processResponse(HttpResponse* response, char* responseMessage)
     }
 }
 
-    
+
 void HttpClient::increaseThreadCount()
 {
     _threadCountMutex.lock();
@@ -559,44 +553,44 @@ void HttpClient::decreaseThreadCountAndMayDeleteThis()
     {
         needDeleteThis = true;
     }
-    
+
     _threadCountMutex.unlock();
     if (needDeleteThis)
     {
         delete this;
     }
 }
-    
+
 void HttpClient::setTimeoutForConnect(int value)
 {
     std::lock_guard<std::mutex> lock(_timeoutForConnectMutex);
     _timeoutForConnect = value;
 }
-    
+
 int HttpClient::getTimeoutForConnect()
 {
     std::lock_guard<std::mutex> lock(_timeoutForConnectMutex);
     return _timeoutForConnect;
 }
-    
+
 void HttpClient::setTimeoutForRead(int value)
 {
     std::lock_guard<std::mutex> lock(_timeoutForReadMutex);
     _timeoutForRead = value;
 }
-    
+
 int HttpClient::getTimeoutForRead()
 {
     std::lock_guard<std::mutex> lock(_timeoutForReadMutex);
     return _timeoutForRead;
 }
-    
+
 const std::string& HttpClient::getCookieFilename()
 {
     std::lock_guard<std::mutex> lock(_cookieFileMutex);
     return _cookieFilename;
 }
-    
+
 const std::string& HttpClient::getSSLVerification()
 {
     std::lock_guard<std::mutex> lock(_sslCaFileMutex);
@@ -614,6 +608,4 @@ void HttpClient::freeRequest(void) {
 NS_CC_END
 
 #endif // #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC
-
-
 

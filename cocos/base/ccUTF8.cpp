@@ -32,6 +32,27 @@ NS_CC_BEGIN
 
 namespace StringUtils {
 
+std::string format(const char* format, ...)
+{
+#define CC_MAX_STRING_LENGTH (1024*100)
+    
+    std::string ret;
+    
+    va_list ap;
+    va_start(ap, format);
+    
+    char* buf = (char*)malloc(CC_MAX_STRING_LENGTH);
+    if (buf != nullptr)
+    {
+        vsnprintf(buf, CC_MAX_STRING_LENGTH, format, ap);
+        ret = buf;
+        free(buf);
+    }
+    va_end(ap);
+    
+    return ret;
+}
+
 /*
  * @str:    the string to search through.
  * @c:        the character to not look for.
@@ -228,7 +249,7 @@ std::string getStringUTFCharsJNI(JNIEnv* env, jstring srcjStr, bool* ret)
     return utf8Str;
 }
 
-jstring newStringUTFJNI(JNIEnv* env, std::string utf8Str, bool* ret)
+jstring newStringUTFJNI(JNIEnv* env, const std::string& utf8Str, bool* ret)
 {
     std::u16string utf16Str;
     bool flag = cocos2d::StringUtils::UTF8ToUTF16(utf8Str, utf16Str);
@@ -435,7 +456,8 @@ unsigned short* cc_utf8_to_utf16(const char* str_old, int length/* = -1*/, int* 
     unsigned short* ret = nullptr;
     
     std::u16string outUtf16;
-    bool succeed = StringUtils::UTF8ToUTF16(str_old, outUtf16);
+    std::string inUtf8 = length == -1 ? std::string(str_old) : std::string(str_old, length);
+    bool succeed = StringUtils::UTF8ToUTF16(inUtf8, outUtf16);
     
     if (succeed)
     {

@@ -68,8 +68,6 @@
 #define  LOGD(...) js_log(__VA_ARGS__)
 #endif
 
-#include "scripting/js-bindings/manual/js_bindings_config.h"
-
 #if COCOS2D_DEBUG
 #define TRACE_DEBUGGER_SERVER(...) CCLOG(__VA_ARGS__)
 #else
@@ -105,7 +103,7 @@ static char *_js_log_buf = NULL;
 static std::vector<sc_register_sth> registrationList;
 
 // name ~> JSScript map
-static std::unordered_map<std::string, JSScript*> filename_script;
+static std::unordered_map<std::string, JS::PersistentRootedScript*> filename_script;
 // port ~> socket map
 static std::unordered_map<int,int> ports_sockets;
 
@@ -388,6 +386,22 @@ bool JSB_core_restartVM(JSContext *cx, uint32_t argc, jsval *vp)
     return true;
 };
 
+bool JSB_closeWindow(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    EventListenerCustom* _event = Director::getInstance()->getEventDispatcher()->addCustomEventListener(Director::EVENT_AFTER_DRAW, [&](EventCustom *event) {
+        Director::getInstance()->getEventDispatcher()->removeEventListener(_event);
+        CC_SAFE_RELEASE(_event);
+        
+        ScriptingCore::getInstance()->cleanup();
+    });
+    _event->retain();
+    Director::getInstance()->end();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+    return true;
+};
+
 void registerDefaultClasses(JSContext* cx, JS::HandleObject global) {
     // first, try to get the ns
     JS::RootedValue nsval(cx);
@@ -421,7 +435,7 @@ void registerDefaultClasses(JSContext* cx, JS::HandleObject global) {
 
     // register some global functions
     JS_DefineFunction(cx, global, "require", ScriptingCore::executeScript, 1, JSPROP_PERMANENT);
-    JS_DefineFunction(cx, global, "log", ScriptingCore::log, 0, JSPROP_READONLY | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, global, "log", ScriptingCore::log, 0, JSPROP_PERMANENT);
     JS_DefineFunction(cx, global, "executeScript", ScriptingCore::executeScript, 1, JSPROP_READONLY | JSPROP_PERMANENT);
     JS_DefineFunction(cx, global, "forceGC", ScriptingCore::forceGC, 0, JSPROP_READONLY | JSPROP_PERMANENT);
 
@@ -431,6 +445,7 @@ void registerDefaultClasses(JSContext* cx, JS::HandleObject global) {
     JS_DefineFunction(cx, global, "__restartVM", JSB_core_restartVM, 0, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
     JS_DefineFunction(cx, global, "__cleanScript", JSB_cleanScript, 1, JSPROP_READONLY | JSPROP_PERMANENT);
     JS_DefineFunction(cx, global, "__isObjectValid", ScriptingCore::isObjectValid, 1, JSPROP_READONLY | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, global, "close", JSB_closeWindow, 0, JSPROP_READONLY | JSPROP_PERMANENT);
 }
 
 static void sc_finalize(JSFreeOp *freeOp, JSObject *obj) {
@@ -465,6 +480,7 @@ ScriptingCore::ScriptingCore()
 : _rt(nullptr)
 , _cx(nullptr)
 , _jsInited(false)
+, _needCleanup(false)
 //, _global(nullptr)
 //, _debugGlobal(nullptr)
 , _callFromScript(false)
@@ -629,6 +645,8 @@ void ScriptingCore::createGlobalContext() {
         sc_register_sth callback = *it;
         callback(_cx, _global.ref());
     }
+    
+    _needCleanup = true;
 }
 
 static std::string RemoveFileExt(const std::string& filePath) {
@@ -641,7 +659,7 @@ static std::string RemoveFileExt(const std::string& filePath) {
     }
 }
 
-JSScript* ScriptingCore::getScript(const char *path)
+JS::PersistentRootedScript* ScriptingCore::getScript(const char *path)
 {
     // a) check jsc file first
     std::string byteCodePath = RemoveFileExt(std::string(path)) + BYTE_CODE_FILE_EXT;
@@ -653,45 +671,55 @@ JSScript* ScriptingCore::getScript(const char *path)
     if (filename_script.find(fullPath) != filename_script.end())
         return filename_script[fullPath];
 
-    return NULL;
+    return nullptr;
 }
 
-void ScriptingCore::compileScript(const char *path, JS::HandleObject global, JSContext* cx)
+JS::PersistentRootedScript* ScriptingCore::compileScript(const char *path, JS::HandleObject global, JSContext* cx)
 {
     if (!path) {
-        return;
+        return nullptr;
     }
 
-    if (getScript(path)) {
-        return;
+    JS::PersistentRootedScript* script = getScript(path);
+    if (script != nullptr) {
+        return script;
     }
-
-    cocos2d::FileUtils *futil = cocos2d::FileUtils::getInstance();
-
-    if (cx == NULL) {
+    
+    if (cx == nullptr) {
         cx = _cx;
     }
+    
+    cocos2d::FileUtils *futil = cocos2d::FileUtils::getInstance();
 
     JSAutoCompartment ac(cx, global);
-
-    JS::RootedScript script(cx);
+    script = new (std::nothrow) JS::PersistentRootedScript(cx);
+    if (script == nullptr) {
+        return nullptr;
+    }
+    
     JS::RootedObject obj(cx, global);
-
+    bool compileSucceed = false;
+    
     // a) check jsc file first
     std::string byteCodePath = RemoveFileExt(std::string(path)) + BYTE_CODE_FILE_EXT;
 
-    // Check whether '.jsc' files exist to avoid outputing log which says 'couldn't find .jsc file'.
+    // Check whether '.jsc' files exist to avoid outputting log which says 'couldn't find .jsc file'.
     if (futil->isFileExist(byteCodePath))
     {
         Data data = futil->getDataFromFile(byteCodePath);
         if (!data.isNull())
         {
-            script = JS_DecodeScript(cx, data.getBytes(), static_cast<uint32_t>(data.getSize()), nullptr);
+            *script = JS_DecodeScript(cx, data.getBytes(), static_cast<uint32_t>(data.getSize()), nullptr);
+        }
+        
+        if (*script) {
+            compileSucceed = true;
+            filename_script[byteCodePath] = script;
         }
     }
 
     // b) no jsc file, check js file
-    if (!script)
+    if (!(*script))
     {
         /* Clear any pending exception from previous failed decoding.  */
         ReportException(cx);
@@ -707,17 +735,26 @@ void ScriptingCore::compileScript(const char *path, JS::HandleObject global, JSC
         std::string jsFileContent = futil->getStringFromFile(fullPath);
         if (!jsFileContent.empty())
         {
-            ok = JS::Compile(cx, obj, op, jsFileContent.c_str(), jsFileContent.size(), &script);
+            ok = JS::Compile(cx, obj, op, jsFileContent.c_str(), jsFileContent.size(), &(*script));
         }
 #else
-        ok = JS::Compile(cx, obj, op, fullPath.c_str(), &script);
+        ok = JS::Compile(cx, obj, op, fullPath.c_str(), &(*script));
 #endif
         if (ok) {
+            compileSucceed = true;
             filename_script[fullPath] = script;
         }
     }
     else {
         filename_script[byteCodePath] = script;
+    }
+    
+    if (compileSucceed) {
+        return script;
+    } else {
+        LOGD("ScriptingCore:: compileScript fail:%s", path);
+        CC_SAFE_DELETE(script);
+        return nullptr;
     }
 }
 
@@ -727,6 +764,7 @@ void ScriptingCore::cleanScript(const char *path)
     auto it = filename_script.find(byteCodePath);
     if (it != filename_script.end())
     {
+        delete it->second;
         filename_script.erase(it);
     }
 
@@ -734,11 +772,12 @@ void ScriptingCore::cleanScript(const char *path)
     it = filename_script.find(fullPath);
     if (it != filename_script.end())
     {
+        delete it->second;
         filename_script.erase(it);
     }
 }
 
-std::unordered_map<std::string, JSScript*>  &ScriptingCore::getFileScript()
+std::unordered_map<std::string, JS::PersistentRootedScript*>& ScriptingCore::getFileScript()
 {
     return filename_script;
 }
@@ -759,13 +798,16 @@ bool ScriptingCore::runScript(const char *path, JS::HandleObject global, JSConte
         cx = _cx;
     }
 
-    compileScript(path,global,cx);
-    JS::RootedScript script(cx, getScript(path));
+    auto script = compileScript(path, global, cx);
+    if (script == nullptr) {
+        return false;
+    }
+    
     bool evaluatedOK = false;
     if (script) {
         JS::RootedValue rval(cx);
         JSAutoCompartment ac(cx, global);
-        evaluatedOK = JS_ExecuteScript(cx, global, script, &rval);
+        evaluatedOK = JS_ExecuteScript(cx, global, *script, &rval);
         if (false == evaluatedOK) {
             cocos2d::log("Evaluating %s failed (evaluatedOK == JS_FALSE)", path);
             JS_ReportPendingException(cx);
@@ -787,13 +829,13 @@ bool ScriptingCore::requireScript(const char *path, JS::HandleObject global, JSC
         cx = _cx;
     }
 
-    compileScript(path,global,cx);
-    JS::RootedScript script(cx, getScript(path));
+    auto script = compileScript(path, global, cx);
+
     bool evaluatedOK = false;
     if (script)
     {
         JSAutoCompartment ac(cx, global);
-        evaluatedOK = JS_ExecuteScript(cx, global, script, jsvalRet);
+        evaluatedOK = JS_ExecuteScript(cx, global, (*script), jsvalRet);
         if (false == evaluatedOK)
         {
             cocos2d::log("(evaluatedOK == JS_FALSE)");
@@ -824,6 +866,9 @@ ScriptingCore::~ScriptingCore()
 
 void ScriptingCore::cleanup()
 {
+    if (!_needCleanup) {
+        return;
+    }
     localStorageFree();
     removeAllRoots(_cx);
     garbageCollect();
@@ -853,6 +898,8 @@ void ScriptingCore::cleanup()
     _js_global_type_map.clear();
     filename_script.clear();
     registrationList.clear();
+    
+    _needCleanup = false;
 }
 
 void ScriptingCore::reportError(JSContext *cx, const char *message, JSErrorReport *report)
@@ -1315,12 +1362,10 @@ int ScriptingCore::handleComponentEvent(void* data)
     else if (action == kComponentOnEnter)
     {
         ret = executeFunctionWithOwner(nodeValue, "onEnter", 1, &dataVal, &retval);
-        resumeSchedulesAndActions(p);
     }
     else if (action == kComponentOnExit)
     {
         ret = executeFunctionWithOwner(nodeValue, "onExit", 1, &dataVal, &retval);
-        pauseSchedulesAndActions(p);
     }
     else if (action == kComponentOnUpdate)
     {
@@ -1508,7 +1553,7 @@ bool ScriptingCore::executeFunctionWithOwner(jsval owner, const char *name, cons
     return bRet;
 }
 
-bool ScriptingCore::handleKeybardEvent(void* nativeObj, cocos2d::EventKeyboard::KeyCode keyCode, bool isPressed, cocos2d::Event* event)
+bool ScriptingCore::handleKeyboardEvent(void* nativeObj, cocos2d::EventKeyboard::KeyCode keyCode, bool isPressed, cocos2d::Event* event)
 {
     JSAutoCompartment ac(_cx, _global.ref());
 
@@ -1740,20 +1785,26 @@ void ScriptingCore::garbageCollect()
 
 void SimpleRunLoop::update(float dt)
 {
-    g_qMutex.lock();
-    size_t size = g_queue.size();
-    g_qMutex.unlock();
-
-    while (size > 0)
+    std::string message;
+    size_t messageCount = 0;
+    while (true)
     {
         g_qMutex.lock();
-        auto first = g_queue.begin();
-        std::string str = *first;
-        g_queue.erase(first);
-        size = g_queue.size();
+        messageCount = g_queue.size();
+        if (messageCount > 0)
+        {
+            auto first = g_queue.begin();
+            message = *first;
+            g_queue.erase(first);
+            --messageCount;
+        }
         g_qMutex.unlock();
-
-        ScriptingCore::getInstance()->debugProcessInput(str);
+        
+        if (!message.empty())
+            ScriptingCore::getInstance()->debugProcessInput(message);
+        
+        if (messageCount == 0)
+            break;
     }
 }
 
@@ -1771,20 +1822,26 @@ void ScriptingCore::debugProcessInput(const std::string& str)
 
 static bool NS_ProcessNextEvent()
 {
-    g_qMutex.lock();
-    size_t size = g_queue.size();
-    g_qMutex.unlock();
-
-    while (size > 0)
+    std::string message;
+    size_t messageCount = 0;
+    while (true)
     {
         g_qMutex.lock();
-        auto first = g_queue.begin();
-        std::string str = *first;
-        g_queue.erase(first);
-        size = g_queue.size();
+        messageCount = g_queue.size();
+        if (messageCount > 0)
+        {
+            auto first = g_queue.begin();
+            message = *first;
+            g_queue.erase(first);
+            --messageCount;
+        }
         g_qMutex.unlock();
-
-        ScriptingCore::getInstance()->debugProcessInput(str);
+        
+        if (!message.empty())
+            ScriptingCore::getInstance()->debugProcessInput(message);
+        
+        if (messageCount == 0)
+            break;
     }
 //    std::this_thread::yield();
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -1869,7 +1926,7 @@ static void serverEntryPoint(unsigned int port)
     struct addrinfo hints, *result = nullptr, *rp = nullptr;
     int s = 0;
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_INET;       // IPv4
+    hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM; // TCP stream sockets
     hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
 
@@ -1921,6 +1978,12 @@ static void serverEntryPoint(unsigned int port)
 
     listen(s, 1);
 
+
+#define MAX_RECEIVED_SIZE 1024
+#define BUF_SIZE MAX_RECEIVED_SIZE + 1
+    
+    char buf[BUF_SIZE] = {0};
+    int readBytes = 0;
     while (true) {
         clientSocket = accept(s, NULL, NULL);
 
@@ -1937,10 +2000,8 @@ static void serverEntryPoint(unsigned int port)
             inData = "connected";
             // process any input, send any output
             clearBuffers();
-
-            char buf[1024] = {0};
-            int readBytes = 0;
-            while ((readBytes = (int)::recv(clientSocket, buf, sizeof(buf), 0)) > 0)
+            
+            while ((readBytes = (int)::recv(clientSocket, buf, MAX_RECEIVED_SIZE, 0)) > 0)
             {
                 buf[readBytes] = '\0';
                 // TRACE_DEBUGGER_SERVER("debug server : received command >%s", buf);
@@ -1954,6 +2015,9 @@ static void serverEntryPoint(unsigned int port)
             cc_closesocket(clientSocket);
         }
     } // while(true)
+    
+#undef BUF_SIZE
+#undef MAX_RECEIVED_SIZE
 }
 
 bool JSBDebug_BufferWrite(JSContext* cx, unsigned argc, jsval* vp)
@@ -2323,7 +2387,11 @@ void jsb_ref_rebind(JSContext* cx, JS::HandleObject jsobj, js_proxy_t *proxy, co
     jsb_remove_proxy(proxy);
 
     // Rebind js obj with new action
-    jsb_new_proxy(newRef, jsobj);
+    js_proxy_t* newProxy = jsb_new_proxy(newRef, jsobj);
+    
+#if !CC_ENABLE_GC_FOR_NATIVE_OBJECTS
+    JS::AddNamedObjectRoot(cx, &newProxy->obj, debug);
+#endif
 }
 
 // Register finalize hook
