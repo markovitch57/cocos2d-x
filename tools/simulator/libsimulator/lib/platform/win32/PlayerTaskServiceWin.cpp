@@ -216,7 +216,8 @@ void PlayerTaskWin::cleanup()
 
 std::u16string PlayerTaskWin::makeCommandLine() const
 {
-    std::stringstream buf;
+	CCLOG("makeCommandLine");
+	std::stringstream buf;
     buf << "\"";
     buf << _executePath;
     buf << "\" ";

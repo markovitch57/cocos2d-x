@@ -1,7 +1,8 @@
-#include "scripting/lua-bindings/auto/lua_cocos2dx_ui_auto.hpp"
-#include "ui/CocosGUI.h"
-#include "scripting/lua-bindings/manual/tolua_fix.h"
-#include "scripting/lua-bindings/manual/LuaBasicConversions.h"
+#include "lua_cocos2dx_ui_auto.hpp"
+#include "CocosGUI.h"
+#include "tolua_fix.h"
+#include "LuaBasicConversions.h"
+
 
 int lua_cocos2dx_ui_LayoutParameter_clone(lua_State* tolua_S)
 {
@@ -21735,9 +21736,9 @@ int lua_cocos2dx_ui_TextField_setCursorPosition(lua_State* tolua_S)
     argc = lua_gettop(tolua_S)-1;
     if (argc == 1) 
     {
-        unsigned long arg0;
+        unsigned int arg0;
 
-        ok &= luaval_to_ulong(tolua_S, 2, &arg0, "ccui.TextField:setCursorPosition");
+        ok &= luaval_to_uint32(tolua_S, 2,&arg0, "ccui.TextField:setCursorPosition");
         if(!ok)
         {
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_TextField_setCursorPosition'", nullptr);
@@ -36570,7 +36571,7 @@ int lua_cocos2dx_ui_TabControl_getTabCount(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_TabControl_getTabCount'", nullptr);
             return 0;
         }
-        unsigned long ret = cobj->getTabCount();
+        unsigned int ret = cobj->getTabCount();
         tolua_pushnumber(tolua_S,(lua_Number)ret);
         return 1;
     }

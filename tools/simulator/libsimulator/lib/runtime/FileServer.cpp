@@ -195,17 +195,21 @@ bool FileServer::listenOnTCP(int port)
     {
         char buf[INET_ADDRSTRLEN] = "";
         struct sockaddr_in *sin = (struct sockaddr_in*) res->ai_addr;
-        if( inet_ntop(res->ai_family, &sin->sin_addr, buf, sizeof(buf)) != NULL )
-            cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin_port));
-        else
+		if (inet_ntop(res->ai_family, &sin->sin_addr, buf, sizeof(buf)) != NULL) {
+			CCLOG("111");
+			cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin_port));
+		} 
+		else
             perror("inet_ntop");
     } else if (res->ai_family == AF_INET6)
     {
         char buf[INET6_ADDRSTRLEN] = "";
         struct sockaddr_in6 *sin = (struct sockaddr_in6*) res->ai_addr;
-        if( inet_ntop(res->ai_family, &sin->sin6_addr, buf, sizeof(buf)) != NULL )
-            cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin6_port));
-        else
+		if (inet_ntop(res->ai_family, &sin->sin6_addr, buf, sizeof(buf)) != NULL) {
+			CCLOG("222");
+			cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin6_port));
+		} 
+		else
             perror("inet_ntop");
     }
     freeaddrinfo(ressave);
@@ -277,7 +281,9 @@ FileServer::~FileServer()
 
 void FileServer::loopReceiveFile()
 {
-    struct sockaddr client;
+	CCLOG("loopReceiveFile");
+
+	struct sockaddr client;
     socklen_t client_len;
 
     /* new client */
@@ -337,7 +343,8 @@ void FileServer::loopReceiveFile()
             _recvBufListMutex.unlock();
         }else if(contentSize > 0)
         {
-            //recv body data
+			CCLOG("contentSize > 0");
+			//recv body data
             Bytef *contentbuf = new Bytef[contentSize+1];
             memset(contentbuf, 0, contentSize+1);
             unsigned long recvTotalLen = contentSize;
@@ -387,6 +394,7 @@ void FileServer::loopReceiveFile()
 
 void FileServer::loopWriteFile()
 {
+	CCLOG("loopWriteFile");
 	_writeRunning = true;
     while(!_writeEndThread)
     {
@@ -417,6 +425,7 @@ void FileServer::loopWriteFile()
         {
             _writeErrorFile ="";
             fp = fopen(fullfilename.c_str(), "wb");
+			CCLOG(" fopen(fullfilename");
         } else
         {
             if (_writeErrorFile == filename)
@@ -482,6 +491,8 @@ void FileServer::addResponse(int fd, std::string filename, int errortype, int er
 
 void FileServer::loopResponse()
 {
+	CCLOG("loopResponse");
+
 	_responseRunning = true;
     while(!_responseEndThread) {
         _responseBufListMutex.lock();
@@ -520,6 +531,7 @@ void FileServer::loopResponse()
         memcpy(dataBuf + sizeof(responseHeader), responseString.c_str(), responseString.size());
         
         sendBuf(responseBuf.fd, dataBuf, sizeof(responseHeader) + responseString.size());
+		CCLOG("!!!!!!!!!!!!!!!!!!!!!!!");
         cocos2d::log("responseFile:%s,result:%d", fileSendProtoComplete.file_name().c_str(), fileSendProtoComplete.result());
     }
 

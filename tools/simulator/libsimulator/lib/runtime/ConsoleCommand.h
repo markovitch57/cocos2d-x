@@ -35,12 +35,11 @@ public:
 	static ConsoleCommand* getShareInstance();
 	static void purge();
 
-    void init();
-    void onSendCommand(int fd, const std::string &args);
+	void init();
+	void onSendCommand(int fd, const std::string &args);
 private:
 	~ConsoleCommand();
-    FileServer* _fileserver;
+	FileServer* _fileserver;
 };
 
 #endif // _CONSOLE_COMMAND__H_
-

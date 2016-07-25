@@ -156,7 +156,7 @@
 -- return current page index.
 -- @function [parent=#PageView] getCurrentPageIndex 
 -- @param self
--- @return long#long ret (return value: long)
+-- @return int#int ret (return value: int)
         
 --------------------------------
 -- Remove a page of PageView.<br>

@@ -212,7 +212,7 @@ void ProjectConfig::setFrameScale(float frameScale)
 
 bool ProjectConfig::isShowConsole() const
 {
-    return _showConsole;
+	return _showConsole;
 }
 
 void ProjectConfig::setShowConsole(bool showConsole)

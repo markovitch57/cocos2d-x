@@ -24,13 +24,6 @@
 -- @return TMXMapInfo#TMXMapInfo self (return value: cc.TMXMapInfo)
         
 --------------------------------
---  initializes a TMX format with a  tmx file 
--- @function [parent=#TMXMapInfo] initWithTMXFile 
--- @param self
--- @param #string tmxFile
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 -- / map orientation
 -- @function [parent=#TMXMapInfo] getOrientation 
 -- @param self
@@ -98,18 +91,25 @@
 -- @return TMXMapInfo#TMXMapInfo self (return value: cc.TMXMapInfo)
         
 --------------------------------
--- @overload self         
--- @overload self         
--- @function [parent=#TMXMapInfo] getTilesets
+--  initializes a TMX format with a  tmx file 
+-- @function [parent=#TMXMapInfo] initWithTMXFile 
 -- @param self
--- @return array_table#array_table ret (return value: array_table)
-
+-- @param #string tmxFile
+-- @return bool#bool ret (return value: bool)
+        
 --------------------------------
 -- / parent GID
 -- @function [parent=#TMXMapInfo] getParentGID 
 -- @param self
 -- @return int#int ret (return value: int)
         
+--------------------------------
+-- @overload self         
+-- @overload self         
+-- @function [parent=#TMXMapInfo] getTilesets
+-- @param self
+-- @return array_table#array_table ret (return value: array_table)
+
 --------------------------------
 -- 
 -- @function [parent=#TMXMapInfo] setParentElement 
