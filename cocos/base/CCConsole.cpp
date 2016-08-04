@@ -1,5 +1,6 @@
-#if (COCOS2D_DEBUG > 0) && (CC_CODE_IDE_DEBUG_SUPPORT > 0)
+//#if (COCOS2D_DEBUG > 0) && (CC_CODE_IDE_DEBUG_SUPPORT > 0)
 
+#ifndef NEW_CONSOLE_CODE 
 // This is 3.11 version (3.12 breaks code ide compatibility)
 
 /****************************************************************************
@@ -1248,6 +1249,43 @@ void Console::loop()
 void Console::setBindAddress(const std::string &address)
 {
 	_bindAddress = address;
+}
+
+// stubs
+
+void Console::addSubCommand(const std::string& cmdName, const Command& subCmd)
+{
+}
+
+void Console::addSubCommand(Command& cmd, const Command& subCmd)
+{
+}
+
+const Console::Command* Console::getCommand(const std::string& cmdName)
+{
+	return nullptr;
+}
+
+const Console::Command* Console::getSubCommand(const std::string& cmdName, const std::string& subCmdName)
+{
+	return nullptr;
+}
+
+const Console::Command* Console::getSubCommand(const Command& cmd, const std::string& subCmdName)
+{
+	return nullptr;
+}
+
+void Console::delCommand(const std::string& cmdName)
+{
+}
+
+void Console::delSubCommand(const std::string& cmdName, const std::string& subCmdName)
+{
+}
+
+void Console::delSubCommand(Command& cmd, const std::string& subCmdName)
+{
 }
 
 NS_CC_END

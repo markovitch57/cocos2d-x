@@ -72,6 +72,11 @@ const char *shaderNames[] = {
 	GLProgram::SHADER_3D_SKYBOX,
 	GLProgram::SHADER_3D_TERRAIN,
 	GLProgram::SHADER_CAMERA_CLEAR,
+	"kShaderType_ETC1ASPositionTextureColor",
+	"kShaderType_ETC1ASPositionTextureColor_noMVP",
+	"kShaderType_ETC1ASPositionTextureGray",
+	"kShaderType_ETC1ASPositionTextureGray_noMVP",
+
 };
 // end of my addition
 enum {

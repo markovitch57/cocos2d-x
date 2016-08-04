@@ -1,5 +1,5 @@
-#if (COCOS2D_DEBUG > 0) && (CC_CODE_IDE_DEBUG_SUPPORT > 0)
-
+//#if (COCOS2D_DEBUG > 0) && (CC_CODE_IDE_DEBUG_SUPPORT > 0)
+#ifndef NEW_CONSOLE_CODE 
 // This is 3.11 version (3.12 breaks code ide compatibility)
 
 /****************************************************************************
@@ -112,6 +112,21 @@ public:
 	*/
 	void setBindAddress(const std::string &address);
 
+	// =========================  Stubs for new commands introduced since 3.11  =========================
+	void addSubCommand(const std::string& cmdName, const Command& subCmd);
+	void addSubCommand(Command& cmd, const Command& subCmd);
+
+	/** get custom command */
+	const Command* getCommand(const std::string& cmdName);
+	const Command* getSubCommand(const std::string& cmdName, const std::string& subCmdName);
+	const Command* getSubCommand(const Command& cmd, const std::string& subCmdName);
+
+	/** delete custom command */
+	void delCommand(const std::string& cmdName);
+	void delSubCommand(const std::string& cmdName, const std::string& subCmdName);
+	void delSubCommand(Command& cmd, const std::string& subCmdName);
+	// =========================  End of stubs for new commands introduced since 3.11  =========================
+
 protected:
 	void loop();
 	ssize_t readline(int fd, char *buf, size_t maxlen);
@@ -157,6 +172,7 @@ protected:
 private:
 	CC_DISALLOW_COPY_AND_ASSIGN(Console);
 };
+
 
 NS_CC_END
 

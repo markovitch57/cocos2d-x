@@ -152,6 +152,7 @@ LOCAL_SRC_FILES += ../auto/lua_cocos2dx_mos_auto.cpp \
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
                     $(LUA_INCLUDE_PATH) \
+                    $(LOCAL_PATH)/../../../base \
                     $(LOCAL_PATH)/../../../2d \
                     $(LOCAL_PATH)/../../../3d \
                     $(LOCAL_PATH)/../../../network \

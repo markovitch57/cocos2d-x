@@ -24,8 +24,16 @@ THE SOFTWARE.
  ****************************************************************************/
 package org.cocos2dx.lib;
 
-import android.content.pm.PackageManager;
-import android.media.AudioManager;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -33,9 +41,11 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -48,22 +58,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-import android.hardware.SensorManager;
 
 import com.android.vending.expansion.zipfile.APKExpansionSupport;
 import com.android.vending.expansion.zipfile.ZipResourceFile;
-
 import com.enhance.gameservice.IGameTuningService;
-
-import java.io.IOException;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 
 public class Cocos2dxHelper {
