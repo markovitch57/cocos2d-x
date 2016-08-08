@@ -186,7 +186,7 @@ NS_CC_END
 // This should be latest version
 
 /****************************************************************************
- Copyright (c) 2013-2015 Chukong Technologies Inc.
+ Copyright (c) 2013-2016 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
