@@ -168,11 +168,12 @@ public class Cocos2dxHelper {
             } catch (NameNotFoundException e) {
                 e.printStackTrace();
             }
+            /* zz fails on Android with java.lang.NoClassDefFoundError: com/android/vending/expansion/zipfile/APKExpansionSupport
             try {
                 Cocos2dxHelper.sOBBFile = APKExpansionSupport.getAPKExpansionZipFile(Cocos2dxActivity.getContext(), versionCode, 0);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
     

@@ -106,16 +106,15 @@ public:
         VERTEX_ATTRIB_TEX_COORD3,
         /**Index 6 will be used as Normal.*/
         VERTEX_ATTRIB_NORMAL,
-        /**Index 7 will be used as Blend weight for hardware skin.*/
+		/**Index 7 will be used as Blend weight for hardware skin.*/
         VERTEX_ATTRIB_BLEND_WEIGHT,
         /**Index 8 will be used as Blend index.*/
         VERTEX_ATTRIB_BLEND_INDEX,
         /**Index 9 will be used as tangent.*/
         VERTEX_ATTRIB_TANGENT,
-        /**Index 10 will be used as Binormal.*/
+		/**Index 10 will be used as Binormal.*/
         VERTEX_ATTRIB_BINORMAL,
-		VERTEX_ATTRIB_NTH_VERTEX, // my addition
-        VERTEX_ATTRIB_MAX,
+		VERTEX_ATTRIB_MAX,
 
         // backward compatibility
         VERTEX_ATTRIB_TEX_COORDS = VERTEX_ATTRIB_TEX_COORD,
@@ -333,7 +332,6 @@ public:
     static const char* ATTRIBUTE_NAME_TANGENT;
     /**Attribute blend binormal.*/
     static const char* ATTRIBUTE_NAME_BINORMAL;
-    static const char* ATTRIBUTE_NAME_NTH_VERTEX; // my addition
     /**
     end of Built Attribute names
     @}

@@ -721,9 +721,9 @@ void GLProgramCache::bindAttributesToShader(GLProgram *shaderProgram, uint32_t d
 	if (GL::VERTEX_ATTRIB_FLAG_NORMAL & dShaderFlags) {
 		shaderProgram->addAttribute(GLProgram::ATTRIBUTE_NAME_NORMAL, GLProgram::VERTEX_ATTRIB_NORMAL);
 	}
-	if (GL::VERTEX_ATTRIB_FLAG_NTH_VERTEX & dShaderFlags) {
-		shaderProgram->addAttribute(GLProgram::ATTRIBUTE_NAME_NTH_VERTEX, GLProgram::VERTEX_ATTRIB_NTH_VERTEX);
-	}
+//	if (GL::VERTEX_ATTRIB_FLAG_NTH_VERTEX & dShaderFlags) {
+//		shaderProgram->addAttribute(GLProgram::ATTRIBUTE_NAME_NTH_VERTEX, GLProgram::VERTEX_ATTRIB_NTH_VERTEX);
+//	}
 }
 
 void GLProgramCache::reloadCustomShaders(void) {

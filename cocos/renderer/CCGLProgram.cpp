@@ -141,7 +141,7 @@ const char* GLProgram::ATTRIBUTE_NAME_BLEND_WEIGHT = "a_blendWeight";
 const char* GLProgram::ATTRIBUTE_NAME_BLEND_INDEX = "a_blendIndex";
 const char* GLProgram::ATTRIBUTE_NAME_TANGENT = "a_tangent";
 const char* GLProgram::ATTRIBUTE_NAME_BINORMAL = "a_binormal";
-const char* GLProgram::ATTRIBUTE_NAME_NTH_VERTEX = "a_nthVertex"; // my addition
+//const char* GLProgram::ATTRIBUTE_NAME_NTH_VERTEX = "a_nthVertex"; // my addition
 
 
 
@@ -312,7 +312,7 @@ void GLProgram::bindPredefinedVertexAttribs()
         {GLProgram::ATTRIBUTE_NAME_TEX_COORD2, GLProgram::VERTEX_ATTRIB_TEX_COORD2},
         {GLProgram::ATTRIBUTE_NAME_TEX_COORD3, GLProgram::VERTEX_ATTRIB_TEX_COORD3},
         {GLProgram::ATTRIBUTE_NAME_NORMAL, GLProgram::VERTEX_ATTRIB_NORMAL},
-        {GLProgram::ATTRIBUTE_NAME_NTH_VERTEX, GLProgram::VERTEX_ATTRIB_NTH_VERTEX}, // my addition
+       //{"a_nthVertex", GLProgram::VERTEX_ATTRIB_NORMAL  + 1}, // my addition
     };
 
     const int size = sizeof(attribute_locations) / sizeof(attribute_locations[0]);
@@ -569,12 +569,11 @@ bool GLProgram::link()
 
     glLinkProgram(_program);
 
-    parseVertexAttribs();
-    parseUniforms();
-
-    clearShader();
-
-#if DEBUG || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+    // Calling glGetProgramiv(...GL_LINK_STATUS...) will force linking of the program at this moment.
+    // Otherwise, they might be linked when they are used for the first time. (I guess this depends on the driver implementation)
+    // So it might slow down the "booting" process on certain devices. But, on the other hand it is important to know if the shader
+    // linked succesfully. Some shaders might be downloaded in runtime so, release version should have this check.
+    // For more info, see Github issue #16231
     glGetProgramiv(_program, GL_LINK_STATUS, &status);
 
     if (status == GL_FALSE)
@@ -583,7 +582,13 @@ bool GLProgram::link()
         GL::deleteProgram(_program);
         _program = 0;
     }
-#endif
+    else
+    {
+        parseVertexAttribs();
+        parseUniforms();
+
+        clearShader();
+    }
 
     return (status == GL_TRUE);
 }
