@@ -821,9 +821,9 @@ void RenderTexture::end()
 }
 
 // my addition
-Texture2D*  RenderTexture::getTexture() {
-	return _texture;
-}
+//Texture2D*  RenderTexture::getTexture() {
+//	return _texture;
+//}
 // end of my addition
 
 NS_CC_END

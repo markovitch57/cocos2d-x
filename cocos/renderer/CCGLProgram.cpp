@@ -141,8 +141,6 @@ const char* GLProgram::ATTRIBUTE_NAME_BLEND_WEIGHT = "a_blendWeight";
 const char* GLProgram::ATTRIBUTE_NAME_BLEND_INDEX = "a_blendIndex";
 const char* GLProgram::ATTRIBUTE_NAME_TANGENT = "a_tangent";
 const char* GLProgram::ATTRIBUTE_NAME_BINORMAL = "a_binormal";
-//const char* GLProgram::ATTRIBUTE_NAME_NTH_VERTEX = "a_nthVertex"; // my addition
-
 
 
 static const char * COCOS2D_SHADER_UNIFORMS =
@@ -312,7 +310,7 @@ void GLProgram::bindPredefinedVertexAttribs()
         {GLProgram::ATTRIBUTE_NAME_TEX_COORD2, GLProgram::VERTEX_ATTRIB_TEX_COORD2},
         {GLProgram::ATTRIBUTE_NAME_TEX_COORD3, GLProgram::VERTEX_ATTRIB_TEX_COORD3},
         {GLProgram::ATTRIBUTE_NAME_NORMAL, GLProgram::VERTEX_ATTRIB_NORMAL},
-       //{"a_nthVertex", GLProgram::VERTEX_ATTRIB_NORMAL  + 1}, // my addition
+        {"a_nthVertex", GLProgram::VERTEX_ATTRIB_NORMAL  + 1}, // my addition
     };
 
     const int size = sizeof(attribute_locations) / sizeof(attribute_locations[0]);

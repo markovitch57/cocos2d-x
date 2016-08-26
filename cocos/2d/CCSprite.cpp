@@ -548,7 +548,7 @@ void Sprite::setTextureCoords(const Rect& rectInPoint)
     }
 }
 
-// MARK: visit, draw, transform
+// MARK:visit, draw, transform
 
 void Sprite::updateTransform(void)
 {

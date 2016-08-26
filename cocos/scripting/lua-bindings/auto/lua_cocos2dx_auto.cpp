@@ -74631,7 +74631,7 @@ int lua_cocos2dx_RenderTexture_getTexture(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_RenderTexture_getTexture'", nullptr);
             return 0;
         }
-        cocos2d::Texture2D* ret = cobj->getTexture();
+		cocos2d::Texture2D* ret = NULL;// cobj->getTexture();
         object_to_luaval<cocos2d::Texture2D>(tolua_S, "cc.Texture2D",(cocos2d::Texture2D*)ret);
         return 1;
     }
