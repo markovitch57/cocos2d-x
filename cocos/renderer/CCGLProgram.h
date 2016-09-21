@@ -537,7 +537,9 @@ protected:
     /**OpenGL handle for fragment shader.*/
     GLuint            _fragShader;
     /**Built in uniforms.*/
+public:
     GLint             _builtInUniforms[UNIFORM_MAX];
+protected:
     /**Indicate whether it has a offline shader compiler or not.*/
     bool              _hasShaderCompiler;
 
