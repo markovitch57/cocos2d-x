@@ -25,12 +25,6 @@
 -- @return RenderTexture#RenderTexture self (return value: cc.RenderTexture)
         
 --------------------------------
--- 
--- @function [parent=#RenderTexture] getTexture 
--- @param self
--- @return Texture2D#Texture2D ret (return value: cc.Texture2D)
-        
---------------------------------
 --  Value for clearDepth. Valid only when "autoDraw" is true. <br>
 -- return Value for clearDepth.
 -- @function [parent=#RenderTexture] getClearDepth 

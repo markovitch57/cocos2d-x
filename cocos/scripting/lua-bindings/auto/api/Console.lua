@@ -37,10 +37,11 @@
 -- @return Console::Command#Console::Command ret (return value: cc.Console::Command)
 
 --------------------------------
---  delete custom command 
--- @function [parent=#Console] delCommand 
+-- set bind address<br>
+-- address : 127.0.0.1
+-- @function [parent=#Console] setBindAddress 
 -- @param self
--- @param #string cmdName
+-- @param #string address
 -- @return Console#Console self (return value: cc.Console)
         
 --------------------------------
@@ -50,13 +51,6 @@
 -- @return Console#Console self (return value: cc.Console)
         
 --------------------------------
---  get custom command 
--- @function [parent=#Console] getCommand 
--- @param self
--- @param #string cmdName
--- @return Console::Command#Console::Command ret (return value: cc.Console::Command)
-        
---------------------------------
 --  starts listening to specified file descriptor 
 -- @function [parent=#Console] listenOnFileDescriptor 
 -- @param self
@@ -64,12 +58,11 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
--- set bind address<br>
--- address : 127.0.0.1
--- @function [parent=#Console] setBindAddress 
+--  get custom command 
+-- @function [parent=#Console] getCommand 
 -- @param self
--- @param #string address
--- @return Console#Console self (return value: cc.Console)
+-- @param #string cmdName
+-- @return Console::Command#Console::Command ret (return value: cc.Console::Command)
         
 --------------------------------
 -- @overload self, cc.Console::Command, string         
@@ -80,4 +73,11 @@
 -- @param #string subCmdName
 -- @return Console#Console self (return value: cc.Console)
 
+--------------------------------
+--  delete custom command 
+-- @function [parent=#Console] delCommand 
+-- @param self
+-- @param #string cmdName
+-- @return Console#Console self (return value: cc.Console)
+        
 return nil

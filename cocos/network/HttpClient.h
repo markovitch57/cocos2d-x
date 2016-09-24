@@ -28,6 +28,7 @@
 #define __CCHTTPCLIENT_H__
 
 #include <thread>
+#include <string>
 #include <condition_variable>
 #include "base/CCVector.h"
 #include "base/CCScheduler.h"
@@ -44,7 +45,11 @@ NS_CC_BEGIN
 
 namespace network {
 
-
+	// my addition
+	//struct receivedStringStruct {
+	//	char *pcData;
+	//	size_t iLen;
+	//};
 
 /** Singleton that handles asynchronous http requests.
  *
@@ -149,8 +154,84 @@ public:
 	};
 	static void zeroDownloaded(void) {ffDownloaded = 0;};
 	static double ffDownloaded;
-	static void freeRequest(void); // my addition
-	// End of my additions
+	static void freeRequest(void);
+	//static CURLcode getStringUsingEasyCurl(const char* url, network::receivedStringStruct receivedString);
+//	static int getStringUsingEasyCurl(const char* url, network::receivedStringStruct  *pReceivedString);
+//	static size_t writeBlock(void *pvBlockData, size_t size, size_t nmemb, struct receivedStringStruct *receivedString);
+
+// my additions
+
+/*
+	static size_t writeBlock(void *pvBlockData, size_t size, size_t nmemb, struct receivedStringStruct *receivedString) {
+		size_t iThisBlockSize = size * nmemb;
+		size_t iNewSize = receivedString->iLen + iThisBlockSize;
+		receivedString->pcData = (char *)realloc(receivedString->pcData, iNewSize + 1); // + 1 - Allow for String terminator!
+		if (receivedString->pcData == NULL) {
+			fprintf(stderr, "realloc() failed\n");
+			exit(EXIT_FAILURE);
+		}
+		else {
+			//CCLOG( "pcData = %s", receivedString->pcData);
+		}
+		memcpy(receivedString->pcData + receivedString->iLen, pvBlockData, iThisBlockSize);
+		receivedString->pcData[iNewSize] = '\0'; //String terminator!
+		receivedString->iLen = iNewSize;
+		return iThisBlockSize;
+	}
+
+	static int getStringUsingEasyCurl(const char* url, receivedStringStruct *pReceivedString)
+	{
+		CURL *curl;       // CURL objects
+		CURLcode res = CURLE_FAILED_INIT;
+		curl = curl_easy_init(); // init CURL library object/structure
+
+
+		if (curl) {
+
+			//struct receivedString s;
+			pReceivedString->iLen = 0;
+			if (pReceivedString->pcData == NULL) {
+				pReceivedString->pcData = (char *)malloc(pReceivedString->iLen + 1);
+				pReceivedString->pcData[pReceivedString->iLen] = '\0'; //String terminator!
+			}
+			//res = curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 2L);
+			//        res = curl_easy_setopt(curl, CURLOPT_URL, "https://www.googleapis.com/storage/v1/b/markv/o/f1%2FFRED");//url);
+			res = curl_easy_setopt(curl, CURLOPT_URL, url);
+			//res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
+			res = curl_easy_setopt(curl, CURLOPT_VERBOSE, 1); // tell us what is happening
+															  //curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+															  //res = curl_easy_setopt(curl, CURLOPT_REDIR_PROTOCOLS, 0xffffffffffffffffL);
+															  //res = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true); // 2014_06_30 - had no effect!
+
+															  // tell libcurl where to write the image (to a dynamic memory buffer)
+
+			res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &HttpClient::writeBlock);
+			res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)pReceivedString);
+
+			// experimental
+			// For following see http://stackoverflow.com/questions/18884821/enable-ssl-connection-for-https-in-curl-php-header-blank
+			///		res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true); // allow https verification if true
+			//		res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2); // check common name and verify with host name
+			///		res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0); // prevent actual verification!
+			//		res = curl_easy_setopt(curl, CURLOPT_SSLVERSION, 3); // verify ssl version 2 or 3
+
+			res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
+			// end experimantal
+			// get the image from the specified URL
+
+			res = curl_easy_perform(curl);
+			CCLOG("Curl code: %i", res);
+			curl_easy_cleanup(curl);
+		}
+		return res;
+	}
+	// end of my additions
+*/
+
+
+
+
+// End of my additions
 
 	/**
      * Get the timeout value for reading.
@@ -217,6 +298,7 @@ private:
     char _responseMessage[RESPONSE_BUFFER_SIZE];
 
     HttpRequest* _requestSentinel;
+
 };
 
 } // namespace network

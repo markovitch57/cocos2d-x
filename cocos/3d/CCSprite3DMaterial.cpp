@@ -52,7 +52,7 @@ Sprite3DMaterial* Sprite3DMaterial::_bumpedDiffuseMaterialSkin = nullptr;
 
 void Sprite3DMaterial::createBuiltInMaterial()
 {
-    releaseBuiltInMaterial();
+	releaseBuiltInMaterial();
     
     auto glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_3D_SKINPOSITION_TEXTURE);
     auto glprogramstate = GLProgramState::create(glProgram);
@@ -133,6 +133,8 @@ void Sprite3DMaterial::releaseBuiltInMaterial()
     CC_SAFE_RELEASE_NULL(_vertexLitMaterialSkin);
     CC_SAFE_RELEASE_NULL(_diffuseMaterialSkin);
     CC_SAFE_RELEASE_NULL(_bumpedDiffuseMaterialSkin);
+	_diffuseMaterial = nullptr; // my addition
+
 }
 
 void Sprite3DMaterial::releaseCachedMaterial()

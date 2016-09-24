@@ -1947,10 +1947,9 @@
       <Filter>network</Filter>
     </ClCompile>
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\Light3DReader\Light3DReader.cpp" />
-
     <ClCompile Include="..\3d\CCSprite3D.cpp">
       <Filter>3d</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\TabControlReader\TabControlReader.cpp">
       <Filter>cocostudio\reader\WidgetReader\TabControlReader</Filter>
     </ClCompile>
