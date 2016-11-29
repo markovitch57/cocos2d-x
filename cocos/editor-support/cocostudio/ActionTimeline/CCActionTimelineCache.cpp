@@ -41,6 +41,8 @@ THE SOFTWARE.
 
 #include <fstream>
 
+#include "platform/CCFileUtils.h"
+
 using namespace cocos2d;
 using namespace flatbuffers;
 

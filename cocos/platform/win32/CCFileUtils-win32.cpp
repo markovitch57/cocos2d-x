@@ -62,7 +62,8 @@ static inline std::string convertPathFormatToUnixStyle(const std::string& path)
 
 static void _checkPath()
 {
-    if (s_resourcePath.empty())
+    /* my addition (subtraction)
+	if (s_resourcePath.empty())
     {
         WCHAR utf16Path[CC_MAX_PATH] = { 0 };
         GetModuleFileNameW(NULL, utf16Path, CC_MAX_PATH - 1);
@@ -76,6 +77,18 @@ static void _checkPath()
 
         s_resourcePath = convertPathFormatToUnixStyle(utf8ExeDir);
     }
+	*/
+	// my addition
+	WCHAR full_path[CC_MAX_PATH + 1] = { 0 };
+	::GetModuleFileName(nullptr, full_path, CC_MAX_PATH + 1);
+	wstring retPath = full_path;
+	retPath = retPath.substr(0, retPath.rfind(L"\\"));
+	retPath = retPath.substr(0, retPath.rfind(L"\\"));
+	retPath = retPath.substr(0, retPath.rfind(L"\\") + 1);
+	retPath.append(L"Resources\\");
+	s_resourcePath = convertPathFormatToUnixStyle(StringWideCharToUtf8(retPath));
+	// end of my addition
+
 }
 
 FileUtils* FileUtils::getInstance()
@@ -227,7 +240,7 @@ std::string FileUtilsWin32::getFullPathForDirectoryAndFilename(const std::string
 
 string FileUtilsWin32::getWritablePath() const
 {
-///* my addition (subtraction)
+/* my addition (subtraction)
 	if (_writablePath.length())
     {
         return _writablePath;
@@ -277,8 +290,18 @@ string FileUtilsWin32::getWritablePath() const
     }
 
     return convertPathFormatToUnixStyle(StringWideCharToUtf8(retPath));
-//	*/
-	//return std::string(".\\..\\Data\\"); // my addition (replacing all above!)
+	*/
+	// my addition - we now expect the Data folder to be two folders above the exe
+	WCHAR full_path[CC_MAX_PATH + 1] = { 0 };
+	::GetModuleFileName(nullptr, full_path, CC_MAX_PATH + 1);
+	wstring retPath = full_path;
+	retPath = retPath.substr(0, retPath.rfind(L"\\"));
+	retPath = retPath.substr(0, retPath.rfind(L"\\"));
+	retPath = retPath.substr(0, retPath.rfind(L"\\") + 1);
+	retPath.append(L"Data\\");
+	return convertPathFormatToUnixStyle(StringWideCharToUtf8(retPath));
+
+	//return std::string(".\\..\\Data\\"); // my addition (replacing all above!) reinstated 2016_11_24
 //	return _writablePath;
 }
 

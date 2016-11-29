@@ -97,7 +97,7 @@ extern "C"
 				chunkName = prefix.substr(0, pos) + filename + NOT_BYTECODE_FILE_EXT;
 				//chunkName = std::string("src/") + filename + NOT_BYTECODE_FILE_EXT;
 				//chunkName = filename + NOT_BYTECODE_FILE_EXT;
-				if (utils->isFileExist(chunkName)) // my addition (subtraction
+				//if (utils->isFileExist(chunkName)) // my addition (subtraction)
 				{
 					//chunk = utils->getDataFromFile(chunkName); //chunk = utils->getFileData(chunkName.c_str(), "rb", &chunkSize); // my addition (subtraction
 					ssize_t chunkSize = 0;
