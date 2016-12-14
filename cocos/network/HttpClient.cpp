@@ -1,28 +1,28 @@
 /****************************************************************************
- Copyright (c) 2012      greathqy
- Copyright (c) 2012      cocos2d-x.org
- Copyright (c) 2013-2016 Chukong Technologies Inc.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
+Copyright (c) 2012      greathqy
+Copyright (c) 2012      cocos2d-x.org
+Copyright (c) 2013-2016 Chukong Technologies Inc.
+
+http://www.cocos2d-x.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+****************************************************************************/
 
 #include "network/HttpClient.h"
 #include <queue>
@@ -35,7 +35,7 @@ NS_CC_BEGIN
 
 namespace network {
 
-	double HttpClient::ffDownloaded = 0; // my addition
+double HttpClient::ffDownloaded = 0; // my addition
 
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
@@ -206,17 +206,6 @@ namespace network {
 		// Document is here: http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTNOSIGNAL 
 		curl_easy_setopt(handle, CURLOPT_NOSIGNAL, 1L);
 
-		// my addition
-		curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 0);
-		curl_easy_setopt(handle, CURLOPT_PROGRESSFUNCTION, HttpClient::downloadProgressFunc);
-		curl_easy_setopt(handle, CURLOPT_PROGRESSDATA, NULL);
-		//curl_easy_setopt(curl, CURLOPT_FAILONERROR, true); //See Downloader
-
-
-		//curl_easy_setopt(handle, CURLOPT_XFERINFOFUNCTION, CCHttpClient::downloadProgressFunc); // cocos2dx curl version too old for this! (older than 7.32.0)
-		//curl_easy_setopt(handle, CURLOPT_PROGRESSDATA, NULL); // see http://curl.haxx.se/libcurl/c/CURLOPT_PROGRESSDATA.html - CURLOPT_PROGRESSDATA - custom pointer passed to the progress callback - Pass a pointer that will be untouched by libcurl and passed as the first argument in the progress callback set with CURLOPT_PROGRESSFUNCTION.
-	// end of my addition
-
 		curl_easy_setopt(handle, CURLOPT_ACCEPT_ENCODING, "");
 
 		return true;
@@ -251,11 +240,11 @@ namespace network {
 		}
 
 		/**
-		 * @brief Inits CURL instance for common usage
-		 * @param request Null not allowed
-		 * @param callback Response write callback
-		 * @param stream Response write stream
-		 */
+		* @brief Inits CURL instance for common usage
+		* @param request Null not allowed
+		* @param callback Response write callback
+		* @param stream Response write stream
+		*/
 		bool init(HttpClient* client, HttpRequest* request, write_callback callback, void* stream, write_callback headerCallback, void* headerStream, char* errorBuffer)
 		{
 			if (!_curl)
@@ -268,8 +257,8 @@ namespace network {
 			if (!headers.empty())
 			{
 				/* append custom headers one by one */
-				for (std::vector<std::string>::iterator it = headers.begin(); it != headers.end(); ++it)
-					_headers = curl_slist_append(_headers, it->c_str());
+				for (auto& header : headers)
+					_headers = curl_slist_append(_headers, header.c_str());
 				/* set custom headers for curl */
 				if (!setOption(CURLOPT_HTTPHEADER, _headers))
 					return false;
@@ -418,7 +407,7 @@ namespace network {
 		, _requestSentinel(new HttpRequest())
 		, _cookie(nullptr)
 	{
-		//CCLOG("In the constructor of HttpClient!");
+		CCLOG("In the constructor of HttpClient!");
 		memset(_responseMessage, 0, RESPONSE_BUFFER_SIZE * sizeof(char));
 		_scheduler = Director::getInstance()->getScheduler();
 		increaseThreadCount();
@@ -650,82 +639,7 @@ namespace network {
 		return _sslCaFilename;
 	}
 
-	// my additions
-	void HttpClient::freeRequest(void) {
-		//delete _requestSentinel;// delete s_requestSentinel;
-		//s_requestSentinel->release();
-
-	}
-
-	// Following writeBlock and getStringUsingEasyCurl are resituated here because of build problem on android (undefined getpwuid_r, signal, tcsetattr, tcgetattr) when they are in CcHttpObject.cpp
-	
-/*
-	size_t HttpClient::writeBlock(void *pvBlockData, size_t size, size_t nmemb, struct receivedStringStruct *receivedString) {
-		size_t iThisBlockSize = size * nmemb;
-		size_t iNewSize = receivedString->iLen + iThisBlockSize;
-		receivedString->pcData = (char *)realloc(receivedString->pcData, iNewSize + 1); // + 1 - Allow for String terminator!
-		if (receivedString->pcData == NULL) {
-			fprintf(stderr, "realloc() failed\n");
-			exit(EXIT_FAILURE);
-		}
-		else {
-			//CCLOG( "pcData = %s", receivedString->pcData);
-		}
-		memcpy(receivedString->pcData + receivedString->iLen, pvBlockData, iThisBlockSize);
-		receivedString->pcData[iNewSize] = '\0'; //String terminator!
-		receivedString->iLen = iNewSize;
-		return iThisBlockSize;
-	}
-
-	int HttpClient::getStringUsingEasyCurl(const char* url, network::receivedStringStruct *pReceivedString)
-	{
-		CURL *curl;       // CURL objects
-		CURLcode res = CURLE_FAILED_INIT;
-		curl = curl_easy_init(); // init CURL library object/structure
-
-		if (curl) {
-
-			//struct receivedString s;
-			pReceivedString->iLen = 0;
-			if (pReceivedString->pcData == NULL) {
-				pReceivedString->pcData = (char *)malloc(pReceivedString->iLen + 1);
-				pReceivedString->pcData[pReceivedString->iLen] = '\0'; //String terminator!
-			}
-			//res = curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 2L);
-			//        res = curl_easy_setopt(curl, CURLOPT_URL, "https://www.googleapis.com/storage/v1/b/markv/o/f1%2FFRED");//url);
-			res = curl_easy_setopt(curl, CURLOPT_URL, url);
-			//res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
-			res = curl_easy_setopt(curl, CURLOPT_VERBOSE, 1); // tell us what is happening
-			//curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-			//res = curl_easy_setopt(curl, CURLOPT_REDIR_PROTOCOLS, 0xffffffffffffffffL);
-			//res = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true); // 2014_06_30 - had no effect!
-
-			// tell libcurl where to write the image (to a dynamic memory buffer)
-
-			res = curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION, &HttpClient::writeBlock);
-			res = curl_easy_setopt(curl,CURLOPT_WRITEDATA, (void *)pReceivedString);
-
-			// experimental
-			// For following see http://stackoverflow.com/questions/18884821/enable-ssl-connection-for-https-in-curl-php-header-blank
-			///		res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true); // allow https verification if true
-			//		res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2); // check common name and verify with host name
-			///		res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0); // prevent actual verification!
-			//		res = curl_easy_setopt(curl, CURLOPT_SSLVERSION, 3); // verify ssl version 2 or 3
-
-			res = curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
-			// end experimantal
-			// get the image from the specified URL
-
-			res = curl_easy_perform(curl);
-			CCLOG("Curl code: %i", res);
-			curl_easy_cleanup(curl);
-		}
-		return res;
-	}
-	// end of my additions
-*/
 }
 
 NS_CC_END
-
 

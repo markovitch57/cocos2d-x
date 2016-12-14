@@ -79,6 +79,9 @@ static void _checkPath()
     }
 	*/
 	// my addition
+	// under dev we use a hard link to point to Resources dir used by intelliJ - ie in MOS/mindofsound do: mklink /J .\Resources C:\Users\markv\IdeaProjects\mindofsound
+	// under release we simply have Resources folder in release root (ie 2 folders above exe)
+
 	WCHAR full_path[CC_MAX_PATH + 1] = { 0 };
 	::GetModuleFileName(nullptr, full_path, CC_MAX_PATH + 1);
 	wstring retPath = full_path;
@@ -291,7 +294,9 @@ string FileUtilsWin32::getWritablePath() const
 
     return convertPathFormatToUnixStyle(StringWideCharToUtf8(retPath));
 	*/
-	// my addition - we now expect the Data folder to be two folders above the exe
+	// my addition - we now expect the Data folder to be two folders above the exe - also, for some history see - https://github.com/cocos2d/cocos2d-x/issues/8286
+	// under dev we use a hard link to point to data dir used by intelliJ - ie in MOS/mindofsound do: mklink /J .\Data C:\Users\markv\AppData\Local\mindofsound
+	// under release we simply have Data folder in release root (ie 2 folders above exe)
 	WCHAR full_path[CC_MAX_PATH + 1] = { 0 };
 	::GetModuleFileName(nullptr, full_path, CC_MAX_PATH + 1);
 	wstring retPath = full_path;
@@ -383,7 +388,7 @@ bool FileUtilsWin32::createDirectory(const std::string& dirPath)
     if ((GetFileAttributes(path.c_str())) == INVALID_FILE_ATTRIBUTES)
     {
         subpath = L"";
-        for (unsigned int i = 0; i < dirs.size(); ++i)
+        for (unsigned int i = 0, size = dirs.size(); i < size; ++i)
         {
             subpath += dirs[i];
 

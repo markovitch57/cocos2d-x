@@ -211,7 +211,7 @@ bool TextureAtlas::initWithTexture(Texture2D *texture, ssize_t capacity)
     return true;
 }
 
-void TextureAtlas::listenRendererRecreated(EventCustom* event)
+void TextureAtlas::listenRendererRecreated(EventCustom* /*event*/)
 {  
     if (Configuration::getInstance()->supportsShareableVAO())
     {
@@ -612,7 +612,7 @@ void TextureAtlas::drawNumberOfQuads(ssize_t numberOfQuads, ssize_t start)
     if(!numberOfQuads)
         return;
     
-    GL::bindTexture2D(_texture->getName());
+    GL::bindTexture2D(_texture);
 
     auto conf = Configuration::getInstance();
     if (conf->supportsShareableVAO() && conf->supportsMapBuffer())

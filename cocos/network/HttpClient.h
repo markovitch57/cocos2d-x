@@ -154,7 +154,7 @@ public:
 	};
 	static void zeroDownloaded(void) {ffDownloaded = 0;};
 	static double ffDownloaded;
-	static void freeRequest(void);
+//	static void freeRequest(void);
 	//static CURLcode getStringUsingEasyCurl(const char* url, network::receivedStringStruct receivedString);
 //	static int getStringUsingEasyCurl(const char* url, network::receivedStringStruct  *pReceivedString);
 //	static size_t writeBlock(void *pvBlockData, size_t size, size_t nmemb, struct receivedStringStruct *receivedString);

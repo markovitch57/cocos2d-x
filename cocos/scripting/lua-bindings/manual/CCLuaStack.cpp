@@ -445,7 +445,7 @@ int LuaStack::executeFunction(int numArgs)
     --_callFromLua;
     if (error)
     {
-		MosAbort(lua_tostring(_state, -1)); // my addition
+		MosAbort(lua_tostring(_state, -1)); // my addition (lua assert comes here!)
 		if (traceback == 0)
         {
             CCLOG("[LUA ERROR] %s", lua_tostring(_state, - 1));        /* L: ... error */

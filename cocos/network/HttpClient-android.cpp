@@ -137,18 +137,16 @@ public:
         if(!headers.empty())
         {
             /* append custom headers one by one */
-            for (HttpRequestHeadersIter it = headers.begin(); it != headers.end(); ++it)
+            for (auto& header : headers)
             {
-                std::string val = *it;
-                
-                int len = val.length();
-                int pos = val.find(':');
+                int len = header.length();
+                int pos = header.find(':');
                 if (-1 == pos || pos >= len)
                 {
                     continue;
                 }
-                std::string str1 = val.substr(0, pos);
-                std::string str2 = val.substr(pos + 1, len - pos - 1);
+                std::string str1 = header.substr(0, pos);
+                std::string str2 = header.substr(pos + 1, len - pos - 1);
                 addRequestHeader(str1.c_str(), str2.c_str());
             }
         }
@@ -466,14 +464,11 @@ private:
         if (cookiesVec.empty())
             return;
         
-        HttpCookiesIter iter = cookiesVec.begin();
-        
         std::vector<CookiesInfo> cookiesInfoVec;
         cookiesInfoVec.clear();
 
-        for (; iter != cookiesVec.end(); iter++)
+        for (auto& cookies : cookiesVec)
         {
-            std::string cookies = *iter;
             if (cookies.find("#HttpOnly_") != std::string::npos)
             {
                 cookies = cookies.substr(10);
@@ -506,16 +501,15 @@ private:
             cookiesInfoVec.push_back(co);
         }
 
-        std::vector<CookiesInfo>::iterator cookiesIter = cookiesInfoVec.begin();
         std::string sendCookiesInfo = "";
         int cookiesCount = 0;
-        for (; cookiesIter != cookiesInfoVec.end(); cookiesIter++)
+        for (auto& cookieInfo : cookiesInfoVec)
         {
-            if (_url.find(cookiesIter->domain) != std::string::npos)
+            if (_url.find(cookieInfo.domain) != std::string::npos)
             {
-                std::string keyValue = cookiesIter->key;
+                std::string keyValue = cookieInfo.key;
                 keyValue.append("=");
-                keyValue.append(cookiesIter->value);
+                keyValue.append(cookieInfo.value);
                 if (cookiesCount != 0)
                     sendCookiesInfo.append(";");
                 
@@ -1054,10 +1048,9 @@ const std::string& HttpClient::getSSLVerification()
 }
 
 // my additions
-void HttpClient::freeRequest(void) {
+//void HttpClient::freeRequest(void) {
 ///	delete s_requestSentinel;
-}
-
+//}
 /*	// Following writeBlock and getStringUsingEasyCurl are resituated here because of build problem on android (undefined getpwuid_r, signal, tcsetattr, tcgetattr) when they are in CcHttpObject.cpp
 	
 
@@ -1131,4 +1124,14 @@ void HttpClient::freeRequest(void) {
 
 NS_CC_END
 
+// Following is stub for getpwuid_r on android which is called by lates version of curl/ssl (required by google play)
+extern "C" {
+#include <sys/types.h>
+#include <pwd.h>
+#include <errno.h>
+
+int getpwuid_r(uid_t uid, struct passwd * pwbuf, char *buf, size_t buflen, struct passwd **pwbufp) {
+  return ENOSYS;
+}
+}
 #endif // #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
