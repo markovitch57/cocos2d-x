@@ -320,6 +320,18 @@ void Director::drawScene()
     {
         showStats();
     }
+	// my addition - frig to solve Cc3dDrawingSprite
+	const Mat4& identity = Mat4::IDENTITY;
+	if (_isStatusLabelUpdated)
+	{
+		createStatsLabel();
+		//_FPSLabel->setScale(0.3);
+		_FPSLabel->setPosition(-100, -100); // ie off screen
+		_isStatusLabelUpdated = false;
+	}
+	_FPSLabel->visit(_renderer, identity, 0); // This magically solves problem with Cc3dDrawingSprite (when effect starts?)
+	// end of my addition
+
     _renderer->render();
 
     _eventDispatcher->dispatchEvent(_eventAfterDraw);
@@ -1264,12 +1276,12 @@ void Director::showStats()
             _drawnVerticesLabel->setString(buffer);
             prevVerts = currentVerts;
         }
-
+		
         const Mat4& identity = Mat4::IDENTITY;
         _drawnVerticesLabel->visit(_renderer, identity, 0);
         _drawnBatchesLabel->visit(_renderer, identity, 0);
-        _FPSLabel->visit(_renderer, identity, 0);
-    }
+       _FPSLabel->visit(_renderer, identity, 0);
+	}
 }
 
 void Director::calculateMPF()
