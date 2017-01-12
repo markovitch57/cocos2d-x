@@ -40,7 +40,7 @@
 
 #include "base/ccUTF8.h"
 
-#include <curl/curl.h>
+//#include <curl/curl.h>
  
 NS_CC_BEGIN
 
@@ -1124,6 +1124,7 @@ const std::string& HttpClient::getSSLVerification()
 
 NS_CC_END
 
+/*
 // Following is stub for getpwuid_r on android which is called by lates version of curl/ssl (required by google play)
 extern "C" {
 #include <sys/types.h>
@@ -1134,4 +1135,5 @@ int getpwuid_r(uid_t uid, struct passwd * pwbuf, char *buf, size_t buflen, struc
   return ENOSYS;
 }
 }
+*/
 #endif // #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
