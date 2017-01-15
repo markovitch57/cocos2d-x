@@ -189,7 +189,7 @@ private static void setKeepScreenOnFlag(boolean yVal) {
 			}
 		} 
 
-		return 0;//iNativeOutputBufferFrames;// * 2; // debug - remove "*2"!!
+		return iNativeOutputBufferFrames;// * 2; // debug - remove "*2"!!
 	}
 
 	private static boolean headsetStatusChanged() {

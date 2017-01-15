@@ -410,7 +410,7 @@ public:
     /**
     * Return the outline effect size value.
     */
-    int getOutlineSize() const { return _outlineSize; }
+    float getOutlineSize() const { return _outlineSize; }
 
     /**
     * Return current effect type.
@@ -673,7 +673,7 @@ protected:
     void scaleFontSizeDown(float fontSize);
     bool setTTFConfigInternal(const TTFConfig& ttfConfig);
     void setBMFontSizeInternal(float fontSize);
-    bool isHorizontalClamped(float letterPositionX, int lineInex);
+    bool isHorizontalClamped(float letterPositionX, int lineIndex);
     void restoreFontSize();
     void updateLetterSpriteScale(Sprite* sprite);
     int getFirstCharLen(const std::u16string& utf16Text, int startIndex, int textLen);
@@ -738,8 +738,9 @@ protected:
     QuadCommand _quadCommand;
     CustomCommand _customCommand;
     Mat4  _shadowTransform;
-    GLuint _uniformEffectColor;
-    GLuint _uniformTextColor;
+    GLint _uniformEffectColor;
+    GLint _uniformEffectType; // 0: None, 1: Outline, 2: Shadow; Only used when outline is enabled.
+    GLint _uniformTextColor;
     bool _useDistanceField;
     bool _useA8Shader;
 
